@@ -1,0 +1,118 @@
+version: '3'
+
+vars:
+  ACTIONLINT_VERSION: v1.7.12
+  ACTIONLINT: '{{.ROOT_DIR}}/.tools/bin/actionlint'
+  ACT_IMAGE: catthehacker/ubuntu:act-latest
+  ACT_ARCH: linux/amd64
+  GH_AW: gh aw
+
+tasks:
+  default:
+    desc: List the available local workflows
+    cmds: [task --list]
+
+  setup:
+    desc: Install locked Python and Node dependencies and local actionlint (requires uv, Node 24, Go, Task)
+    cmds:
+      - uv sync --locked
+      - npm ci
+      - task: tools:lint
+
+  tools:lint:
+    desc: Install pinned actionlint inside .tools/bin
+    status:
+      - '"{{.ACTIONLINT}}" -version 2>&1 | head -n 1 | tr -d "\r" | grep -Fx "{{.ACTIONLINT_VERSION}}"'
+    cmds:
+      - mkdir -p .tools/bin
+      - 'env GOBIN="{{.ROOT_DIR}}/.tools/bin" go install github.com/rhysd/actionlint/cmd/actionlint@{{.ACTIONLINT_VERSION}}'
+
+  check:
+    desc: Run all host checks without a container daemon or GitHub runner
+    cmds:
+      - task: lint:workflows
+      - task: test
+      - task: docs:check
+      - task: docs:diagrams
+      - task: docs:build
+
+  lint:workflows:
+    desc: Check workflow syntax, expressions, and local action metadata
+    preconditions:
+      - sh: 'test -x "{{.ACTIONLINT}}"'
+        msg: Run task tools:lint first (Go is required)
+    cmds:
+      - '"{{.ACTIONLINT}}" -color'
+
+  test:
+    desc: Type-check and test all four action adapters directly on the host
+    cmds:
+      - npm run typecheck
+      - npm run check:dist
+      - npm test
+      - uv run python scripts/test_actions.py
+
+  actions:build:
+    desc: Rebuild the committed TypeScript action bundle after editing its source
+    cmds: [npm run build:action]
+
+  test:validation:
+    desc: Check diagram cache invalidation and failure handling after changing validators
+    cmds: [uv run python scripts/test_validation.py]
+
+  docs:check:
+    desc: Verify documentation links, navigation, and SVG assets
+    cmds: [uv run python scripts/check_docs.py]
+
+  docs:diagrams:
+    desc: Render new or changed Mermaid diagrams; pass -- --force to recheck all
+    cmds:
+      - uv run python .agents/skills/teach/scripts/validate_mermaid.py {{.CLI_ARGS}}
+
+  docs:verify:
+    desc: Validate documentation and build once, with cached diagram checks
+    cmds:
+      - task: docs:check
+      - task: docs:diagrams
+      - task: docs:build
+
+  docs:build:
+    desc: Build the site into site/
+    cmds: [uv run zensical build]
+
+  docs:build:clean:
+    desc: Rebuild documentation from scratch for publishing or cache troubleshooting
+    cmds: [uv run zensical build --clean]
+
+  docs:serve:
+    desc: Serve the learning site locally
+    cmds: [uv run zensical serve]
+
+  test:container:
+    desc: Build the Docker action and verify its output-file contract in Linux
+    preconditions:
+      - sh: docker info >/dev/null 2>&1
+        msg: Start a Docker-compatible daemon; see the local testing guide for Podman
+    cmds:
+      - docker build --tag actions-learn-greet:local examples/docker-action
+      - uv run python scripts/test_container.py
+
+  act:list:
+    desc: List only the dedicated smoke workflow jobs
+    cmds: ['act workflow_dispatch -W .github/workflows/actions-smoke.yml -l --container-architecture {{.ACT_ARCH}}']
+
+  act:smoke:
+    desc: Run just the smoke job using act (requires a Docker-compatible socket)
+    preconditions:
+      - sh: docker info >/dev/null 2>&1
+        msg: Start a Docker-compatible daemon before running act
+    cmds:
+      - 'act workflow_dispatch -W .github/workflows/actions-smoke.yml -j smoke -e tests/fixtures/workflow_dispatch.json -P ubuntu-latest={{.ACT_IMAGE}} --container-architecture {{.ACT_ARCH}} {{.CLI_ARGS}}'
+
+  agentic:check:
+    desc: Compile and validate the Agentic Workflow example without emitting YAML or running an agent
+    preconditions:
+      - sh: '{{.GH_AW}} version >/dev/null 2>&1'
+        msg: Install the extension with gh extension install github/gh-aw, then verify gh aw compile --help
+    cmds:
+      - '{{.GH_AW}} compile examples/agentic/repo-report.md --no-emit --strict'

@@ -1,0 +1,15 @@
+name: Docker greeting
+description: A Linux container action with explicit arguments and output-file handling
+inputs:
+  name:
+    description: A nonempty, single-line name
+    required: false
+    default: World
+outputs:
+  greeting:
+    description: The validated greeting
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+    - ${{ inputs.name }}

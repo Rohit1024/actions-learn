@@ -1,0 +1,13 @@
+name: JavaScript greeting
+description: A dependency-free Node action with a directly testable greeting function
+inputs:
+  name:
+    description: A nonempty, single-line name
+    required: false
+    default: World
+outputs:
+  greeting:
+    description: The validated greeting
+runs:
+  using: node24
+  main: index.cjs

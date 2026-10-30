@@ -1,0 +1,19 @@
+name: Composite greeting
+description: A composite action with explicit input transport and mapped outputs
+inputs:
+  name:
+    description: A nonempty, single-line name
+    required: false
+    default: World
+outputs:
+  greeting:
+    description: The validated greeting
+    value: ${{ steps.greet.outputs.greeting }}
+runs:
+  using: composite
+  steps:
+    - id: greet
+      shell: bash
+      env:
+        GREETING_NAME: ${{ inputs.name }}
+      run: bash "$GITHUB_ACTION_PATH/greet.sh"

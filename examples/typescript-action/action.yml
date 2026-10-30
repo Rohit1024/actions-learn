@@ -1,0 +1,13 @@
+name: TypeScript greeting
+description: A TypeScript-authored Node action distributed as bundled JavaScript
+inputs:
+  name:
+    description: A nonempty, single-line name
+    required: false
+    default: World
+outputs:
+  greeting:
+    description: The validated greeting
+runs:
+  using: node24
+  main: dist/index.cjs

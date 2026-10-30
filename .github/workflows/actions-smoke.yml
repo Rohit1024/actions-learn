@@ -1,0 +1,44 @@
+name: Action runtime smoke test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: javascript
+        uses: ./examples/javascript-action
+        with:
+          name: Ada
+      - id: typescript
+        uses: ./examples/typescript-action
+        with:
+          name: Ada
+      - id: composite
+        uses: ./examples/composite-action
+        with:
+          name: Ada
+      - id: docker
+        uses: ./examples/docker-action
+        with:
+          name: Ada
+      - name: Verify output wiring for every action
+        shell: bash
+        env:
+          JAVASCRIPT_GREETING: ${{ steps.javascript.outputs.greeting }}
+          TYPESCRIPT_GREETING: ${{ steps.typescript.outputs.greeting }}
+          COMPOSITE_GREETING: ${{ steps.composite.outputs.greeting }}
+          DOCKER_GREETING: ${{ steps.docker.outputs.greeting }}
+        run: |
+          test "$JAVASCRIPT_GREETING" = 'Hello, Ada!'
+          test "$TYPESCRIPT_GREETING" = 'Hello, Ada!'
+          test "$COMPOSITE_GREETING" = 'Hello, Ada!'
+          test "$DOCKER_GREETING" = 'Hello, Ada!'
