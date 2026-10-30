@@ -1,0 +1,31 @@
+name: Module 4 Docker output contract
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - id: good
+        uses: ./labs/0016/action
+        with:
+          name: Ada
+      - id: bad
+        continue-on-error: true
+        uses: ./labs/0016/action
+        with:
+          name: '   '
+      - name: Assert success and expected rejection
+        env:
+          GREETING: ${{ steps.good.outputs.greeting }}
+          BAD_OUTCOME: ${{ steps.bad.outcome }}
+          BAD_GREETING: ${{ steps.bad.outputs.greeting }}
+        run: |
+          test "$GREETING" = 'Hello, Ada!'
+          test "$BAD_OUTCOME" = failure
+          test -z "$BAD_GREETING"

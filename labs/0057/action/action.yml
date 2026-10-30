@@ -1,0 +1,22 @@
+name: Project Node setup
+description: Configure the project's Node runtime and npm download cache through maintained actions.
+inputs:
+  node-version:
+    description: Node version required by the caller.
+    default: '24'
+  cache-dependency-path:
+    description: Lockfile path relative to the checked-out caller workspace.
+    default: package-lock.json
+outputs:
+  node-version:
+    description: The installed Node version.
+    value: ${{ steps.node.outputs.node-version }}
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      id: node
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: npm
+        cache-dependency-path: ${{ inputs.cache-dependency-path }}

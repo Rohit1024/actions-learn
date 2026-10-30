@@ -14,6 +14,7 @@ lesson_status: placeholder
 ## Prerequisites
 
 - [0030 · Compose setup/build/test steps and reusable job workflows](0030-compose-step-and-job-orchestration.md)
+- [0054 · Compose an action-based pipeline and maintain its dependencies](0054-compose-maintained-actions-and-manage-updates.md)
 - [0029 · Reusable workflows, typed inputs, explicit secrets, and permissions](0029-reusable-workflows-and-permission-interfaces.md)
 
 ## What you will learn to do
@@ -89,4 +90,4 @@ Finish with retrieval questions and a truthful handoff for the next thread.
 
 | Previous | All lessons | Next |
 | --- | --- | --- |
-| [0030 · Compose setup/build/test steps and reusable job workflows](0030-compose-step-and-job-orchestration.md) | [Curriculum](index.md) | [0032 · Script injection, untrusted artifacts, and privileged-event pitfalls](0032-script-injection-artifacts-and-privileged-events.md) |
+| [0054 · Compose an action-based pipeline and maintain its dependencies](0054-compose-maintained-actions-and-manage-updates.md) | [Curriculum](index.md) | [0032 · Script injection, untrusted artifacts, and privileged-event pitfalls](0032-script-injection-artifacts-and-privileged-events.md) |

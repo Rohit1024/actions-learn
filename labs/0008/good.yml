@@ -1,0 +1,19 @@
+name: Correct expression and local action interface
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - shell: bash
+        env:
+          REF: ${{ github.ref }}
+        run: printf '%s\n' "$REF"
+      - uses: ./examples/javascript-action
+        with:
+          name: Ada

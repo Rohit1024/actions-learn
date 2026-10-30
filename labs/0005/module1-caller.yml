@@ -1,0 +1,22 @@
+name: Module 1 reusable greeting caller
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  call:
+    uses: ./.github/workflows/module1-reusable.yml
+    with:
+      name: Ada
+  verify:
+    needs: call
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - shell: bash
+        env:
+          GREETING: ${{ needs.call.outputs.greeting }}
+        run: test "$GREETING" = 'Hello, Ada!'

@@ -1,0 +1,12 @@
+name: Module 5 portable line count
+description: Count UTF-8 logical lines using Node APIs with a workspace-relative file
+inputs:
+  file:
+    description: Existing file relative to the workspace; LF, CRLF and CR are accepted
+    required: true
+outputs:
+  count:
+    description: Decimal logical line count; a terminal newline adds no extra line
+runs:
+  using: node24
+  main: index.cjs

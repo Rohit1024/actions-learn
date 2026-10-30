@@ -1,0 +1,23 @@
+name: Module 2 deliberate output mapping failure
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: greet
+        uses: ./labs/0011/broken-action
+        with:
+          name: Ada
+      - name: Assert the caller-visible contract
+        shell: bash
+        env:
+          ACTUAL: ${{ steps.greet.outputs.greeting }}
+        run: |
+          printf 'caller-visible greeting=%s\n' "$ACTUAL"
+          test "$ACTUAL" = 'Hello, Ada!'

@@ -1,0 +1,13 @@
+name: Module 3 greeting contract
+description: Demonstrate metadata declarations and runtime validation separately.
+inputs:
+  name:
+    description: Nonempty single-line recipient; surrounding whitespace is trimmed.
+    required: true
+    default: World
+outputs:
+  greeting:
+    description: Validated single-line greeting.
+runs:
+  using: node24
+  main: index.cjs

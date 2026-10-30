@@ -1,0 +1,12 @@
+name: Deliberate unknown expression context
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - shell: bash
+        env:
+          REF: ${{ githb.ref }}
+        run: printf '%s\n' "$REF"

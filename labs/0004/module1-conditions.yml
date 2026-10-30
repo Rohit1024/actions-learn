@@ -1,0 +1,53 @@
+name: Module 1 conditions and types
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_extra:
+        description: Run the typed optional step
+        type: boolean
+        default: false
+      simulate_failure:
+        description: Fail the exercise step
+        type: boolean
+        default: false
+
+permissions: {}
+
+jobs:
+  conditions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      TEXT_FLAG: 'false'
+    steps:
+      - name: Deliberately wrong text condition
+        if: env.TEXT_FLAG
+        run: printf '%s\n' 'nonempty text ran this step'
+      - name: Explicit text comparison
+        if: env.TEXT_FLAG == 'true'
+        run: printf '%s\n' 'text enabled'
+      - name: Convert known JSON text
+        if: fromJSON(env.TEXT_FLAG)
+        run: printf '%s\n' 'JSON boolean enabled'
+      - name: Typed dispatch input
+        if: inputs.run_extra
+        run: printf '%s\n' 'typed input enabled'
+      - name: Exercise step
+        id: exercise
+        shell: bash
+        env:
+          SIMULATE_FAILURE: ${{ inputs.simulate_failure }}
+        run: |
+          if [ "$SIMULATE_FAILURE" = true ]; then
+            exit 1
+          fi
+          printf '%s\n' 'exercise passed'
+      - name: Default success condition
+        run: printf '%s\n' 'earlier steps succeeded'
+      - name: Failure diagnostic
+        if: failure() && steps.exercise.outcome == 'failure'
+        run: printf '%s\n' 'exercise failed; inspect its log'
+      - name: Report unless cancelled
+        if: ${{ !cancelled() }}
+        run: printf '%s\n' 'bounded report after success or failure'

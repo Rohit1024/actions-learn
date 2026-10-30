@@ -1,0 +1,23 @@
+name: Module 4 mounted report
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - run: printf '%s\n' Ada > name.txt
+      - id: report
+        uses: ./labs/0015/action
+      - env:
+          GREETING: ${{ steps.report.outputs.greeting }}
+          REPORT: ${{ steps.report.outputs.report }}
+        run: |
+          test "$GREETING" = 'Hello, Ada!'
+          test "$REPORT" = report.txt
+          test "$(cat "$REPORT")" = 'Hello, Ada!'

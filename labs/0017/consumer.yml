@@ -1,0 +1,26 @@
+name: Module 4 truthful failure status
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  failure-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - id: worker
+        continue-on-error: true
+        uses: ./labs/0017/action
+        with:
+          mode: fail
+      - name: Verify intended rejection and cleanup
+        env:
+          OUTCOME: ${{ steps.worker.outcome }}
+          RESULT: ${{ steps.worker.outputs.result }}
+        run: |
+          test "$OUTCOME" = failure
+          test -z "$RESULT"
+          test ! -e .lesson17.partial

@@ -1,0 +1,14 @@
+name: Module 4 interruption contract
+description: Stage local work, clean up interruptions, and publish only completed work
+inputs:
+  mode:
+    description: success, fail, or wait
+    default: success
+outputs:
+  result:
+    description: Workspace-relative completed result file
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+    - ${{ inputs.mode }}

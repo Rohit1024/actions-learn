@@ -1,0 +1,31 @@
+name: Module 1 reusable greeting
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        description: Single-line recipient
+        type: string
+        default: Ada
+    outputs:
+      greeting:
+        description: Greeting returned by the worker
+        value: ${{ jobs.greet.outputs.greeting }}
+
+permissions:
+  contents: read
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      greeting: ${{ steps.greet.outputs.greeting }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: greet
+        uses: ./examples/javascript-action
+        with:
+          name: ${{ inputs.name }}

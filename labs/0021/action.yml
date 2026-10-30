@@ -1,0 +1,12 @@
+name: Module 5 bundled greeting
+description: Execute the reviewed JavaScript distribution rather than TypeScript source
+inputs:
+  name:
+    description: Nonempty single-line name
+    default: World
+outputs:
+  greeting:
+    description: Validated greeting
+runs:
+  using: node24
+  main: dist/index.cjs

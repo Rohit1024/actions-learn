@@ -1,0 +1,47 @@
+name: Module 1 output contracts
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  produce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      greeting: ${{ steps.emit.outputs.greeting }}
+    steps:
+      - name: Write three different runner channels
+        id: emit
+        shell: bash
+        run: |
+          printf '%s\n' 'greeting=Hello, Ada!' >> "$GITHUB_OUTPUT"
+          printf '%s\n' 'LESSON_COLOR=green' >> "$GITHUB_ENV"
+          printf '%s\n' '### Greeting ready' >> "$GITHUB_STEP_SUMMARY"
+          printf '%s\n' 'report<<LESSON_REPORT' 'first line' 'second line' \
+            'LESSON_REPORT' >> "$GITHUB_OUTPUT"
+          printf '%s\n' 'empty=' >> "$GITHUB_OUTPUT"
+      - name: Consume in a later step of this job
+        shell: bash
+        env:
+          GREETING: ${{ steps.emit.outputs.greeting }}
+          REPORT: ${{ steps.emit.outputs.report }}
+          EMPTY_VALUE: ${{ steps.emit.outputs.empty }}
+        run: |
+          test "$GREETING" = 'Hello, Ada!'
+          test "$LESSON_COLOR" = green
+          test "$REPORT" = $'first line\nsecond line'
+          test -z "$EMPTY_VALUE"
+  consume:
+    needs: produce
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Consume a mapped job output
+        shell: bash
+        env:
+          GREETING: ${{ needs.produce.outputs.greeting }}
+        run: |
+          test "$GREETING" = 'Hello, Ada!'
+          test -z "${LESSON_COLOR:-}"

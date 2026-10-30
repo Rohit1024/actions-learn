@@ -1,0 +1,21 @@
+{
+  "candidate": "v1.1.0",
+  "runtime": "node24",
+  "entrypoint": "index.cjs",
+  "intendedPlatforms": ["ubuntu-latest", "macos-latest", "windows-latest"],
+  "hostedMatrixExecuted": false,
+  "changes": [
+    "Define LF/CRLF/CR logical-line semantics and terminal-newline behavior",
+    "Use Node filesystem/path APIs instead of wc",
+    "Accept workspace-relative paths with spaces and Unicode"
+  ],
+  "releaseReview": [
+    "Confirm whether changed counting semantics break any existing consumer before choosing v1.1.0",
+    "Review source and all required shipped files at the exact candidate commit",
+    "Review locked dependency diff and regenerated bundle for a bundled action such as labs/0021",
+    "Run the intended OS and runner-version checks before claiming support",
+    "Keep patch releases fixed; move a compatible major alias only after verification",
+    "Give consumers the verified full commit SHA and release notes; do not invent a SHA"
+  ],
+  "publication": "plan only; no tags, pushes, releases, or Marketplace writes"
+}

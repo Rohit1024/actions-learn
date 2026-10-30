@@ -1,0 +1,3 @@
+FROM scratch
+COPY entrypoint.py /entrypoint.py
+ENTRYPOINT ["python3", "/entrypoint.py"]

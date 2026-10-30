@@ -1,0 +1,12 @@
+name: Module 5 required greeting
+description: A dependency-free Node adapter with a required single-line input
+inputs:
+  name:
+    description: Nonempty single-line recipient
+    required: true
+outputs:
+  greeting:
+    description: Validated greeting
+runs:
+  using: node24
+  main: index.cjs

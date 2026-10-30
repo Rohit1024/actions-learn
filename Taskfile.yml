@@ -53,6 +53,91 @@ tasks:
     cmds:
       - '"{{.ACTIONLINT}}" -color examples/prebuilt-actions/*.yml examples/own-action-consumer.yml'
 
+  lint:module1:
+    desc: Check inactive Module 1 workflows and their local reusable-workflow interfaces
+    cmds: [uv run python labs/check_workflows.py]
+
+  lint:module2:
+    desc: Check the five syntax-valid Module 2 recipes, excluding diagnostic failure fixtures
+    cmds:
+      - '"{{.ACTIONLINT}}" -color labs/0007/module2-command.yml labs/0008/good.yml labs/0008/safe-template.yml labs/0011/smoke.yml labs/0011/broken-smoke.yml'
+
+  lint:module3:
+    desc: Check the five inactive custom-action consumer recipes
+    cmds:
+      - '"{{.ACTIONLINT}}" -color labs/0056/consumer.yml labs/0057/consumer.yml labs/0058/consumer.yml labs/0059/consumer.yml labs/0060/consumer.yml'
+
+  lint:module4:
+    desc: Check the four inactive Docker action consumer recipes
+    cmds:
+      - '"{{.ACTIONLINT}}" -color labs/0013/consumer.yml labs/0015/consumer.yml labs/0016/consumer.yml labs/0017/consumer.yml'
+
+  lint:module5:
+    desc: Check Node action consumers and the unexecuted hosted OS matrix recipe
+    cmds:
+      - '"{{.ACTIONLINT}}" -color labs/0019/module5-contracts.yml labs/0024/module5-platforms.yml'
+
+  lint:labs:
+    desc: Check all 23 syntax-valid workflow recipes across authored Modules 1-5
+    cmds:
+      - task: lint:module1
+      - task: lint:module2
+      - task: lint:module3
+      - task: lint:module4
+      - task: lint:module5
+
+  test:module2:
+    desc: Run local-testing lab contracts without containers or documentation checks
+    cmds:
+      - task --taskfile labs/0007/Taskfile.yml check
+      - uv run --no-sync python labs/0007/cache_demo.py
+      - uv run --no-sync python labs/0008/shell_probe.py
+      - node --test labs/0009/greet.test.cjs labs/0009/contract.test.cjs
+      - uv run --no-sync python labs/0009/event_probe.py labs/0009/dispatch.json
+      - uv run --no-sync python labs/0011/direct.py
+      - uv run --no-sync python labs/0012/exercise.py
+
+  test:module3:
+    desc: Check custom-action contracts and the local release candidate without publishing
+    cmds:
+      - node labs/0056/probe.cjs
+      - uv run --no-sync python labs/0057/preflight.py
+      - node node_modules/typescript/bin/tsc --ignoreConfig --noEmit --strict --target ES2022 --module NodeNext --moduleResolution NodeNext --types node labs/0058/action/src/domain.ts labs/0058/action/src/index.ts
+      - node labs/0058/build.cjs --check
+      - node --test labs/0058/test.cjs
+      - node labs/0058/stale-demo.cjs
+      - uv run --no-sync python labs/0059/contract.py
+      - node labs/0060/check-package.cjs
+      - node labs/0060/failure-demo.cjs
+
+  test:module4:
+    desc: Test Docker action programs, interruption, and review policy on the host
+    cmds:
+      - uv run --no-sync python labs/0013/probe.py
+      - uv run --no-sync python labs/0014/host_probe.py
+      - uv run --no-sync python labs/0015/mount_probe.py
+      - uv run --no-sync python labs/0016/contract.py host
+      - uv run --no-sync python labs/0017/test_host.py
+      - sh -n labs/0017/action/entrypoint.sh
+      - uv run --no-sync python labs/0018/test_review.py
+
+  test:module5:
+    desc: Check Node, API-fixture, lifecycle, portability, and bundle contracts locally
+    cmds:
+      - node --test labs/0019/action.test.cjs labs/0020/report.test.cjs labs/0020/process.test.cjs labs/0021/artifact.test.cjs labs/0022/report.test.cjs labs/0023/lifecycle.test.cjs labs/0024/portable.test.cjs
+      - node node_modules/typescript/bin/tsc --project labs/0021/tsconfig.json
+      - node labs/0021/check-dist.cjs
+      - node labs/0020/mutation.cjs
+      - node labs/0021/drift-demo.cjs
+
+  test:labs:
+    desc: Run host contracts for authored Modules 2-5 without documentation or hosted execution
+    cmds:
+      - task: test:module2
+      - task: test:module3
+      - task: test:module4
+      - task: test:module5
+
   test:
     desc: Type-check and test all four action adapters directly on the host
     cmds:

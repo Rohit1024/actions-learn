@@ -1,0 +1,23 @@
+{
+  "subject": "Module 2 greeting action and selected smoke caller",
+  "revision": "exercise-revision-A (synthetic; replace with a real commit in a live evidence record)",
+  "claims": [
+    {"id": "input-validation", "required_for": "local-candidate", "minimum_layer": "host", "evidence": {"layer": "host", "status": "not-run", "command": "node --test labs/0009/greet.test.cjs labs/0009/contract.test.cjs"}},
+    {"id": "workflow-structure", "required_for": "local-candidate", "minimum_layer": "static", "evidence": {"layer": "static", "status": "not-run", "command": ".tools/bin/actionlint -no-color labs/0011/smoke.yml"}},
+    {"id": "caller-output-mapping", "required_for": "local-candidate", "minimum_layer": "act", "evidence": {"layer": "act", "status": "deferred", "reason": "No reachable Docker-compatible engine in the authoring environment"}},
+    {"id": "actual-token-permissions", "required_for": "platform-release", "minimum_layer": "github", "evidence": {"layer": "github", "status": "not-run", "reason": "No hosted execution requested"}},
+    {"id": "oidc-federation", "required_for": "deployment", "minimum_layer": "github", "evidence": {"layer": "act", "status": "simulated", "reason": "A fake token fixture tests application handling, not real identity"}},
+    {"id": "environment-approval", "required_for": "deployment", "minimum_layer": "github", "evidence": {"layer": "github", "status": "not-run", "reason": "No configured test deployment environment was exercised"}}
+  ],
+  "budget": {
+    "max_hosted_runs_per_revision": 1,
+    "planned_jobs": 1,
+    "job_timeout_minutes": 5,
+    "matrix_size": 1,
+    "max_model_calls": 0,
+    "max_external_writes": 0,
+    "actual_hosted_runs": 0,
+    "actual_model_calls": 0,
+    "actual_external_writes": 0
+  }
+}

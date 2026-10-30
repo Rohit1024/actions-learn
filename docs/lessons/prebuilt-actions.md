@@ -4,9 +4,9 @@ icon: lucide/blocks
 
 # Popular pre-built actions: less shell glue
 
-Use maintained actions for common repository, setup, cache, build, artifact, identity, and release operations. Keep project-specific build and test commands explicit. This module teaches selection and composition before custom action implementation.
+Use maintained actions for common repository, setup, cache, build, artifact, identity, and release operations. Keep project-specific build and test commands explicit. This module develops action selection and composition after the custom-action modules and before security, reliability, and releases.
 
-**Module 2 · Lessons 0049–0054.** Start after [workflow dependencies](0006-matrices-dependencies-and-cancellation.md). The [ranked catalog](../references/prebuilt-actions.md) contains **29 actions**, dated star counts, and observed Marketplace creator evidence. GitHub's [pre-written building blocks guide](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/find-and-customize-actions) explains how to reference an existing action.
+**Module 7 · Lessons 0049–0054.** Start after [composite and reusable-workflow orchestration](0030-compose-step-and-job-orchestration.md). The [ranked catalog](../references/prebuilt-actions.md) contains **29 actions**, dated star counts, and observed Marketplace creator evidence. GitHub's [pre-written building blocks guide](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/find-and-customize-actions) explains how to reference an existing action.
 
 ## The six lessons
 
@@ -106,4 +106,4 @@ Static checks validate workflow structure, expressions, and the local custom-act
 
 | Previous | All lessons | Next |
 | --- | --- | --- |
-| [Workflow dependencies](0006-matrices-dependencies-and-cancellation.md) | [Curriculum](index.md) | [0049 · Choose pre-built actions](0049-selecting-popular-prebuilt-actions.md) |
+| [0030 · Workflow orchestration](0030-compose-step-and-job-orchestration.md) | [Curriculum](index.md) | [0049 · Choose pre-built actions](0049-selecting-popular-prebuilt-actions.md) |

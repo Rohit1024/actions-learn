@@ -5,7 +5,7 @@ description: Learn GitHub Actions by building custom actions and testing them lo
 
 # GitHub Actions, from workflows to production orchestration
 
-Start with **workflows, events, jobs, steps, and runners**, reuse **maintained pre-built actions** to reduce shell glue, then build **Docker container actions, JavaScript and TypeScript actions, composite actions, and GitHub Agentic Workflows**. Progress toward an orchestrator with tested workers, parallel jobs, evidence gates, bounded credentials, and an operating playbook. Keep the feedback loop local, then use GitHub to verify behavior that depends on its platform.
+Start with **workflows, events, jobs, steps, and runners**, establish a **local testing loop**, then build **Docker container actions, JavaScript and TypeScript actions, and composite actions**. Study **maintained pre-built actions** before security, releases, and **GitHub Agentic Workflows**. Progress toward an orchestrator with tested workers, parallel jobs, evidence gates, bounded credentials, and an operating playbook. Keep the feedback loop local, then use GitHub to verify behavior that depends on its platform.
 
 [Start with GitHub Actions](lessons/0001-execution-model.md){ .md-button .md-button--primary }
 [Use pre-built actions](lessons/prebuilt-actions.md){ .md-button }
@@ -57,12 +57,12 @@ Start with **workflows, events, jobs, steps, and runners**, reuse **maintained p
 
 ```mermaid
 flowchart TD
-    M1["1. Workflow execution"] --> M2["2. Popular pre-built actions"]
-    M2 --> M3["3. Local testing"]
-    M3 --> M4["4. Create your own action"]
-    M4 --> M5["5. Docker actions"]
-    M5 --> M6["6. JavaScript and TypeScript actions"]
-    M6 --> M7["7. Composite actions and reusable workflows"]
+    M1["1. Workflow execution"] --> M2["2. Local testing"]
+    M2 --> M3["3. Create your own action"]
+    M3 --> M4["4. Docker actions"]
+    M4 --> M5["5. JavaScript and TypeScript actions"]
+    M5 --> M6["6. Composite actions and reusable workflows"]
+    M6 --> M7["7. Popular pre-built actions"]
     M7 --> M8["8. Security and releases"]
     M8 --> M9["9. Agentic workflows"]
     M9 --> M10["10. Production capstone"]
@@ -72,7 +72,7 @@ flowchart TD
 
 Open the [curriculum](lessons/index.md), select a lesson, and copy its thread prompt. The [teaching guide](lessons/teaching-guide.md) keeps explanations focused on Actions behavior, relevant YAML and code, and learner predictions and exercises. Start with `/teach 0001` for the execution model.
 
-The course currently has 58 detailed teaching briefs and two starter lessons. A placeholder is a plan for a future session. Written pages and checkmarks are separate from demonstrated understanding.
+Modules 1–5 now have 30 authored reference lessons and local labs. The remaining 30 pages in Modules 6–10 are detailed teaching briefs for future sessions; there are no starter pages. Written pages and checkmarks are separate from demonstrated understanding.
 
 ## Local workspace commands
 
@@ -84,7 +84,7 @@ task check
 task docs:serve
 ```
 
-`task check` runs workflow linting, host tests for all four action adapters, link checks, Mermaid validation, and an incremental site build. For documentation-only edits, use `task docs:verify`. Successful diagram renders are reused until their content or validation tools change. These checks do not dispatch GitHub Actions or call an AI model. The first setup downloads dependencies and a browser used to render diagrams.
+`task check` runs workflow linting, host tests for all four action adapters, link checks, Mermaid validation, and an incremental site build. Use `task test:labs` for the Module 2–5 host exercises and `task lint:labs` for the 23 syntax-valid lab workflow recipes. For documentation-only edits, use `task docs:verify` once after the complete authoring batch. Successful diagram renders are reused until their content or validation tools change. These checks do not dispatch GitHub Actions or call an AI model. The first setup downloads dependencies and a browser used to render diagrams.
 
 When a Docker-compatible daemon is running:
 

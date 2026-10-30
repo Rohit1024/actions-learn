@@ -1,0 +1,73 @@
+name: Module 1 dependencies and failure
+
+on:
+  workflow_dispatch:
+    inputs:
+      skip_review:
+        description: Skip a required branch to demonstrate the gate
+        type: boolean
+        default: false
+      fail_worker:
+        description: Select a failing matrix member
+        type: choice
+        options: [none, alpha, beta]
+        default: none
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      candidate: ${{ steps.plan.outputs.candidate }}
+    steps:
+      - id: plan
+        run: printf '%s\n' 'candidate=preview' >> "$GITHUB_OUTPUT"
+  workers:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        case: [alpha, beta]
+    steps:
+      - name: Check one independent case
+        shell: bash
+        env:
+          CASE_NAME: ${{ matrix.case }}
+          FAIL_WORKER: ${{ inputs.fail_worker }}
+          CANDIDATE: ${{ needs.plan.outputs.candidate }}
+        run: |
+          test "$CANDIDATE" = preview
+          printf 'checking %s\n' "$CASE_NAME"
+          test "$CASE_NAME" != "$FAIL_WORKER"
+  review:
+    needs: plan
+    if: ${{ !inputs.skip_review }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: printf '%s\n' 'required review passed'
+  gate:
+    needs: [workers, review]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Require both branches
+        shell: bash
+        env:
+          WORKER_RESULT: ${{ needs.workers.result }}
+          REVIEW_RESULT: ${{ needs.review.result }}
+        run: python3 labs/0006/gate.py --worker "$WORKER_RESULT" --review "$REVIEW_RESULT"

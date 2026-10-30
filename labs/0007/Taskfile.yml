@@ -1,0 +1,39 @@
+version: '3'
+
+dir: '{{.TASKFILE_DIR}}'
+
+tasks:
+  check:
+    desc: Run the command contract without caching test success
+    preconditions:
+      - sh: command -v python3 >/dev/null
+        msg: This lab needs the already installed Python 3 interpreter
+      - sh: test -f input.json && test -f policy.json
+        msg: Run from this lab with both input.json and policy.json present
+    cmds:
+      - python3 check.py
+
+  build:bad:
+    desc: Deliberately omit the policy from the source fingerprint
+    sources: [check.py, input.json]
+    generates: [result.json]
+    cmds:
+      - python3 check.py --write
+
+  build:fixed:
+    desc: Track every local file that determines this generated result
+    sources: [check.py, input.json, policy.json]
+    generates: [result.json]
+    cmds:
+      - python3 check.py --write
+
+  verify-result:
+    desc: Compare the generated result with the current contract
+    cmds:
+      - python3 check.py --verify
+
+  ordered:
+    desc: Call tasks in the order required by the generated-file contract
+    cmds:
+      - task: build:fixed
+      - task: verify-result

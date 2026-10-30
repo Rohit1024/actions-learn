@@ -29,17 +29,18 @@ Use lesson IDs **0001–0060**, resolved through the curriculum. Follow module a
 
 ```mermaid
 flowchart TD
-    Workflow["Understand workflow events, jobs, steps, and runners"] --> Reuse["Select maintained pre-built actions with publisher evidence"]
-    Reuse --> Local["Test action behavior and workflow wiring locally"]
+    Workflow["Understand workflow events, jobs, steps, and runners"] --> Local["Test action behavior and workflow wiring locally"]
     Local --> Author["Build custom actions with explicit contracts"]
     Author --> Composer["Compose workers through reusable workflow interfaces"]
-    Composer --> Operator["Control identity, releases, failure, and usage"]
+    Composer --> Reuse["Select maintained pre-built actions with publisher evidence"]
+    Reuse --> Operator["Control identity, releases, failure, and usage"]
     Operator --> Orchestrator["Independently design and operate a verified pipeline"]
 ```
 
-- **Modules 1–2:** configure workflow execution, then select maintained pre-built actions using a dated star snapshot, matched publisher evidence, and reviewed releases.
-- **Modules 3–4:** test locally, then create a focused action interface and choose composition, Node, or Docker deliberately.
-- **Modules 5–7:** develop Docker, JavaScript/TypeScript, composite, and reusable-workflow implementations in depth.
+- **Modules 1–2:** configure workflow execution, then test action behavior and workflow wiring locally with Task and act.
+- **Module 3:** create a focused action interface and choose composition, Node, or Docker deliberately.
+- **Modules 4–6:** develop Docker, JavaScript/TypeScript, composite, and reusable-workflow implementations in depth.
+- **Module 7:** select maintained pre-built actions using a dated star snapshot, matched publisher evidence, and reviewed releases.
 - **Modules 8–9:** secure credentials and releases, then evaluate constrained agentic automation.
 - **Module 10:** deliver a capstone with worker evidence, release gates, and an operating playbook.
 

@@ -1,0 +1,10 @@
+name: Module 4 mounted report
+description: Read a workspace fixture and expose a report and named output
+outputs:
+  greeting:
+    description: Greeting read from the workspace fixture
+  report:
+    description: Workspace-relative report path
+runs:
+  using: docker
+  image: Dockerfile

@@ -1,0 +1,15 @@
+name: Module 5 timing report
+description: Summarize supplied workflow durations without calling a service
+inputs:
+  durations:
+    description: JSON array of finite nonnegative seconds
+    default: '[]'
+  budget:
+    description: Nonnegative total seconds budget; exceeded budget is data, not an execution error
+    default: '10'
+outputs:
+  report:
+    description: JSON object with count, totalSeconds, and withinBudget
+runs:
+  using: node24
+  main: index.cjs

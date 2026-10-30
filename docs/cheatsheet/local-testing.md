@@ -52,6 +52,10 @@ flowchart TD
 # Fast path while editing behavior.
 task test
 
+# Authored Modules 2–5 have additional host contracts; lab workflow lint covers Modules 1–5.
+task test:labs
+task lint:labs
+
 # Rebuild the distribution artifact only after changing TypeScript source.
 task actions:build
 task test
@@ -73,6 +77,8 @@ task docs:build:clean
 Mermaid validation scans the selected Markdown files, deduplicates diagrams, and renders only diagrams without a matching successful check. Cache keys include diagram content, validator code, installed renderer versions, and the dependency lockfile. A repeat run or prose-only edit does not start Node or a browser. New or changed diagrams share one browser; failed renders are always retried. The cache lives under `.tools/validation/`, which survives Zensical clean builds. To focus on one lesson, run `uv run python .agents/skills/teach/scripts/validate_mermaid.py docs/lessons/0001-execution-model.md`. Whole-site link checks remain enabled to catch incoming links to renamed or deleted headings.
 
 `task test` first type-checks TypeScript, compares its generated bundle with the committed distribution file, then tests the pure JavaScript function and all four real entrypoints. Cases include default input, empty input, whitespace, Unicode, multiline rejection, and shell-like text treated as data. Docker's program is tested with host Python at this layer; the image is tested separately.
+
+`task test:labs` additionally exercises the authored Module 2–5 labs, including Task cache invalidation, real process contracts, packaging drift, fixture-only APIs, lifecycle cleanup, and host interruption handling. `task lint:labs` selects 23 syntax-valid recipes across Modules 1–5. Deliberate negative workflow fixtures remain separate; a clean static check also does not repair or execute an intentionally broken output mapping. These lab commands perform no documentation checks and need no container daemon. Use `task test:module2` through `task test:module5`, or the matching `lint:moduleN` task, for a focused module edit.
 
 The TypeScript bundle check builds into a temporary file and compares bytes. It fails on stale output without silently repairing it. Commit both source and `examples/typescript-action/dist/index.cjs` when changing that action.
 

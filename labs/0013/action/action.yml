@@ -1,0 +1,18 @@
+name: Module 4 argument contract
+description: Map two named inputs to two positional container arguments
+inputs:
+  name:
+    description: Nonempty single-line recipient
+    default: World
+  salutation:
+    description: Nonempty single-line salutation
+    default: Hello
+outputs:
+  greeting:
+    description: Validated greeting
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+    - ${{ inputs.name }}
+    - ${{ inputs.salutation }}

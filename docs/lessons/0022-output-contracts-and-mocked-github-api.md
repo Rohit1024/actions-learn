@@ -1,92 +1,212 @@
 ---
 icon: lucide/book-open
 lesson_id: "0022"
-lesson_status: placeholder
+lesson_status: authored
 ---
 
 # 0022 · Output files, failure status, and mocked GitHub API responses
 
-!!! note "Placeholder for a future teaching thread"
-    This page is a teaching brief. Expand it into a full interactive lesson in its own thread. The planned exercises and outcomes have not been completed or demonstrated.
+!!! note "Authored reference lesson"
+    `labs/0022/` uses local response fixtures and fake time. It never contacts GitHub, loads a token, or retries a real request. The executable lab develops the adapter contract; it does not prove real API authorization or learner mastery.
 
-**Level:** Intermediate.
+## Prerequisites and goal
 
-## Prerequisites
+Read [0021 · Shipped entrypoints](0021-typescript-bundling-and-dist-drift.md) and [0009 · Fixtures and output files](0009-unit-tests-fixtures-and-output-files.md). Recall that zero exit status and a success-shaped output can both be wrong when an adapter hides a service failure.
 
-- [0021 · TypeScript compilation, bundling, and committed distribution files](0021-typescript-bundling-and-dist-drift.md)
-- [0009 · Unit tests, event fixtures, and temporary output files](0009-unit-tests-fixtures-and-output-files.md)
+Create an issue-report adapter that follows a normalized pagination contract, validates responses, retries one transient read within a budget, and publishes a report only after all pages succeed. Success means you can distinguish an empty successful list from inaccessible data and prove that a page-two failure does not leak a partial success report.
 
-## What you will learn to do
+## Establish the service boundary before mocking it
 
-- Test a repository API adapter with deterministic response fixtures.
-- Propagate a failure without fabricating a successful output.
+An **HTTP response** contains a status, headers, and a body. An API client may normalize that response or throw on error statuses. A **mock** or **fake** is a controlled substitute at a chosen interface; it proves only the behavior exercised through that interface.
 
-## Explain the Actions behavior
+This lab's client interface is deliberately smaller than Octokit:
 
-Start from the prerequisite workflow or action behavior and introduce these concepts with focused examples:
+```javascript title="The injected client contract"
+request({ method: 'GET', url })
+// Resolves to { status, headers?, data?, nextUrl? }.
+// nextUrl is the next-page URL already extracted by a transport adapter.
+```
 
-1. An API adapter translates response status and data into domain results or failures.
-2. Mock responses isolate pagination, rate limits, and unavailable services from remote credentials.
-3. Retry policy must consider operation semantics, deadlines, and whether a repeated write is safe.
+`fixtures/scenarios.json` contains version-controlled examples. The fake checks the method and exact requested URL, returns the next prescribed response, records calls, and rejects unexpected requests. It cannot perform network I/O.
 
-Explain the relevant workflow YAML, expressions, and action code in context. Follow the [shared teaching guide](teaching-guide.md) for pacing, expected output, and progression toward independent design.
+!!! note "Normalized pagination, not a GitHub response field"
+    GitHub exposes REST pagination through `Link` headers. `nextUrl` is this lab's normalized seam, not a field GitHub promises in an issues response. A real transport should use the client's pagination facilities or a reviewed Link parser. The [pagination guide](https://docs.github.com/en/rest/using-the-rest-api/using-pagination-in-the-rest-api) is the primary reference.
 
-## Planned local lab
-
-Create an isolated exercise under `labs/0022/` when the lesson is developed. Explain setup and expected output before each command; reuse installed tools rather than reinstalling them on every step.
-
-1. Create a tiny report function driven by a fake GitHub client or static response adapter.
-2. Exercise multiple pages, empty results, denied access, rate limiting, and a transient failure.
-3. Check the final output file and exit status, then identify the smallest real-service integration still needed.
-
-## Break it and diagnose it
-
-Treat an error response as an empty successful report or retry a non-idempotent operation blindly. Diagnose the misleading or duplicated result.
-
-Ask for a prediction first. Capture the smallest reproducer, the actual result, and the corrected behavior. State which remaining claim requires a real GitHub or external-service check.
-
-## Planning diagram
+The fixture URL names a fictional `acme/widget` repository. It is a deterministic request key, not a repository to access. Real integrations should configure the appropriate GitHub API base URL, including Enterprise Server, instead of copying this fixed fixture origin into production.
 
 ```mermaid
 flowchart TD
-    N0["Versioned API response fixture"]
-    N1["Adapter interprets status and pages"]
-    N0 --> N1
-    N2["Report logic"]
-    N1 --> N2
-    N3["Output or truthful failure"]
-    N2 --> N3
+    Input["Action input selects a local scenario"] --> Fake["Fake client validates GET and exact URL"]
+    Fake --> Status["Report adapter interprets response status"]
+    Status --> Retry["503 read: one retry after 250 ms of fake time"]
+    Retry --> Fake
+    Status --> Reject["Denied, rate-limited, exhausted or malformed: reject"]
+    Status --> Data["200: validate rows and exclude pull requests"]
+    Data --> More["Follow normalized next URL within page budget"]
+    More --> Fake
+    Data --> Complete["All pages complete: return report"]
+    Complete --> Output["Serialize one JSON output and exit 0"]
+    Reject --> Failure["stderr and exit 1; no report output"]
 ```
 
-When expanding this lesson, refine the diagram to show the actual processes, branches, data exchange, and trust boundaries being taught.
+## Interpret statuses before counting data
 
-## Retrieval questions
+`issueReport` takes explicit `request`, `sleep`, and `now` dependencies. The initial route is an issues listing. The GitHub issues endpoint can include pull requests, so this report excludes rows with a `pull_request` field. The first fixture page includes one on purpose.
 
-1. What does the fake client establish about report logic?
-2. Which failures should be retried and under which deadline?
-3. What authorization behavior remains unproven by a mocked response?
+The adapter accumulates successful rows in memory and returns only after the final page. Each row must have a safe-integer ID and a string title. Invalid shapes are failures, not silently discarded rows. A repeated next URL is rejected as a cycle; more than three pages is rejected as a bounded lab limit. A real large repository needs a documented pagination policy rather than silently truncating results.
 
-## Evidence to capture in the teaching thread
+| Fixture scenario | Interpretation | Output policy |
+| --- | --- | --- |
+| `pages` | Two pages, one pull request excluded | Count 2 with both issue titles |
+| `empty` | HTTP 200 with an empty array | Valid count 0 |
+| `denied` | Ordinary HTTP 403 | Fail, no report |
+| `rate` | HTTP 429 with Retry-After | Fail, no retry in this short budget |
+| `primary-rate` | HTTP 403 with remaining quota 0 | Fail, no retry in this short budget |
+| `transient` | HTTP 503, then successful GET | Retry once and report count 1 |
+| `unavailable` | Two HTTP 503 responses | Fail after bounded attempts |
+| `partial` | First page succeeds, next page never succeeds | Fail without publishing the first page |
+| `malformed` / `cycle` | Wrong response shape / repeated page | Fail with a diagnostic |
 
-- A working learner-produced example and an explanation of why it works.
-- A reproduced failure, a reasoned repair, and the smallest check that verifies it.
-- A short account of remaining limits, unresolved questions, and readiness for the next lesson.
+The [REST best-practices guide](https://docs.github.com/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api), checked **2026-10-30**, distinguishes rate-limit waiting instructions from ordinary access errors. A 404 can also hide inaccessible private resources; it must not automatically become an empty successful list.
 
-Use [primary references](../references/resources.md) to verify current syntax, runtime support, and tool behavior. Add learning records only for real statements or demonstrated understanding; a placeholder or generated page does not establish mastery.
+## Bound retries by operation and time
+
+A **retry** repeats an operation after an error. The lab retries only a GET that returns 503, at most once for that page. The injected clock and sleep function advance fake time by 250 milliseconds without blocking. A 1,500-millisecond budget covers the whole report, and the code checks the clock before and after requests and before a wait.
+
+```javascript title="Transient-read policy excerpt"
+if (response.status === 200) break;
+if (response.status !== 503 || attempt === 2) {
+  throw new Error(`API status ${response.status}`);
+}
+if (now() + 250 >= deadline) throw new Error('retry would exceed deadline');
+await sleep(250); // (1)!
+```
+
+1. This delay is a chosen teaching policy for a transient read, not GitHub's general rate-limit recommendation. Rate-limit cases are rejected before this branch.
+
+When rate limited, GitHub instructs clients to respect `retry-after`, quota-reset timestamps, or the documented secondary-limit backoff. This short-lived lab fails promptly instead of making another request sooner than allowed. A production adapter may defer a job or wait within an explicit overall budget. It should not turn every 403 into an automatic retry.
+
+A POST that creates an issue has different semantics: if the server created it but the response was lost, repeating the request may create a duplicate. Safe writes need an operation-specific idempotency or reconciliation strategy. Merely adding exponential backoff does not solve duplication.
+
+!!! warning "A clock check cannot interrupt a hung transport"
+    The fake resolves immediately. A production network adapter also needs a request timeout or abort signal tied to the remaining deadline. Checking `now()` only after an awaited request cannot stop a request that never returns. No claim of real network deadline enforcement is made by this lab.
+
+## Publish one complete result
+
+`labs/0022/action.yml` honestly names the action as fixture-only, with a `scenario` input and one JSON `report` output. The normal entrypoint calls this adapter logic:
+
+```javascript title="Output boundary excerpt"
+const client = fakeClient(process.env.INPUT_SCENARIO ?? 'pages');
+const report = await issueReport(client); // (1)!
+if (!process.env.GITHUB_OUTPUT) throw new Error('GITHUB_OUTPUT must be set');
+appendFileSync(process.env.GITHUB_OUTPUT, `report=${JSON.stringify(report)}\n`, 'utf8'); // (2)!
+```
+
+1. An exception from any page skips the write. The outer catch prints a safe diagnostic and sets exit code 1.
+2. A title containing a newline is JSON-escaped inside one record. The caller can parse the JSON back into the original title. There is no raw multiline title inserted into the single-line output protocol.
+
+Outputs are still strings. A later workflow step can access `fromJSON(steps.report.outputs.report).count` after a successful identified producer. See [0005](0005-environment-files-and-output-contracts.md) for step-to-job mappings. Output strings are neither secret transport nor an unlimited file store; large reports belong in files/artifacts with a small status output.
+
+## Predict and run the successful and denied cases
+
+From the repository root:
+
+```bash
+node labs/0022/demo.cjs pages
+node labs/0022/demo.cjs denied
+node labs/0022/demo.cjs transient
+```
+
+The helper displays a child-process record; its own exit status is zero after printing it. Predict all four channels before opening the solution.
+
+??? tip "Expected child results"
+    `pages` has status **0**, stdout `count=2; requests=2; waits=[]` plus a newline, empty stderr, and one output record containing `{"count":2,"titles":["Fix runner","Document\noutputs"]}`. The title's newline is escaped in the output bytes. `denied` has status **1**, empty stdout, stderr `API status 403` plus a newline, and an empty output file. `transient` has status **0**, stdout `count=1; requests=2; waits=[250]`, and a report with the title `Recovered`. No real wait or request occurred.
+
+The exact JSON display escapes newlines again to represent the captured strings. Compare the underlying file assertion in the tests if visual escaping becomes confusing.
+
+## Break it: confuse missing access with no issues
+
+Predict how a blanket error catch changes a denied request:
+
+```bash
+node labs/0022/demo.cjs denied --broken
+node labs/0022/demo.cjs partial
+```
+
+The deliberately broken adapter uses:
+
+```javascript title="Deliberate defect in the broken path"
+report = await issueReport(client).catch(() => ({ count: 0, titles: [] }));
+```
+
+??? tip "Diagnosis and repair"
+    The broken denied case exits 0 and publishes `report={"count":0,"titles":[]}`. That falsely claims a completed empty query. Repair it by allowing the error to reach the failure handler before any output is written, as the normal adapter does. The `partial` case confirms that a successful first page is insufficient: the repaired process exits 1 after page-two retries are exhausted and leaves the output file empty. Inspect status and output together; stdout text alone cannot prove success.
+
+Run the focused suite:
+
+```bash
+node --test labs/0022/report.test.cjs
+```
+
+Expected: **10 tests pass**. The tests cover exact request method/URL, multiple pages, PR exclusion, empty results, denied access, both rate-limit shapes, one transient retry, exhausted retries, malformed data, cycles, page/time budgets, escaped output bytes, append behavior, a missing output path, failure-without-output, and reproduction of the broken catch. Multiple data cases are grouped inside some tests.
+
+## Transfer to an authenticated client
+
+The Toolkit [GitHub package](https://github.com/actions/toolkit/blob/main/packages/github/README.md) supplies `getOctokit(token)` and context. It is absent from this installed workspace, so this conceptual adaptation is reference-only:
+
+```javascript title="Toolkit reference excerpt — not executed here"
+const octokit = github.getOctokit(token);
+const rows = await octokit.paginate(octokit.rest.issues.listForRepo, {
+  owner,
+  repo,
+  state: 'open',
+  per_page: 100,
+});
+```
+
+A real adaptation must match Octokit's actual thrown-error shape, pagination behavior, request timeout API, and retry plugins. It must obtain the repository explicitly, require only the necessary read permissions, and keep the token out of logs and outputs. Do not copy the fake's resolved `status: 403` contract into code that actually receives a rejected promise without translating it.
+
+The smallest later integration would use a disposable repository with a known issue/PR fixture, read-only permissions, and a single bounded report run. That can verify authentication, response shape, and hosted output mapping; it is out of scope for this authoring batch.
+
+## Exercises and retrieval
+
+1. Add a fixture in your own copy with three pages and explain whether the configured page budget allows it. Then add a fourth-page continuation and predict the failure.
+2. Transfer: design a summary containing only the first five titles while still counting all issues. Decide where truncation belongs and how the output reveals it.
+3. A failed create-issue request times out. Explain what evidence you need before retrying it.
+
+??? tip "Worked exercises"
+    Three complete pages fit; a continuation requiring page four fails before another request. Count all successfully fetched pages first, then return an explicitly truncated preview plus fields such as `total` and `previewTruncated`. Do not silently stop pagination after five issues and call that the total. Before retrying a write, reconcile whether the intended resource already exists or use an operation-specific idempotency mechanism; a transport timeout does not prove the server performed no write.
+
+Retrieve without looking:
+
+1. Why is `nextUrl` not an assertion about GitHub's response body?
+2. How does the suite distinguish empty data from denied data?
+3. Why does a failed second page publish no first-page report?
+4. Which authorization claims remain unknown after every fake passes?
+
+??? tip "Retrieval check"
+    `nextUrl` is the chosen normalized client seam; the real transport derives pagination from Link headers or client helpers. An empty 200 returns a report, while denied access rejects and produces exit 1 with no report. Results are accumulated before the output boundary. Fakes cannot establish token permissions, repository access, real response/error shapes, or GitHub event policy.
+
+## Verification limits and next session
+
+This suite establishes report rules, request sequencing, simulated waits, and real child-process output/failure behavior. It does not establish HTTP-client integration, DNS/TLS behavior, rate-limit enforcement, live data consistency, real API-version compatibility, or hosted permissions. All source checking was read-only; the lab itself has no real API client. Sources checked on **2026-10-30** are recorded in the Module 5 handoff and connected to the [curated source library](../references/resources.md).
+
+During teaching, record the learner's failure diagnosis and chosen write-retry policy. Continue to [0023](0023-javascript-action-lifecycle-and-state.md), where one action uses separate primary and cleanup processes.
 
 ## Start this lesson in a new thread
 
 ```text
 /teach 0022
 
-Expand docs/lessons/0022-output-contracts-and-mocked-github-api.md in place using docs/lessons/teaching-guide.md.
-Read docs/mission.md, NOTES.md, and the prerequisite lesson pages first.
-Begin with a short check of the Actions prerequisites. Explain relevant YAML,
-expressions, and action contracts, one concept at a time. Let me predict and
-try each exercise before revealing its answer. Keep feedback local where possible.
-Finish with retrieval questions and a truthful handoff for the next thread.
+Use docs/lessons/0022-output-contracts-and-mocked-github-api.md and labs/0022/.
+Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lessons 0021 and 0009.
+Ask me to distinguish empty 200, denied 403, rate limiting, and partial pagination.
+Pause before the broken-catch solution and transfer exercises.
+Use local fixtures only. Separate normalized fake contracts from real Octokit behavior.
+Record actual evidence and continue at exact file
+docs/lessons/0023-javascript-action-lifecycle-and-state.md.
 ```
 
-| Previous | All lessons | Next |
+| Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0021 · TypeScript compilation, bundling, and committed distribution files](0021-typescript-bundling-and-dist-drift.md) | [Curriculum](index.md) | [0023 · Action lifecycle hooks, state files, and cleanup](0023-javascript-action-lifecycle-and-state.md) |
+| [0021 · TypeScript packaging and dist drift](0021-typescript-bundling-and-dist-drift.md) | [Curriculum](index.md) | [0023 · Lifecycle and cleanup](0023-javascript-action-lifecycle-and-state.md) |

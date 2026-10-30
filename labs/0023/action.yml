@@ -1,0 +1,10 @@
+name: Module 5 disposable resource
+description: Create an owned temporary resource in main and clean it in post
+outputs:
+  resource:
+    description: The literal ready only after primary work succeeds
+runs:
+  using: node24
+  main: index.cjs
+  post: cleanup.cjs
+  post-if: always()

@@ -1,0 +1,22 @@
+name: Module 4 Docker lifecycle
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lifecycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1; existing course pin
+        with:
+          persist-credentials: false
+      - id: greet
+        uses: ./labs/0013/action
+        with:
+          name: Ada
+          salutation: Welcome
+      - name: Assert runner-visible result
+        env:
+          GREETING: ${{ steps.greet.outputs.greeting }}
+        run: test "$GREETING" = 'Welcome, Ada!'

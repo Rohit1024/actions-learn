@@ -12,6 +12,7 @@ lesson_status: placeholder
 ## Prerequisites
 
 - [0006 · Matrices, job dependencies, cancellation, and failure propagation](0006-matrices-dependencies-and-cancellation.md)
+- [0030 · Compose setup/build/test steps and reusable job workflows](0030-compose-step-and-job-orchestration.md)
 - [Module guide](prebuilt-actions.md)
 
 ## What you will learn to do
@@ -77,4 +78,4 @@ actual learner evidence.
 
 | Previous | All lessons | Next |
 | --- | --- | --- |
-| [0006 · Matrices, job dependencies, cancellation, and failure propagation](0006-matrices-dependencies-and-cancellation.md) | [Curriculum](index.md) | [0050 · Replace git-diff shell logic with dorny/paths-filter](0050-paths-filter-and-selective-jobs.md) |
+| [0030 · Compose setup/build/test steps and reusable job workflows](0030-compose-step-and-job-orchestration.md) | [Curriculum](index.md) | [0050 · Replace git-diff shell logic with dorny/paths-filter](0050-paths-filter-and-selective-jobs.md) |

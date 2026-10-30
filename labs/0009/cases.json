@@ -1,0 +1,12 @@
+[
+  {"label": "missing input uses default", "name": null, "greeting": "Hello, World!"},
+  {"label": "ordinary name", "name": "Ada", "greeting": "Hello, Ada!"},
+  {"label": "trim whitespace", "name": "  Ada  ", "greeting": "Hello, Ada!"},
+  {"label": "Unicode", "name": "रोहित", "greeting": "Hello, रोहित!"},
+  {"label": "shell-like data", "name": "$(exit 99); `exit 88`", "greeting": "Hello, $(exit 99); `exit 88`!"},
+  {"label": "equals in value", "name": "a=b", "greeting": "Hello, a=b!"},
+  {"label": "empty is invalid", "name": "", "error": "nonempty, single-line"},
+  {"label": "blank is invalid", "name": "   ", "error": "nonempty, single-line"},
+  {"label": "newline cannot inject output", "name": "Ada\nother=injected", "error": "nonempty, single-line"},
+  {"label": "carriage return is invalid", "name": "Ada\rother=injected", "error": "nonempty, single-line"}
+]

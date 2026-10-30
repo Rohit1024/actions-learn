@@ -1,0 +1,27 @@
+name: Module 5 portable Node contract
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  portable:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1; existing project pin
+        with:
+          persist-credentials: false
+      - name: Test host behavior (image Node version is separate from action runtime)
+        run: node --test labs/0024/portable.test.cjs
+      - id: count
+        uses: ./labs/0024
+        with:
+          file: labs/0024/fixtures/report with spaces-रोहित.txt
+      - name: Check runner-consumed output
+        env:
+          COUNT: ${{ steps.count.outputs.count }}
+        run: node -e "require('node:assert/strict').equal(process.env.COUNT, '2')"

@@ -1,0 +1,10 @@
+{
+  "action": "synchronize",
+  "number": 7,
+  "pull_request": {
+    "number": 7,
+    "base": {"ref": "main"},
+    "head": {"ref": "feature/greeting", "sha": "2222222222222222222222222222222222222222"}
+  },
+  "repository": {"full_name": "example/actions-sandbox", "default_branch": "main"}
+}

@@ -1,0 +1,12 @@
+name: Inspect only - deliberate template injection
+on: pull_request
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Deliberate source interpolation defect - do not execute
+        shell: bash
+        run: printf '%s\n' "${{ github.event.pull_request.title }}"

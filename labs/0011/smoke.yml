@@ -1,0 +1,31 @@
+name: Module 2 selected output smoke
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: Use an ordinary unpadded single-line name for this smoke contract
+        type: string
+        default: Ada
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: greet
+        uses: ./labs/0011/action
+        with:
+          name: ${{ inputs.name || 'Ada' }}
+      - name: Assert the caller-visible contract
+        shell: bash
+        env:
+          ACTUAL: ${{ steps.greet.outputs.greeting }}
+          EXPECTED: Hello, ${{ inputs.name || 'Ada' }}!
+        run: |
+          printf 'caller-visible greeting=%s\n' "$ACTUAL"
+          test "$ACTUAL" = "$EXPECTED"

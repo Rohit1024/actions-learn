@@ -1,0 +1,18 @@
+name: Module 2 composite greeting
+description: A local copy with an observable metadata output boundary
+inputs:
+  name:
+    description: Nonempty single-line recipient
+    default: World
+outputs:
+  greeting:
+    description: Validated greeting returned to the caller
+    value: ${{ steps.greet.outputs.greeting }}
+runs:
+  using: composite
+  steps:
+    - id: greet
+      shell: bash
+      env:
+        GREETING_NAME: ${{ inputs.name }}
+      run: bash "$GITHUB_ACTION_PATH/greet.sh"

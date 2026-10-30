@@ -77,4 +77,4 @@ actual learner evidence.
 
 | Previous | All lessons | Next |
 | --- | --- | --- |
-| [0053 · Automate releases, pull requests, and reports with pre-built actions](0053-release-pr-and-reporting-actions.md) | [Curriculum](index.md) | [0007 · Taskfile as the command contract shared by humans and CI](0007-taskfile-shared-command-contract.md) |
+| [0053 · Automate releases, pull requests, and reports with pre-built actions](0053-release-pr-and-reporting-actions.md) | [Curriculum](index.md) | [0031 · Least-privilege tokens, fork pull requests, and event trust boundaries](0031-github-token-forks-and-trust-boundaries.md) |

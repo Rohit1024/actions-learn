@@ -1,0 +1,42 @@
+name: Module 1 execution boundaries
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      greeting: ${{ steps.greet.outputs.greeting }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: First shell
+        shell: bash
+        run: |
+          export LESSON_NAME=Ada
+          printf '%s\n' "$LESSON_NAME" > lesson-name.txt
+      - name: Next shell, same job workspace
+        shell: bash
+        run: |
+          test -z "${LESSON_NAME:-}"
+          test "$(cat lesson-name.txt)" = Ada
+      - id: greet
+        uses: ./examples/javascript-action
+        with:
+          name: Ada
+  report:
+    needs: greet
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Consume an explicit cross-job value
+        shell: bash
+        env:
+          GREETING: ${{ needs.greet.outputs.greeting }}
+        run: test "$GREETING" = 'Hello, Ada!'

@@ -1,0 +1,5 @@
+{
+  "ref": "refs/heads/main",
+  "inputs": {"run_checks": "false"},
+  "repository": {"full_name": "example/actions-sandbox", "default_branch": "main"}
+}

@@ -1,0 +1,37 @@
+{
+  "pages": [
+    {"url":"https://api.github.com/repos/acme/widget/issues?per_page=2","status":200,"data":[{"id":1,"title":"Fix runner"},{"id":2,"title":"A pull request","pull_request":{}}],"nextUrl":"https://api.github.com/repos/acme/widget/issues?per_page=2&page=2"},
+    {"url":"https://api.github.com/repos/acme/widget/issues?per_page=2&page=2","status":200,"data":[{"id":3,"title":"Document\noutputs"}]}
+  ],
+  "empty": [
+    {"url":"https://api.github.com/repos/acme/widget/issues?per_page=2","status":200,"data":[]}
+  ],
+  "denied": [
+    {"url":"https://api.github.com/repos/acme/widget/issues?per_page=2","status":403,"headers":{},"data":{"message":"Resource not accessible by integration"}}
+  ],
+  "rate": [
+    {"url":"https://api.github.com/repos/acme/widget/issues?per_page=2","status":429,"headers":{"retry-after":"60"},"data":{"message":"Rate limit exceeded"}}
+  ],
+  "primary-rate": [
+    {"url":"https://api.github.com/repos/acme/widget/issues?per_page=2","status":403,"headers":{"x-ratelimit-remaining":"0","x-ratelimit-reset":"1800000000"},"data":{"message":"API rate limit exceeded"}}
+  ],
+  "transient": [
+    {"url":"https://api.github.com/repos/acme/widget/issues?per_page=2","status":503,"data":{"message":"Unavailable"}},
+    {"url":"https://api.github.com/repos/acme/widget/issues?per_page=2","status":200,"data":[{"id":4,"title":"Recovered"}]}
+  ],
+  "unavailable": [
+    {"url":"https://api.github.com/repos/acme/widget/issues?per_page=2","status":503},
+    {"url":"https://api.github.com/repos/acme/widget/issues?per_page=2","status":503}
+  ],
+  "partial": [
+    {"url":"https://api.github.com/repos/acme/widget/issues?per_page=2","status":200,"data":[{"id":1,"title":"First page"}],"nextUrl":"https://api.github.com/repos/acme/widget/issues?per_page=2&page=2"},
+    {"url":"https://api.github.com/repos/acme/widget/issues?per_page=2&page=2","status":503},
+    {"url":"https://api.github.com/repos/acme/widget/issues?per_page=2&page=2","status":503}
+  ],
+  "malformed": [
+    {"url":"https://api.github.com/repos/acme/widget/issues?per_page=2","status":200,"data":[{"id":1,"title":42}]}
+  ],
+  "cycle": [
+    {"url":"https://api.github.com/repos/acme/widget/issues?per_page=2","status":200,"data":[],"nextUrl":"https://api.github.com/repos/acme/widget/issues?per_page=2"}
+  ]
+}

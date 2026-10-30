@@ -1,0 +1,12 @@
+name: Module 5 fixture-only API report
+description: Teach output and API contracts with local fixtures; never contacts GitHub
+inputs:
+  scenario:
+    description: Scenario key in fixtures/scenarios.json
+    default: pages
+outputs:
+  report:
+    description: JSON object containing issue count and titles after all pages succeed
+runs:
+  using: node24
+  main: index.cjs
