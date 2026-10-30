@@ -1,5 +1,5 @@
 [project]
-site_name = "Learning GitHub Actions with Docker Container Actions, JavaScript / TypeScript Actions, Composite Actions and Agentic Workflows (GitHub Agentic Workflows)"
+site_name = "Learn GitHub Actions"
 site_description = "Learn GitHub Actions through Docker, JavaScript, TypeScript, composite actions, and GitHub Agentic Workflows, with repeatable local tests before using hosted runners."
 site_author = "rohit1024"
 site_url = "https://rohit1024.github.io/actions-learn/"
