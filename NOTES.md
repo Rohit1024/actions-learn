@@ -40,6 +40,14 @@
 - **Open questions:** learner proficiency in specific Actions topics is still unknown; assess it through the requested Actions lesson's examples.
 - **Next lesson:** 0001, then 0002 for local feedback. Keep the remaining lesson IDs and Actions module sequence stable.
 
+## GitHub repository and Pages setup — 2026-10-30
+
+- **Repository:** `https://github.com/Rohit1024/actions-learn`; published the workspace and README to `main`. The user explicitly authorized changing the repository from private to public for Pages.
+- **Repository metadata:** description explains the 48-lesson Actions course, custom actions, local testing, and agentic workflows; homepage is `https://rohit1024.github.io/actions-learn/`.
+- **Pages:** enabled with the GitHub Actions build source and HTTPS enforcement. Documentation workflow run `41018410694`, attempt 2, deployed successfully to `https://rohit1024.github.io/actions-learn/`.
+- **CI finding:** hosted Ubuntu rejected Puppeteer's downloaded Chrome sandbox. The checks workflow now selects `/usr/bin/google-chrome`, the installed browser covered by Ubuntu's AppArmor policy. This setting is scoped to the `task check` step; the local validator stays unchanged.
+- **Verification:** `task check` passed locally, including action tests, workflow linting, 454 documentation links, 61 diagrams, and the site build. All 61 diagrams also passed a forced render. Hosted contract-check run `41019013890` passed with the runner's Chrome. The public home page, curriculum, first lesson, logo, stylesheet, and JavaScript asset returned HTTP 200. The remote README matches the local file; repository metadata confirms public visibility, the description, homepage, and enabled Pages.
+
 ## Project map
 
 - `docs/mission.md`: goals and constraints.
