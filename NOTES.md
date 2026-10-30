@@ -57,6 +57,7 @@
 - **Learning record:** `learning-records/0002-prefer-prebuilt-actions-and-create-focused-actions.md` records this scope preference, without claiming technical mastery.
 - **Verification:** active workflows and all four inactive workflow recipes passed actionlint, including the new local composite's metadata. Type checking, distribution consistency, 3 JavaScript tests, and 4 process-adapter tests passed. Documentation verification passed: 76 Markdown pages, 602 local links, and 76 diagrams (18 rendered, 58 cached), 0 errors; incremental build succeeded. Verified 60 lesson IDs, 10 modules, all pagination in module order, and 29 sorted snapshot records with 20 observed creator badges. All 10 remote recipe references have full commit pins, and their configured input names match metadata fetched at those exact commits. The teach skill compatibility check preserved its existing invocation metadata.
 - **Deferred execution:** the Docker-compatible daemon is unavailable; container and act execution were not run. The inactive recipes have not executed remote setup, cache/artifact services, a container build, or release writes. Existing application/adapter tests remain the local behavior evidence.
+- **Publication:** commit `ec9b546` passed hosted contract checks (`41023169449`) and the documentation deployment (`41023169353`). Both module guides, the ranked catalog, its JSON snapshot, the chart, and the final new lesson are publicly accessible with expected content. The repository description now reflects 60 lessons and pre-built action reuse.
 
 ## Project map
 
