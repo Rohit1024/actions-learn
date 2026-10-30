@@ -88,4 +88,4 @@ Finish with retrieval questions and a truthful handoff for the next thread.
 
 | Previous | All lessons | Next |
 | --- | --- | --- |
-| [0011 · Run one event and one job with act](0011-act-targeted-workflow-smoke-tests.md) | [Curriculum](index.md) | [0013 · Docker action metadata, arguments, and container lifecycle](0013-docker-action-metadata-and-lifecycle.md) |
+| [0011 · Run one event and one job with act](0011-act-targeted-workflow-smoke-tests.md) | [Curriculum](index.md) | [0055 · Decide when to reuse, compose, or create your own action](0055-reuse-compose-or-create-an-action.md) |

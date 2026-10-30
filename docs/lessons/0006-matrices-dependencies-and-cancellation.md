@@ -87,4 +87,4 @@ Finish with retrieval questions and a truthful handoff for the next thread.
 
 | Previous | All lessons | Next |
 | --- | --- | --- |
-| [0005 · Environment files and step, job, and workflow output contracts](0005-environment-files-and-output-contracts.md) | [Curriculum](index.md) | [0007 · Taskfile as the command contract shared by humans and CI](0007-taskfile-shared-command-contract.md) |
+| [0005 · Environment files and step, job, and workflow output contracts](0005-environment-files-and-output-contracts.md) | [Curriculum](index.md) | [0049 · Choose popular pre-built actions and verify their publishers](0049-selecting-popular-prebuilt-actions.md) |

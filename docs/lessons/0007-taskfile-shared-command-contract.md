@@ -88,4 +88,4 @@ Finish with retrieval questions and a truthful handoff for the next thread.
 
 | Previous | All lessons | Next |
 | --- | --- | --- |
-| [0006 · Matrices, job dependencies, cancellation, and failure propagation](0006-matrices-dependencies-and-cancellation.md) | [Curriculum](index.md) | [0008 · Workflow linting, shell diagnostics, metadata checks, and security analysis](0008-workflow-shell-and-security-linting.md) |
+| [0054 · Compose an action-based pipeline and maintain its dependencies](0054-compose-maintained-actions-and-manage-updates.md) | [Curriculum](index.md) | [0008 · Workflow linting, shell diagnostics, metadata checks, and security analysis](0008-workflow-shell-and-security-linting.md) |

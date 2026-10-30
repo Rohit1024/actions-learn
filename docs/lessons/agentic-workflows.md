@@ -91,4 +91,4 @@ Keep a deliberate progression: local compilation → fixture evaluation → stag
 
 | Previous | All lessons | Next |
 | --- | --- | --- |
-| [Action labs](action-labs.md) | [Curriculum](index.md) | [Security and capstone modules](index.md#module-8-production-capstone) |
+| [Action labs](action-labs.md) | [Curriculum](index.md) | [Production capstone](index.md#module-10-production-capstone) |

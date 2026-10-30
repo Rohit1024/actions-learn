@@ -31,6 +31,7 @@ tasks:
     desc: Run all host checks without a container daemon or GitHub runner
     cmds:
       - task: lint:workflows
+      - task: lint:recipes
       - task: test
       - task: docs:check
       - task: docs:diagrams
@@ -43,6 +44,14 @@ tasks:
         msg: Run task tools:lint first (Go is required)
     cmds:
       - '"{{.ACTIONLINT}}" -color'
+
+  lint:recipes:
+    desc: Check inactive pre-built workflow recipes and the custom composite consumer
+    preconditions:
+      - sh: 'test -x "{{.ACTIONLINT}}"'
+        msg: Run task tools:lint first (Go is required)
+    cmds:
+      - '"{{.ACTIONLINT}}" -color examples/prebuilt-actions/*.yml examples/own-action-consumer.yml'
 
   test:
     desc: Type-check and test all four action adapters directly on the host

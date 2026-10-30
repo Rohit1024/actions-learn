@@ -5,10 +5,11 @@ description: Learn GitHub Actions by building custom actions and testing them lo
 
 # GitHub Actions, from workflows to production orchestration
 
-Start with **workflows, events, jobs, steps, and runners**, then build **Docker container actions, JavaScript and TypeScript actions, composite actions, and GitHub Agentic Workflows**. Progress toward an orchestrator with tested workers, parallel jobs, evidence gates, bounded credentials, and an operating playbook. Keep the feedback loop local, then use GitHub to verify behavior that depends on its platform.
+Start with **workflows, events, jobs, steps, and runners**, reuse **maintained pre-built actions** to reduce shell glue, then build **Docker container actions, JavaScript and TypeScript actions, composite actions, and GitHub Agentic Workflows**. Progress toward an orchestrator with tested workers, parallel jobs, evidence gates, bounded credentials, and an operating playbook. Keep the feedback loop local, then use GitHub to verify behavior that depends on its platform.
 
 [Start with GitHub Actions](lessons/0001-execution-model.md){ .md-button .md-button--primary }
-[Run the local lab](cheatsheet/local-testing.md){ .md-button }
+[Use pre-built actions](lessons/prebuilt-actions.md){ .md-button }
+[Create your own action](lessons/create-your-own-action.md){ .md-button }
 
 ## Your learning workspace
 
@@ -20,9 +21,9 @@ Start with **workflows, events, jobs, steps, and runners**, then build **Docker 
 
     [Read the mission](mission.md)
 
-- :lucide-graduation-cap: **48 GitHub Actions lessons**
+- :lucide-graduation-cap: **60 GitHub Actions lessons**
 
-    Follow 8 modules from workflow execution and local testing to custom actions, security, agentic workflows, and a production capstone. Each planned page has a teaching brief and a prompt for its own thread.
+    Follow 10 modules from workflow execution and local testing to custom actions, security, agentic workflows, and a production capstone. Each planned page has a teaching brief and a prompt for its own thread.
 
     [Open the curriculum](lessons/index.md)
 
@@ -56,21 +57,22 @@ Start with **workflows, events, jobs, steps, and runners**, then build **Docker 
 
 ```mermaid
 flowchart TD
-    M1["1. Workflow execution and configuration"]
-    M1 --> M2["2. Repeatable local feedback"]
-    M2 --> M3["3. Docker container actions"]
-    M3 --> M4["4. JavaScript and TypeScript actions"]
-    M4 --> M5["5. Composite actions and reusable workflows"]
-    M5 --> M6["6. Security and release quality"]
-    M6 --> M7["7. GitHub Agentic Workflows"]
-    M7 --> M8["8. Professional orchestration capstone"]
+    M1["1. Workflow execution"] --> M2["2. Popular pre-built actions"]
+    M2 --> M3["3. Local testing"]
+    M3 --> M4["4. Create your own action"]
+    M4 --> M5["5. Docker actions"]
+    M5 --> M6["6. JavaScript and TypeScript actions"]
+    M6 --> M7["7. Composite actions and reusable workflows"]
+    M7 --> M8["8. Security and releases"]
+    M8 --> M9["9. Agentic workflows"]
+    M9 --> M10["10. Production capstone"]
 ```
 
 ## Learn one lesson in each thread
 
 Open the [curriculum](lessons/index.md), select a lesson, and copy its thread prompt. The [teaching guide](lessons/teaching-guide.md) keeps explanations focused on Actions behavior, relevant YAML and code, and learner predictions and exercises. Start with `/teach 0001` for the execution model.
 
-The course currently has 46 detailed placeholders and two starter lessons. A placeholder is a plan for a future session. Written pages and checkmarks are separate from demonstrated understanding.
+The course currently has 58 detailed teaching briefs and two starter lessons. A placeholder is a plan for a future session. Written pages and checkmarks are separate from demonstrated understanding.
 
 ## Local workspace commands
 

@@ -89,4 +89,4 @@ Finish with retrieval questions and a truthful handoff for the next thread.
 
 | Previous | All lessons | Next |
 | --- | --- | --- |
-| [0012 · Define the local/hosted coverage boundary and usage budget](0012-local-hosted-coverage-and-usage-budget.md) | [Curriculum](index.md) | [0014 · Dockerfile layers, build context, reproducible bases, and entrypoints](0014-dockerfiles-layers-and-build-context.md) |
+| [0060 · Document, version, and publish your action for real consumers](0060-own-action-release-and-marketplace.md) | [Curriculum](index.md) | [0014 · Dockerfile layers, build context, reproducible bases, and entrypoints](0014-dockerfiles-layers-and-build-context.md) |

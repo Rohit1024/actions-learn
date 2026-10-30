@@ -4,24 +4,29 @@ icon: lucide/graduation-cap
 
 # GitHub Actions curriculum
 
-**48 GitHub Actions lessons in 8 modules.** Start with workflow events, jobs, steps, and runners, then build toward designing, testing, securing, and operating a multi-job Actions orchestrator.
+**60 GitHub Actions lessons in 10 modules.** Learn workflow execution, reuse maintained pre-built actions, test locally, and create your own actions when the required behavior calls for them. Progress toward a verified production orchestrator.
 
-There are **46 detailed placeholders** and **2 existing starter lessons**. Every lesson has its own file and a prompt for a teaching thread. Checked items mean written content exists; they do not establish mastery. Leave placeholders unchecked until they are expanded into real lessons, and track understanding through actual evidence.
+There are **58 detailed teaching briefs** and **2 starter lessons**. Checked items track written starter content, not mastery. The two new module guides include a dated action catalog, workflow recipes, and a custom composite example.
 
-Every session should include a mental model, a runnable experiment, a failure to diagnose, and a retrieval exercise. Follow the [teaching guide](teaching-guide.md), then copy the prompt from your chosen lesson into a new thread. Use `/teach 0001` to start directly with GitHub Actions. Explain supporting YAML, shell, and language details within the relevant workflow or action.
+**Follow module order below.** Lesson IDs are stable identifiers: the new lessons use 0049–0060 so existing published lesson URLs remain valid. Previous/next links follow this learning order.
+
+Every session includes a model, prediction, runnable experiment, failure diagnosis, and retrieval exercise. Use `/teach 0001` to begin. Prefer maintained pre-built actions for platform operations and keep necessary project build/test commands explicit.
 
 [Start at 0001](0001-execution-model.md){ .md-button .md-button--primary }
-[How teaching threads should work](teaching-guide.md){ .md-button }
+[Pre-built actions](prebuilt-actions.md){ .md-button }
+[Create your own action](create-your-own-action.md){ .md-button }
 
 ```mermaid
 flowchart TD
-    Workflows["0001-0006: workflow execution and configuration"] --> Local["0007-0012: local testing"]
-    Local --> Docker["Docker"]
-    Docker --> JS["JavaScript and TypeScript"]
-    JS --> Composite["Composite actions"]
-    Composite --> Security["Security and releases"]
-    Security --> Agentic["Agentic workflows"]
-    Agentic --> Capstone["Capstone"]
+    Workflow["1. Workflow execution and configuration"] --> Reuse["2. Popular pre-built actions"]
+    Reuse --> Local["3. Local testing"]
+    Local --> Own["4. Create your own action"]
+    Own --> Docker["5. Docker action deep dive"]
+    Docker --> Node["6. JavaScript and TypeScript actions"]
+    Node --> Compose["7. Composite actions and reusable workflows"]
+    Compose --> Security["8. Security, reliability, and releases"]
+    Security --> Agentic["9. GitHub Agentic Workflows"]
+    Agentic --> Capstone["10. Production capstone"]
 ```
 
 ## Module 1: Workflow execution and configuration
@@ -35,7 +40,18 @@ flowchart TD
 - [ ] **0005:** [Environment files and step, job, and workflow output contracts](0005-environment-files-and-output-contracts.md)
 - [ ] **0006:** [Matrices, job dependencies, cancellation, and failure propagation](0006-matrices-dependencies-and-cancellation.md)
 
-## Module 2: Testing locally with Task and act
+## Module 2: Popular pre-built actions: replace shell glue
+
+**Outcome:** select maintained actions using dated popularity and publisher evidence, then compose them through inputs and outputs. Start with the [module guide](prebuilt-actions.md) and [29-action catalog](../references/prebuilt-actions.md).
+
+- [ ] **0049:** [Choose popular pre-built actions and verify their publishers](0049-selecting-popular-prebuilt-actions.md)
+- [ ] **0050:** [Replace git-diff shell logic with dorny/paths-filter](0050-paths-filter-and-selective-jobs.md)
+- [ ] **0051:** [Use setup, cache, and artifact actions instead of bootstrap scripts](0051-setup-cache-and-artifact-actions.md)
+- [ ] **0052:** [Compose Docker build and cloud authentication actions](0052-docker-build-and-cloud-auth-actions.md)
+- [ ] **0053:** [Automate releases, pull requests, and reports with pre-built actions](0053-release-pr-and-reporting-actions.md)
+- [ ] **0054:** [Compose an action-based pipeline and maintain its dependencies](0054-compose-maintained-actions-and-manage-updates.md)
+
+## Module 3: Testing locally with Task and act
 
 **Outcome:** reproduce a failure without a remote edit/push/rerun cycle. Keep the [local lab](../cheatsheet/local-testing.md) open.
 
@@ -46,7 +62,18 @@ flowchart TD
 - [ ] **0011:** [Run one event and one job with act](0011-act-targeted-workflow-smoke-tests.md)
 - [ ] **0012:** [Define the local/hosted coverage boundary and usage budget](0012-local-hosted-coverage-and-usage-budget.md)
 
-## Module 3: Docker container actions
+## Module 4: Create your own GitHub action
+
+**Outcome:** choose when custom behavior is justified, build a composite, Node, or Docker action, test its contract, and prepare a standalone release. Start with the [module guide](create-your-own-action.md).
+
+- [ ] **0055:** [Decide when to reuse, compose, or create your own action](0055-reuse-compose-or-create-an-action.md)
+- [ ] **0056:** [Design action.yml inputs, outputs, runtimes, and failure contracts](0056-own-action-metadata-and-contracts.md)
+- [ ] **0057:** [Create a composite action by composing pre-built actions](0057-own-composite-action-from-prebuilt-actions.md)
+- [ ] **0058:** [Create a JavaScript or TypeScript action with a tested distribution](0058-own-node-action-and-distribution.md)
+- [ ] **0059:** [Create a Docker action with tested arguments, mounts, and outputs](0059-own-docker-action-and-image-contract.md)
+- [ ] **0060:** [Document, version, and publish your action for real consumers](0060-own-action-release-and-marketplace.md)
+
+## Module 5: Docker container actions
 
 **Outcome:** package a Linux action with explicit filesystem, process, and output contracts. Use the [action labs](action-labs.md).
 
@@ -57,7 +84,7 @@ flowchart TD
 - [ ] **0017:** [Container exit codes, stderr, signals, timeouts, and cleanup](0017-container-errors-signals-and-cleanup.md)
 - [ ] **0018:** [Container scanning, dependency pinning, cold starts, and release tradeoffs](0018-container-security-and-release-tradeoffs.md)
 
-## Module 4: JavaScript and TypeScript actions
+## Module 6: JavaScript and TypeScript actions
 
 **Outcome:** publish executable JavaScript with a tested adapter around application logic.
 
@@ -68,7 +95,7 @@ flowchart TD
 - [ ] **0023:** [Action lifecycle hooks, state files, and cleanup](0023-javascript-action-lifecycle-and-state.md)
 - [ ] **0024:** [Cross-platform action behavior, dependency updates, and release versions](0024-cross-platform-actions-and-versioned-releases.md)
 
-## Module 5: Composite actions and reusable workflows
+## Module 7: Composite actions and reusable workflows
 
 **Outcome:** choose a step-level or job-level reuse boundary intentionally.
 
@@ -79,7 +106,7 @@ flowchart TD
 - [ ] **0029:** [Reusable workflows, typed inputs, explicit secrets, and permissions](0029-reusable-workflows-and-permission-interfaces.md)
 - [ ] **0030:** [Compose setup/build/test steps and reusable job workflows](0030-compose-step-and-job-orchestration.md)
 
-## Module 6: Security, reliability, and releases
+## Module 8: Security, reliability, and releases
 
 **Outcome:** ship automation whose trust and release boundaries you can explain.
 
@@ -90,7 +117,7 @@ flowchart TD
 - [ ] **0035:** [Commit pins, semantic releases, major tags, and distribution integrity](0035-sha-pins-semantic-releases-and-provenance.md)
 - [ ] **0036:** [Logs, annotations, summaries, concurrency, and usage budgets](0036-observability-concurrency-and-usage-budgets.md)
 
-## Module 7: GitHub Agentic Workflows
+## Module 9: GitHub Agentic Workflows
 
 **Outcome:** compile and evaluate a constrained repository automation. Use the [agentic lab](agentic-workflows.md).
 
@@ -101,7 +128,7 @@ flowchart TD
 - [ ] **0041:** [Agentic fixtures, adversarial repository text, and quality evaluation](0041-agentic-fixtures-adversarial-input-and-evaluation.md)
 - [ ] **0042:** [Hosted trials, model variability, usage budgets, and diagnostics](0042-agentic-hosted-trials-budgets-and-diagnostics.md)
 
-## Module 8: Production capstone
+## Module 10: Production capstone
 
 **Outcome:** deliver a small action suite with tests, a release strategy, and an operational playbook.
 

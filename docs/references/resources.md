@@ -17,13 +17,23 @@ Initial source check: **2026-10-30**. Prefer the installed tool's help when an o
 - [Workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax) — Events, jobs, expressions, permissions, matrices, and workflow reuse. Use when validating orchestration.
 - [Action metadata syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/metadata-syntax) — Inputs, outputs, and the Docker, Node, and composite execution formats. Use when designing an action contract.
 - [Workflow commands](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands) — Output/environment files, multiline values, annotations, and summaries. Use when building adapters.
-- [Docker container action tutorial](https://docs.github.com/en/actions/tutorials/use-containerized-services/create-a-docker-container-action) — Dockerfiles, arguments, entrypoints, and workspace access. Use for Module 3.
-- [JavaScript action tutorial](https://docs.github.com/en/actions/tutorials/create-actions/create-a-javascript-action) — Node metadata and the Actions Toolkit. Use for Module 4.
+- [Docker container action tutorial](https://docs.github.com/en/actions/tutorials/use-containerized-services/create-a-docker-container-action) — Dockerfiles, arguments, entrypoints, and workspace access. Use for the Docker action lessons.
+- [JavaScript action tutorial](https://docs.github.com/en/actions/tutorials/create-actions/create-a-javascript-action) — Node metadata and the Actions Toolkit. Use for the JavaScript action lessons.
 - [TypeScript action template](https://github.com/actions/typescript-action) — Maintained packaging and testing patterns. Use when extending the minimal TypeScript lab.
-- [Composite action tutorial](https://docs.github.com/en/actions/tutorials/create-actions/create-a-composite-action) — Input transport, shell steps, and output mapping. Use for Module 5.
+- [Composite action tutorial](https://docs.github.com/en/actions/tutorials/create-actions/create-a-composite-action) — Input transport, shell steps, and output mapping. Use for the composite action lessons.
 - [Secure use reference](https://docs.github.com/en/actions/reference/security/secure-use) — Untrusted input, token scope, action references, and supply-chain concerns. Use for security reviews.
 - [OpenID Connect](https://docs.github.com/en/actions/concepts/security/openid-connect) — Federated identity and short-lived cloud credentials. Use when planning hosted identity checks.
 - [GitHub Pages custom workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) — Build artifacts, deployment jobs, and required permissions. Use when publishing this portal.
+
+### Pre-built action selection and composition
+
+- [GitHub: pre-written building blocks](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/find-and-customize-actions) — Action references, discovery, and version selection. Use before writing platform glue.
+- [Marketplace publication and badges](https://docs.github.com/en/actions/how-tos/create-and-publish-actions/publish-in-github-marketplace) — Standalone action packaging and verified creator meaning. Use for publisher evidence and your own release plan.
+- [Dated 29-action catalog](prebuilt-actions.md) and [source snapshot](actions-snapshot.json) — Repository stars, activity, upstream release information, and matched Marketplace listings checked on 2026-10-30. Each record links its primary sources.
+- [dorny/paths-filter](https://github.com/dorny/paths-filter) — Named changed-path outputs and event-dependent permissions. Use for selective jobs without a custom diff script.
+- [actions/setup-node](https://github.com/actions/setup-node), [actions/cache](https://github.com/actions/cache), [upload-artifact](https://github.com/actions/upload-artifact), and [download-artifact](https://github.com/actions/download-artifact) — Runtime/cache inputs and named artifact exchange. Use for setup and data movement recipes.
+- [Docker build/push](https://github.com/docker/build-push-action), [Buildx setup](https://github.com/docker/setup-buildx-action), [image metadata](https://github.com/docker/metadata-action), and [registry login](https://github.com/docker/login-action) — Vendor-maintained container interfaces. Use to separate image building from publication.
+- [Google Release Please action](https://github.com/googleapis/release-please-action) — Release PRs and version/changelog automation. Use with explicit repository write permissions and deliberate activation.
 
 ### Local tools
 

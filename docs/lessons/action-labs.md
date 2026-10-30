@@ -6,7 +6,7 @@ icon: lucide/box
 
 These starter labs implement the same contract: a nonempty, single-line name produces `greeting=Hello, <trimmed name>!` in `GITHUB_OUTPUT`. Invalid input fails without publishing a success output. Missing input defaults to `World`; an explicitly empty input is invalid.
 
-The implementations are intentionally small so you can inspect input transport, process boundaries, and output mapping. Follow Modules 3–5 to extend them with real repository automation.
+The implementations are intentionally small so you can inspect input transport, process boundaries, and output mapping. Start with the [create-your-own-action module](create-your-own-action.md), then follow the Docker, Node, and composite deep dives to extend them with real repository automation.
 
 ```mermaid
 flowchart TD
@@ -57,7 +57,7 @@ npm test
 task test
 ```
 
-This first implementation uses Node's standard library to expose the output-file protocol. Module 4 introduces the Actions Toolkit for input parsing, annotations, API clients, and lifecycle state. Read the [official JavaScript action tutorial](https://docs.github.com/en/actions/tutorials/create-actions/create-a-javascript-action).
+This first implementation uses Node's standard library to expose the output-file protocol. The JavaScript/TypeScript module introduces the Actions Toolkit for input parsing, annotations, API clients, and lifecycle state. Read the [official JavaScript action tutorial](https://docs.github.com/en/actions/tutorials/create-actions/create-a-javascript-action).
 
 **Extend it:** add a repository API adapter and inject a fake client into the business logic. Test pagination, rate-limit responses, missing data, and authentication errors without real API calls.
 

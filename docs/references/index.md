@@ -7,6 +7,7 @@ icon: lucide/book-open
 Use primary documentation to check syntax, security boundaries, runtime support, and the evolving GitHub Agentic Workflows CLI.
 
 - [Curated resources](resources.md): annotated official documentation and maintainer communities.
+- [Popular pre-built actions](prebuilt-actions.md): 29 actions with dated stars, matched publisher evidence, and a saved snapshot.
 - [Working glossary](glossary.md): terms used in the starter material; understanding is tracked separately during teaching.
 - [Command cheatsheet](../cheatsheet/index.md): commands and data-flow syntax for quick retrieval.
 

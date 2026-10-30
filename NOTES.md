@@ -9,6 +9,7 @@
 
 ## Teaching preferences
 
+- Prefer maintained pre-built actions for common automation and reduce repeated shell glue. Track dated stars and matched Marketplace creator evidence separately. Create custom actions for missing behavior or a useful team interface.
 - Start directly with GitHub Actions: events, workflows, jobs, steps, runners, expressions, inputs, outputs, and dependencies.
 - The user explicitly requested deletion of the basic Linux and general programming lessons. Keep supporting YAML, shell, language, Git, or API explanations brief and inside the relevant Actions example.
 - Progress toward independent professional orchestration: worker contracts, workflow DAGs, evidence joins, trust boundaries, release gates, diagnostics, usage budgets, and recovery.
@@ -24,8 +25,8 @@
 
 - **Current starting point:** lesson 0001, the GitHub Actions execution model. The earlier basic-lesson exercises are superseded by the user's course-scope change.
 - **Starter content:** 0001 execution model and 0002 local feedback loop; both have prompts for fuller guided sessions.
-- **Placeholders:** 46 detailed Actions lesson briefs, 0003–0048.
-- **Roadmap:** 48 GitHub Actions lessons across 8 modules. Checked items track written content, not mastery.
+- **Placeholders:** 58 detailed Actions lesson briefs, 0003–0060.
+- **Roadmap:** 60 GitHub Actions lessons across 10 modules; follow catalog order, including new lessons 0049–0054 after 0006 and 0055–0060 after 0012. Checked items track written content, not mastery.
 - **Next suggested session:** `/teach 0001`, using `docs/lessons/0001-execution-model.md`. Begin with an event becoming a workflow run, jobs, steps, and runner processes.
 - **Learning records:** `learning-records/0001-start-with-github-actions.md` records the user's explicit scope preference. No technical mastery has been demonstrated yet.
 - **Environment observation during setup:** Node 24, uv, Task, and act are installed. The Docker command points to Podman, whose socket was unavailable. Host tests do not depend on that daemon.
@@ -48,10 +49,19 @@
 - **CI finding:** hosted Ubuntu rejected Puppeteer's downloaded Chrome sandbox. The checks workflow now selects `/usr/bin/google-chrome`, the installed browser covered by Ubuntu's AppArmor policy. This setting is scoped to the `task check` step; the local validator stays unchanged.
 - **Verification:** `task check` passed locally, including action tests, workflow linting, 454 documentation links, 61 diagrams, and the site build. All 61 diagrams also passed a forced render. Hosted contract-check run `41019013890` passed with the runner's Chrome. The public home page, curriculum, first lesson, logo, stylesheet, and JavaScript asset returned HTTP 200. The remote README matches the local file; repository metadata confirms public visibility, the description, homepage, and enabled Pages.
 
+## Pre-built and custom-action modules — 2026-10-30
+
+- **User preference:** add popular pre-built actions, including dorny/paths-filter, to reduce shell scripting; emphasize verified publishers for important tasks and include a dedicated module for creating our own actions.
+- **Work:** added modules 2 and 4, with 12 lesson briefs, two module guides, three inactive pre-built workflow recipes, a shell-free project setup composite, and its inactive consumer recipe. Existing lesson URLs remain stable; pagination follows module order.
+- **Evidence sources:** 29-repository snapshot records current stars, non-archived status, last pushes, repository releases, and matched Marketplace badges. Community and unknown badge cases are labeled explicitly. The chart ranks only the curated shortlist.
+- **Learning record:** `learning-records/0002-prefer-prebuilt-actions-and-create-focused-actions.md` records this scope preference, without claiming technical mastery.
+- **Verification:** active workflows and all four inactive workflow recipes passed actionlint, including the new local composite's metadata. Type checking, distribution consistency, 3 JavaScript tests, and 4 process-adapter tests passed. Documentation verification passed: 76 Markdown pages, 602 local links, and 76 diagrams (18 rendered, 58 cached), 0 errors; incremental build succeeded. Verified 60 lesson IDs, 10 modules, all pagination in module order, and 29 sorted snapshot records with 20 observed creator badges. All 10 remote recipe references have full commit pins, and their configured input names match metadata fetched at those exact commits. The teach skill compatibility check preserved its existing invocation metadata.
+- **Deferred execution:** the Docker-compatible daemon is unavailable; container and act execution were not run. The inactive recipes have not executed remote setup, cache/artifact services, a container build, or release writes. Existing application/adapter tests remain the local behavior evidence.
+
 ## Project map
 
 - `docs/mission.md`: goals and constraints.
-- `docs/lessons/index.md`: the 48-lesson GitHub Actions curriculum and publication status.
+- `docs/lessons/index.md`: the 60-lesson GitHub Actions curriculum and publication status.
 - `docs/lessons/teaching-guide.md`: teaching scope, lesson development, and handoff rules.
 - `docs/cheatsheet/local-testing.md`: the local-testing workflow and environment setup.
 - `examples/`: executable Docker, JavaScript, TypeScript, composite, and agentic examples.

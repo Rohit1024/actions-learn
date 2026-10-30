@@ -2,7 +2,7 @@
 
 # Learn GitHub Actions
 
-Learn to design, build, test, secure, and operate GitHub Actions through **48 lessons across 8 modules**. Start with workflow execution, then build custom actions and a production orchestration pipeline. Test locally before spending hosted runner minutes.
+Learn to design, build, test, secure, and operate GitHub Actions through **60 lessons across 10 modules**. Start with workflow execution, reuse maintained pre-built actions, then create your own actions and a production orchestration pipeline. Test locally before spending hosted runner minutes.
 
 **[Learning site](https://rohit1024.github.io/actions-learn/)** · **[Curriculum](docs/lessons/index.md)** · **[First lesson](docs/lessons/0001-execution-model.md)** · **[Local testing guide](docs/cheatsheet/local-testing.md)**
 
@@ -11,7 +11,9 @@ Learn to design, build, test, secure, and operate GitHub Actions through **48 le
 | Module | Lessons | Focus |
 | --- | --- | --- |
 | Workflow execution and configuration | 0001–0006 | Events, runners, jobs, steps, expressions, outputs, and dependencies |
+| Popular pre-built actions | 0049–0054 | Select maintained actions, verify publishers, and replace repeated shell glue |
 | Local testing | 0007–0012 | Task, actionlint, fixtures, container checks, and selected `act` runs |
+| Create your own GitHub action | 0055–0060 | Choose a runtime, define action metadata, test a consumer, and prepare a release |
 | Docker container actions | 0013–0018 | Metadata, images, entrypoints, mounts, failure handling, and releases |
 | JavaScript and TypeScript actions | 0019–0024 | Node, the Actions Toolkit, tests, bundling, and versioning |
 | Composite actions and reusable workflows | 0025–0030 | Reuse boundaries, input/output contracts, and workflow composition |
@@ -19,7 +21,9 @@ Learn to design, build, test, secure, and operate GitHub Actions through **48 le
 | GitHub Agentic Workflows | 0037–0042 | Compilation, engines, tool boundaries, constrained outputs, and evaluation |
 | Production capstone | 0043–0048 | Verified workers, orchestration, release gates, and an operating playbook |
 
-The first two lessons contain starter material; the remaining 46 are detailed teaching briefs developed during guided sessions. Written lesson status and demonstrated learner understanding are tracked separately. Supporting syntax is explained within the relevant Actions example.
+Follow the module order above; lesson IDs preserve existing URLs. The first two lessons contain starter material; the remaining 58 are detailed teaching briefs developed during guided sessions. Written lesson status and demonstrated learner understanding are tracked separately. Supporting syntax is explained within the relevant Actions example.
+
+Explore the [pre-built action module](docs/lessons/prebuilt-actions.md), [29-action catalog with dated stars and publisher evidence](docs/references/prebuilt-actions.md), and [create-your-own-action module](docs/lessons/create-your-own-action.md).
 
 ## Start locally
 
@@ -40,7 +44,8 @@ task docs:serve
 | Command | Purpose |
 | --- | --- |
 | `task test` | Test all four action adapters directly on the host |
-| `task lint:workflows` | Check workflow syntax and expressions with actionlint |
+| `task lint:workflows` | Check active workflow syntax and expressions with actionlint |
+| `task lint:recipes` | Check inactive workflow recipes and their local composite action interface |
 | `task docs:verify` | Check documentation links and diagrams, then build the site |
 | `task actions:build` | Rebuild the TypeScript action's committed distribution file |
 | `task test:container` | Build and test the Docker action's image and output mount |
@@ -52,7 +57,7 @@ Container checks need a running Docker-compatible engine; the selected workflow 
 ## Navigate the workspace
 
 - [Mission](docs/mission.md)
-- [48-lesson GitHub Actions curriculum](docs/lessons/index.md)
+- [60-lesson GitHub Actions curriculum](docs/lessons/index.md)
 - [Start with the GitHub Actions execution model](docs/lessons/0001-execution-model.md)
 - [Teaching and thread handoff guide](docs/lessons/teaching-guide.md)
 - [Runnable action labs](docs/lessons/action-labs.md)

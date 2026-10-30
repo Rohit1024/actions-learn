@@ -1,0 +1,589 @@
+{
+  "checked_at_utc": "2026-10-30T07:37:36+00:00",
+  "ranking_scope": "Curated shortlist, ordered by GitHub repository stars; not a Marketplace-wide leaderboard.",
+  "verified_creator_meaning": "GitHub Marketplace publisher identity signal, not a review of every action release or a security guarantee.",
+  "records": [
+    {
+      "repository": "super-linter/super-linter",
+      "repository_url": "https://github.com/super-linter/super-linter",
+      "repository_api_url": "https://api.github.com/repos/super-linter/super-linter",
+      "stars": 10644,
+      "archived": false,
+      "last_push": "2026-10-28T13:34:46Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v9.0.0",
+        "publishedAt": "2026-10-01T15:14:28Z",
+        "url": "https://github.com/super-linter/super-linter/releases/tag/v9.0.0"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/super-linter",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Run a configured collection of source linters"
+    },
+    {
+      "repository": "actions/checkout",
+      "repository_url": "https://github.com/actions/checkout",
+      "repository_api_url": "https://api.github.com/repos/actions/checkout",
+      "stars": 8985,
+      "archived": false,
+      "last_push": "2026-10-17T10:14:02Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v7.0.1",
+        "publishedAt": "2026-07-20T15:10:05Z",
+        "url": "https://github.com/actions/checkout/releases/tag/v7.0.1"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/checkout",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Check out the requested repository revision",
+      "example_pin": {
+        "tag": "v7.0.1",
+        "sha": "3d3c42e5aac5ba805825da76410c181273ba90b1"
+      }
+    },
+    {
+      "repository": "appleboy/ssh-action",
+      "repository_url": "https://github.com/appleboy/ssh-action",
+      "repository_api_url": "https://api.github.com/repos/appleboy/ssh-action",
+      "stars": 6232,
+      "archived": false,
+      "last_push": "2026-08-16T12:07:10Z",
+      "owner_type": "User",
+      "latest_repository_release": {
+        "tagName": "v1.2.5",
+        "publishedAt": "2026-01-28T02:21:35Z",
+        "url": "https://github.com/appleboy/ssh-action/releases/tag/v1.2.5"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/ssh-remote-commands",
+      "marketplace_verified_creator": false,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Run explicitly reviewed remote commands over SSH"
+    },
+    {
+      "repository": "softprops/action-gh-release",
+      "repository_url": "https://github.com/softprops/action-gh-release",
+      "repository_api_url": "https://api.github.com/repos/softprops/action-gh-release",
+      "stars": 5790,
+      "archived": false,
+      "last_push": "2026-10-24T22:43:02Z",
+      "owner_type": "User",
+      "latest_repository_release": {
+        "tagName": "v3.0.3",
+        "publishedAt": "2026-08-30T00:30:08Z",
+        "url": "https://github.com/softprops/action-gh-release/releases/tag/v3.0.3"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/gh-release",
+      "marketplace_verified_creator": false,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Attach release files without custom API upload loops",
+      "example_pin": {
+        "tag": "v3.0.3",
+        "sha": "efb35369e0ad2afab669f228072c1b0d510eae64"
+      }
+    },
+    {
+      "repository": "actions/cache",
+      "repository_url": "https://github.com/actions/cache",
+      "repository_api_url": "https://api.github.com/repos/actions/cache",
+      "stars": 5589,
+      "archived": false,
+      "last_push": "2026-07-15T18:13:46Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v6.1.0",
+        "publishedAt": "2026-06-26T19:17:06Z",
+        "url": "https://github.com/actions/cache/releases/tag/v6.1.0"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/cache",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Restore and save dependency or tool caches",
+      "example_pin": {
+        "tag": "v6.1.0",
+        "sha": "55cc8345863c7cc4c66a329aec7e433d2d1c52a9"
+      }
+    },
+    {
+      "repository": "docker/build-push-action",
+      "repository_url": "https://github.com/docker/build-push-action",
+      "repository_api_url": "https://api.github.com/repos/docker/build-push-action",
+      "stars": 5421,
+      "archived": false,
+      "last_push": "2026-10-30T02:16:22Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v7.4.0",
+        "publishedAt": "2026-09-15T08:22:01Z",
+        "url": "https://github.com/docker/build-push-action/releases/tag/v7.4.0"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/build-and-push-docker-images",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Build, cache, and optionally publish container images",
+      "example_pin": {
+        "tag": "v7.4.0",
+        "sha": "c3c9e263c25d99ce0380d002d59b67737d91b0dc"
+      }
+    },
+    {
+      "repository": "peaceiris/actions-gh-pages",
+      "repository_url": "https://github.com/peaceiris/actions-gh-pages",
+      "repository_api_url": "https://api.github.com/repos/peaceiris/actions-gh-pages",
+      "stars": 5367,
+      "archived": false,
+      "last_push": "2026-10-26T18:34:54Z",
+      "owner_type": "User",
+      "latest_repository_release": {
+        "tagName": "v4.1.0",
+        "publishedAt": "2026-05-12T16:17:57Z",
+        "url": "https://github.com/peaceiris/actions-gh-pages/releases/tag/v4.1.0"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/github-pages-action",
+      "marketplace_verified_creator": false,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Publish generated files to a Pages branch"
+    },
+    {
+      "repository": "actions/setup-node",
+      "repository_url": "https://github.com/actions/setup-node",
+      "repository_api_url": "https://api.github.com/repos/actions/setup-node",
+      "stars": 5012,
+      "archived": false,
+      "last_push": "2026-10-17T10:35:01Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v7.1.0",
+        "publishedAt": "2026-10-08T02:52:34Z",
+        "url": "https://github.com/actions/setup-node/releases/tag/v7.1.0"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/setup-node-js-environment",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Install Node and configure package-manager caching",
+      "example_pin": {
+        "tag": "v7.1.0",
+        "sha": "949feb2413d6458794dcd2491c4babbbce0c15c1"
+      }
+    },
+    {
+      "repository": "JamesIves/github-pages-deploy-action",
+      "repository_url": "https://github.com/JamesIves/github-pages-deploy-action",
+      "repository_api_url": "https://api.github.com/repos/JamesIves/github-pages-deploy-action",
+      "stars": 4618,
+      "archived": false,
+      "last_push": "2026-10-26T20:45:40Z",
+      "owner_type": "User",
+      "latest_repository_release": {
+        "tagName": "v4.9.0",
+        "publishedAt": "2026-08-08T15:55:31Z",
+        "url": "https://github.com/JamesIves/github-pages-deploy-action/releases/tag/v4.9.0"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/deploy-to-github-pages",
+      "marketplace_verified_creator": false,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Publish generated files to a deployment branch"
+    },
+    {
+      "repository": "actions/upload-artifact",
+      "repository_url": "https://github.com/actions/upload-artifact",
+      "repository_api_url": "https://api.github.com/repos/actions/upload-artifact",
+      "stars": 4244,
+      "archived": false,
+      "last_push": "2026-10-07T10:18:23Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v7.0.2",
+        "publishedAt": "2026-10-07T10:08:14Z",
+        "url": "https://github.com/actions/upload-artifact/releases/tag/v7.0.2"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/upload-a-build-artifact",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Upload build results without archive/upload scripts",
+      "example_pin": {
+        "tag": "v7.0.2",
+        "sha": "cf430e030ddbb5b0abf93d22962f4752f3646cd9"
+      }
+    },
+    {
+      "repository": "dorny/paths-filter",
+      "repository_url": "https://github.com/dorny/paths-filter",
+      "repository_api_url": "https://api.github.com/repos/dorny/paths-filter",
+      "stars": 3381,
+      "archived": false,
+      "last_push": "2026-09-27T22:03:36Z",
+      "owner_type": "User",
+      "latest_repository_release": {
+        "tagName": "v4.0.3",
+        "publishedAt": "2026-08-05T12:17:06Z",
+        "url": "https://github.com/dorny/paths-filter/releases/tag/v4.0.3"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/paths-changes-filter",
+      "marketplace_verified_creator": false,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Select jobs from changed paths without custom git-diff parsing",
+      "example_pin": {
+        "tag": "v4.0.3",
+        "sha": "ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d"
+      }
+    },
+    {
+      "repository": "aws-actions/configure-aws-credentials",
+      "repository_url": "https://github.com/aws-actions/configure-aws-credentials",
+      "repository_api_url": "https://api.github.com/repos/aws-actions/configure-aws-credentials",
+      "stars": 3018,
+      "archived": false,
+      "last_push": "2026-10-27T04:02:18Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v6.3.0",
+        "publishedAt": "2026-09-15T05:13:09Z",
+        "url": "https://github.com/aws-actions/configure-aws-credentials/releases/tag/v6.3.0"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/configure-aws-credentials-action-for-github-actions",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Configure short-lived AWS credentials through OIDC"
+    },
+    {
+      "repository": "peter-evans/create-pull-request",
+      "repository_url": "https://github.com/peter-evans/create-pull-request",
+      "repository_api_url": "https://api.github.com/repos/peter-evans/create-pull-request",
+      "stars": 2872,
+      "archived": false,
+      "last_push": "2026-10-30T02:13:47Z",
+      "owner_type": "User",
+      "latest_repository_release": {
+        "tagName": "v8.1.1",
+        "publishedAt": "2026-04-10T16:27:57Z",
+        "url": "https://github.com/peter-evans/create-pull-request/releases/tag/v8.1.1"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/create-pull-request",
+      "marketplace_verified_creator": false,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Create or update a pull request from generated changes",
+      "example_pin": {
+        "tag": "v8.1.1",
+        "sha": "5f6978faf089d4d20b00c7766989d076bb2fc7f1"
+      }
+    },
+    {
+      "repository": "googleapis/release-please-action",
+      "repository_url": "https://github.com/googleapis/release-please-action",
+      "repository_api_url": "https://api.github.com/repos/googleapis/release-please-action",
+      "stars": 2560,
+      "archived": false,
+      "last_push": "2026-08-28T14:42:38Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v5.0.0",
+        "publishedAt": "2026-04-22T18:03:34Z",
+        "url": "https://github.com/googleapis/release-please-action/releases/tag/v5.0.0"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/release-please-action",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Propose version and changelog changes through release PRs",
+      "example_pin": {
+        "tag": "v5.0.0",
+        "sha": "45996ed1f6d02564a971a2fa1b5860e934307cf7"
+      }
+    },
+    {
+      "repository": "actions/labeler",
+      "repository_url": "https://github.com/actions/labeler",
+      "repository_api_url": "https://api.github.com/repos/actions/labeler",
+      "stars": 2512,
+      "archived": false,
+      "last_push": "2026-10-12T11:10:34Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v7.0.0",
+        "publishedAt": "2026-07-21T02:40:50Z",
+        "url": "https://github.com/actions/labeler/releases/tag/v7.0.0"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/labeler",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Apply path-based pull-request labels"
+    },
+    {
+      "repository": "actions/setup-python",
+      "repository_url": "https://github.com/actions/setup-python",
+      "repository_api_url": "https://api.github.com/repos/actions/setup-python",
+      "stars": 2244,
+      "archived": false,
+      "last_push": "2026-10-26T04:13:29Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v7.1.0",
+        "publishedAt": "2026-10-22T02:56:04Z",
+        "url": "https://github.com/actions/setup-python/releases/tag/v7.1.0"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/setup-python",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Select Python without manual installer scripts",
+      "example_pin": {
+        "tag": "v7.1.0",
+        "sha": "6d4fd22b20465ccc0f7354476588e8df7c9ca0e0"
+      }
+    },
+    {
+      "repository": "actions/download-artifact",
+      "repository_url": "https://github.com/actions/download-artifact",
+      "repository_api_url": "https://api.github.com/repos/actions/download-artifact",
+      "stars": 1920,
+      "archived": false,
+      "last_push": "2026-10-07T10:19:59Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v8.0.2",
+        "publishedAt": "2026-10-07T10:09:51Z",
+        "url": "https://github.com/actions/download-artifact/releases/tag/v8.0.2"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/download-a-build-artifact",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Download named results for dependent jobs",
+      "example_pin": {
+        "tag": "v8.0.2",
+        "sha": "9000827ccba6bdab643e8b6fd33ac0654aef8333"
+      }
+    },
+    {
+      "repository": "codecov/codecov-action",
+      "repository_url": "https://github.com/codecov/codecov-action",
+      "repository_api_url": "https://api.github.com/repos/codecov/codecov-action",
+      "stars": 1717,
+      "archived": false,
+      "last_push": "2026-09-17T00:47:32Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v7.1.1",
+        "publishedAt": "2026-09-17T00:48:02Z",
+        "url": "https://github.com/codecov/codecov-action/releases/tag/v7.1.1"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/codecov",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Upload coverage reports to Codecov"
+    },
+    {
+      "repository": "github/codeql-action",
+      "repository_url": "https://github.com/github/codeql-action",
+      "repository_api_url": "https://api.github.com/repos/github/codeql-action",
+      "stars": 1668,
+      "archived": false,
+      "last_push": "2026-10-30T00:46:05Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "codeql-bundle-v2.27.3",
+        "publishedAt": "2026-10-20T16:51:44Z",
+        "url": "https://github.com/github/codeql-action/releases/tag/codeql-bundle-v2.27.3"
+      },
+      "marketplace_url": null,
+      "marketplace_verified_creator": null,
+      "publisher_evidence": "GitHub-maintained repository; Marketplace listing not established in this snapshot",
+      "purpose": "Run CodeQL analysis and publish code-scanning results"
+    },
+    {
+      "repository": "docker/login-action",
+      "repository_url": "https://github.com/docker/login-action",
+      "repository_api_url": "https://api.github.com/repos/docker/login-action",
+      "stars": 1497,
+      "archived": false,
+      "last_push": "2026-10-26T06:04:04Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v4.7.0",
+        "publishedAt": "2026-10-23T15:22:45Z",
+        "url": "https://github.com/docker/login-action/releases/tag/v4.7.0"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/docker-login",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Authenticate to an image registry",
+      "example_pin": {
+        "tag": "v4.7.0",
+        "sha": "81c6f93d4bc991e510b342a00b419b3bb4efc5c6"
+      }
+    },
+    {
+      "repository": "google-github-actions/auth",
+      "repository_url": "https://github.com/google-github-actions/auth",
+      "repository_api_url": "https://api.github.com/repos/google-github-actions/auth",
+      "stars": 1412,
+      "archived": false,
+      "last_push": "2026-07-29T20:24:41Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v3",
+        "publishedAt": "2025-09-03T02:14:46Z",
+        "url": "https://github.com/google-github-actions/auth/releases/tag/v3"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/authenticate-to-google-cloud",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Authenticate to Google Cloud through workload identity"
+    },
+    {
+      "repository": "docker/setup-buildx-action",
+      "repository_url": "https://github.com/docker/setup-buildx-action",
+      "repository_api_url": "https://api.github.com/repos/docker/setup-buildx-action",
+      "stars": 1391,
+      "archived": false,
+      "last_push": "2026-10-29T20:48:27Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v4.4.1",
+        "publishedAt": "2026-09-16T07:50:21Z",
+        "url": "https://github.com/docker/setup-buildx-action/releases/tag/v4.4.1"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/docker-setup-buildx",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Configure the Buildx builder",
+      "example_pin": {
+        "tag": "v4.4.1",
+        "sha": "f87e5991a6d7451dcb8d9637bfbc97413f497069"
+      }
+    },
+    {
+      "repository": "pnpm/action-setup",
+      "repository_url": "https://github.com/pnpm/action-setup",
+      "repository_api_url": "https://api.github.com/repos/pnpm/action-setup",
+      "stars": 1323,
+      "archived": false,
+      "last_push": "2026-09-05T07:26:22Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v6.1.0",
+        "publishedAt": "2026-09-05T07:31:28Z",
+        "url": "https://github.com/pnpm/action-setup/releases/tag/v6.1.0"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/setup-pnpm",
+      "marketplace_verified_creator": false,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Install pnpm without a custom bootstrap script"
+    },
+    {
+      "repository": "dorny/test-reporter",
+      "repository_url": "https://github.com/dorny/test-reporter",
+      "repository_api_url": "https://api.github.com/repos/dorny/test-reporter",
+      "stars": 1184,
+      "archived": false,
+      "last_push": "2026-10-29T23:53:13Z",
+      "owner_type": "User",
+      "latest_repository_release": {
+        "tagName": "v3.0.0",
+        "publishedAt": "2026-03-21T13:52:19Z",
+        "url": "https://github.com/dorny/test-reporter/releases/tag/v3.0.0"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/test-reporter",
+      "marketplace_verified_creator": false,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Publish structured test reports as checks"
+    },
+    {
+      "repository": "docker/metadata-action",
+      "repository_url": "https://github.com/docker/metadata-action",
+      "repository_api_url": "https://api.github.com/repos/docker/metadata-action",
+      "stars": 1154,
+      "archived": false,
+      "last_push": "2026-10-23T19:48:39Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v6.2.0",
+        "publishedAt": "2026-07-02T08:55:18Z",
+        "url": "https://github.com/docker/metadata-action/releases/tag/v6.2.0"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/docker-metadata-action",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Generate image tags and OCI labels",
+      "example_pin": {
+        "tag": "v6.2.0",
+        "sha": "dc802804100637a589fabce1cb79ff13a1411302"
+      }
+    },
+    {
+      "repository": "actions/deploy-pages",
+      "repository_url": "https://github.com/actions/deploy-pages",
+      "repository_api_url": "https://api.github.com/repos/actions/deploy-pages",
+      "stars": 965,
+      "archived": false,
+      "last_push": "2026-09-07T16:52:52Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v5.0.1",
+        "publishedAt": "2026-09-01T21:31:19Z",
+        "url": "https://github.com/actions/deploy-pages/releases/tag/v5.0.1"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/deploy-github-pages-site",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Deploy the generated GitHub Pages artifact"
+    },
+    {
+      "repository": "actions/dependency-review-action",
+      "repository_url": "https://github.com/actions/dependency-review-action",
+      "repository_api_url": "https://api.github.com/repos/actions/dependency-review-action",
+      "stars": 930,
+      "archived": false,
+      "last_push": "2026-10-30T03:22:18Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v5.0.0",
+        "publishedAt": "2026-05-08T20:23:50Z",
+        "url": "https://github.com/actions/dependency-review-action/releases/tag/v5.0.0"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/dependency-review",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Review dependency changes in pull requests"
+    },
+    {
+      "repository": "astral-sh/setup-uv",
+      "repository_url": "https://github.com/astral-sh/setup-uv",
+      "repository_api_url": "https://api.github.com/repos/astral-sh/setup-uv",
+      "stars": 897,
+      "archived": false,
+      "last_push": "2026-10-28T14:45:35Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v10.3.3",
+        "publishedAt": "2026-10-28T14:35:19Z",
+        "url": "https://github.com/astral-sh/setup-uv/releases/tag/v10.3.3"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/astral-sh-setup-uv",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Install uv and configure its cache",
+      "example_pin": {
+        "tag": "v10.3.3",
+        "sha": "68559e99cc807c1eb7e9238fd43a15bba460eec2"
+      }
+    },
+    {
+      "repository": "Azure/login",
+      "repository_url": "https://github.com/Azure/login",
+      "repository_api_url": "https://api.github.com/repos/Azure/login",
+      "stars": 564,
+      "archived": false,
+      "last_push": "2026-10-18T11:34:11Z",
+      "owner_type": "Organization",
+      "latest_repository_release": {
+        "tagName": "v3.1.0",
+        "publishedAt": "2026-09-10T03:16:59Z",
+        "url": "https://github.com/Azure/login/releases/tag/v3.1.0"
+      },
+      "marketplace_url": "https://github.com/marketplace/actions/azure-login",
+      "marketplace_verified_creator": true,
+      "publisher_evidence": "Marketplace listing matched to upstream repository",
+      "purpose": "Authenticate to Azure through a declared identity"
+    }
+  ]
+}

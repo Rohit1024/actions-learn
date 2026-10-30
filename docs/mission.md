@@ -12,6 +12,7 @@ Start directly with GitHub Actions workflows, jobs, steps, runners, and events, 
 
 - Explain how an event becomes a workflow run, jobs, steps, and action processes.
 - Configure triggers, expressions, inputs, outputs, dependencies, and reusable workflows with explicit contracts.
+- Select maintained pre-built actions using task fit, dated popularity, publisher evidence, and reviewed release references; reduce repeated shell glue.
 - Implement and test Docker container, JavaScript, TypeScript, and composite actions with documented inputs and outputs.
 - Run the same core checks from a local Taskfile and CI, and reproduce failures with fixtures.
 - Identify where `act` differs from GitHub, including token permissions, OIDC, environments, concurrency, and runner images.
@@ -21,6 +22,7 @@ Start directly with GitHub Actions workflows, jobs, steps, runners, and events, 
 
 ## Constraints
 
+- Prefer maintained actions for common platform operations. Keep necessary project commands explicit and create custom actions for reusable interfaces or missing domain behavior.
 - Prefer host tests and deterministic fixtures before containers or hosted runs.
 - Preserve GitHub Actions minutes and AI usage by selecting the smallest useful test.
 - Teach through runnable examples, retrieval exercises, and vertical Mermaid diagrams.

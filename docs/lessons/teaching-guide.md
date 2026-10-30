@@ -4,9 +4,9 @@ icon: lucide/route
 
 # Teaching guide: from workflows to an Actions orchestrator
 
-Start directly with GitHub Actions and develop the ability to design, test, secure, release, and operate its automation. Use real workflows and custom actions to introduce events, jobs, steps, runners, expressions, and contracts. Explain supporting YAML, shell, language, and API details when the current example needs them. The learner has excluded standalone Linux and general programming lessons.
+Start directly with GitHub Actions and develop the ability to design, test, secure, release, and operate its automation. Prefer maintained pre-built actions for standard platform operations and use real workflows and custom actions to introduce events, jobs, steps, runners, expressions, and contracts. Explain supporting YAML, shell, language, and API details when the current example needs them. The learner has excluded standalone Linux and general programming lessons.
 
-The course has [48 Actions lessons in 8 modules](index.md), starting at [0001 · The execution model](0001-execution-model.md). Each planned lesson is a brief for a future teaching thread. A written page does not establish that the material has been taught or understood.
+The course has [60 Actions lessons in 10 modules](index.md), starting at [0001 · The execution model](0001-execution-model.md). Each planned lesson is a brief for a future teaching thread. A written page does not establish that the material has been taught or understood.
 
 ## Start a lesson in a new thread
 
@@ -23,23 +23,27 @@ Start with events, workflows, jobs, steps, and runners, one concept at a time.
 Ask me to predict and try examples before showing their solutions.
 ```
 
-Use lesson IDs **0001–0048**, resolved through the curriculum. Expand the existing page in place so links and neighboring lessons remain stable.
+Use lesson IDs **0001–0060**, resolved through the curriculum. Follow module and pagination order rather than sorting IDs: the added modules use new IDs to preserve existing published URLs. Expand the existing page in place so links and neighboring lessons remain stable.
 
 ## The progression
 
 ```mermaid
 flowchart TD
-    Workflow["Understand workflow events, jobs, steps, and runners"] --> Local["Test action behavior and workflow wiring locally"]
+    Workflow["Understand workflow events, jobs, steps, and runners"] --> Reuse["Select maintained pre-built actions with publisher evidence"]
+    Reuse --> Local["Test action behavior and workflow wiring locally"]
     Local --> Author["Build custom actions with explicit contracts"]
     Author --> Composer["Compose workers through reusable workflow interfaces"]
     Composer --> Operator["Control identity, releases, failure, and usage"]
     Operator --> Orchestrator["Independently design and operate a verified pipeline"]
 ```
 
-- **Modules 1–2:** configure events, runners, steps, expressions, outputs, and dependencies; build a fast local feedback loop.
-- **Modules 3–5:** author Docker, JavaScript/TypeScript, and composite actions, then choose step-level or job-level reuse deliberately.
-- **Modules 6–7:** reason about credentials, provenance, releases, failure, usage, and constrained agentic automation using real evidence.
-- **Module 8:** build a capstone with workers, parallel branches, evidence joins, release gates, observability, and a recovery playbook.
+- **Modules 1–2:** configure workflow execution, then select maintained pre-built actions using a dated star snapshot, matched publisher evidence, and reviewed releases.
+- **Modules 3–4:** test locally, then create a focused action interface and choose composition, Node, or Docker deliberately.
+- **Modules 5–7:** develop Docker, JavaScript/TypeScript, composite, and reusable-workflow implementations in depth.
+- **Modules 8–9:** secure credentials and releases, then evaluate constrained agentic automation.
+- **Module 10:** deliver a capstone with worker evidence, release gates, and an operating playbook.
+
+Use the [action catalog](../references/prebuilt-actions.md) for discovery. Verified creator status identifies a publisher; stars measure popularity. Recheck current upstream metadata and review release behavior before updating an example pin. Keep project build/test commands explicit and replace repeated platform glue where a suitable maintained action exists.
 
 ## Check prerequisites without guessing proficiency
 
