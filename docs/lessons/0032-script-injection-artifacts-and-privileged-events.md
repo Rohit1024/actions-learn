@@ -1,92 +1,141 @@
 ---
 icon: lucide/book-open
 lesson_id: "0032"
-lesson_status: placeholder
+lesson_status: authored
 ---
 
 # 0032 · Script injection, untrusted artifacts, and privileged-event pitfalls
 
-!!! note "Placeholder for a future teaching thread"
-    This page is a teaching brief. Expand it into a full interactive lesson in its own thread. The planned exercises and outcomes have not been completed or demonstrated.
+!!! note "Authored reference lesson"
+    The injection payload is fixed and creates only a disposable local marker. The artifact exercise consumes in-memory synthetic ZIPs as data. No real credential, hosted event, download service, or privileged operation is involved; authored content establishes no learner mastery.
 
-**Level:** Advanced.
+## Prerequisites and observable goals
 
-## Prerequisites
+Read [0031 · Tokens and trust](0031-github-token-forks-and-trust-boundaries.md) and [0027 · Input transport and quoting](0027-untrusted-input-and-shell-quoting.md). Recall that Actions evaluates expressions before a shell interprets the generated script.
 
-- [0031 · Least-privilege tokens, fork pull requests, and event trust boundaries](0031-github-token-forks-and-trust-boundaries.md)
-- [0027 · Transport inputs safely through environment variables and quoted arguments](0027-untrusted-input-and-shell-quoting.md)
+Reproduce an injection-shaped string becoming shell syntax, preserve the same string as data, and reject an artifact with the wrong producer or unexpected files. Success means you can identify the exact evaluation stage, explain which identity evidence is trusted, and repair a privileged follow-up without executing contributor content.
 
-## What you will learn to do
+## Follow data through every interpreter
 
-- Trace a plausible path from untrusted input to privileged execution.
-- Design a safer contract for consuming repository data or artifacts.
+**Script injection** happens when external text becomes program syntax. A PR title, branch name, body, or commit message is not trusted because GitHub delivered it. Direct interpolation such as the following generates shell source before Bash starts:
 
-## Explain the Actions behavior
+```yaml title="Unsafe teaching excerpt; do not activate"
+run: printf '%s\n' "${{ github.event.pull_request.title }}"
+```
 
-Start from the prerequisite workflow or action behavior and introduce these concepts with focused examples:
+Shell quotes in the template cannot protect against a value that contributes new quote characters to the generated script. The safer shape transports the value separately:
 
-1. Event text and downloaded artifacts can carry attacker-controlled data or executable content.
-2. A privileged trigger and an untrusted checkout can combine authorities unexpectedly.
-3. A safe boundary checks producer identity, content, and execution context before consuming data.
+```yaml title="labs/0032/data-only-pr.yml — safe transport"
+env:
+  TITLE: ${{ github.event.pull_request.title }} # (1)!
+shell: bash
+run: |
+  python3 -c 'import os; print("title characters:", len(os.environ["TITLE"]))' # (2)!
+```
 
-Explain the relevant workflow YAML, expressions, and action code in context. Follow the [shared teaching guide](teaching-guide.md) for pacing, expected output, and progression toward independent design.
+1. The runner supplies the value through the environment rather than writing it into program source.
+2. The Python source is fixed. It reads data and prints a count; it does not evaluate the title or log its arbitrary contents.
 
-## Planned local lab
-
-Create an isolated exercise under `labs/0032/` when the lesson is developed. Explain setup and expected output before each command; reuse installed tools rather than reinstalling them on every step.
-
-1. Use an inert fixture to map shell injection and artifact-consumption paths.
-2. Inspect the semantics of pull_request_target and checkout refs against current primary documentation.
-3. Redesign a privileged follow-up workflow so its code and inputs have explicit provenance and validation.
-
-## Break it and diagnose it
-
-Treat an artifact filename or successful upstream status as proof that its contents are safe to execute. Explain the missing trust evidence.
-
-Ask for a prediction first. Capture the smallest reproducer, the actual result, and the corrected behavior. State which remaining claim requires a real GitHub or external-service check.
-
-## Planning diagram
+The [secure-use guidance](https://docs.github.com/en/actions/reference/security/secure-use#good-practices-for-mitigating-script-injection-attacks), checked **2026-10-30**, describes intermediate environment transport and action arguments. Passing an input to an action only preserves this boundary if that action handles it safely. Sending the string onward to `eval`, `bash -c`, a generated JavaScript expression, or an unsafe template reintroduces evaluation. Quoting also does not validate whether a data value is an authorized target, allowed filename, or valid command option.
 
 ```mermaid
 flowchart TD
-    N0["Untrusted text or artifact"]
-    N1["Privilege and execution boundary"]
-    N0 --> N1
-    N2["Provenance and validation checks"]
-    N1 --> N2
-    N3["Constrained consumption"]
-    N2 --> N3
+    Input["Contributor-controlled event text or artifact"] --> Route{"How does the consumer use it?"}
+    Route -->|"Generated script or downloaded executable"| Execution["External input becomes code with the consumer's authority"]
+    Execution --> Reject["Reject this privilege crossing"]
+    Route -->|"Explicit data transport"| Producer["Bind trusted service metadata to the intended producer run"]
+    Producer --> Content["Check names, size, schema, and permitted destination"]
+    Content --> Consume["Parse bounded data with reviewed consumer code"]
+    Consume --> Operation["Authorize the exact target separately before any later write"]
 ```
 
-When expanding this lesson, refine the diagram to show the actual processes, branches, data exchange, and trust boundaries being taught.
+## Privileged events change context, not the ownership of data
 
-## Retrieval questions
+`pull_request` is suitable for testing contributor code with restricted authority. `pull_request_target` runs in the base repository's default-branch context and is useful for metadata operations. Checking out a PR head, running its install hooks, or sourcing its scripts in that context defeats the intended boundary. [GitHub's event reference](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#pull_request_target) warns against building/running PR code there.
 
-1. Which inputs can an external contributor control?
-2. Where could plain data become executable behavior?
-3. What does an upstream success status actually establish about an artifact?
+A `workflow_run` follow-up can have secrets or a write token even when the preceding workflow did not. A `completed` trigger does not mean the predecessor succeeded; conclusion is a separate check. Moreover, success does not prove its artifact is authorized or safe. These are documented [workflow_run semantics](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_run).
 
-## Evidence to capture in the teaching thread
+A safer follow-up uses reviewed consumer code and validates independent service evidence: repository identity, workflow ID/path, run ID and attempt, event, head revision, and conclusion. It selects an exact artifact from that run, isolates the download from executable workspace files, and parses a constrained schema. The artifact's own `repository` or `sha` string is an assertion from the producer, not proof of identity. A filename such as `approved-report.zip` is equally weak.
 
-- A working learner-produced example and an explanation of why it works.
-- A reproduced failure, a reasoned repair, and the smallest check that verifies it.
-- A short account of remaining limits, unresolved questions, and readiness for the next lesson.
+!!! warning "A report can redirect an otherwise safe write"
+    A numeric PR number in a valid report still needs to match the intended triggering PR/repository. Parsing JSON safely does not authorize the target of a comment, release, or deployment. This lab performs none of those operations.
 
-Use [primary references](../references/resources.md) to verify current syntax, runtime support, and tool behavior. Add learning records only for real statements or demonstrated understanding; a placeholder or generated page does not establish mastery.
+## Local lab: predict both boundaries
 
-## Start this lesson in a new thread
+Before running, predict whether a title containing `"; : > marker; #` creates a file when inserted into shell source, and whether an environment variable containing the same bytes gets parsed again.
+
+```bash
+python3 -B labs/0032/boundaries.py
+```
+
+Expected exit 0 and exact lines:
 
 ```text
-/teach 0032
-
-Expand docs/lessons/0032-script-injection-artifacts-and-privileged-events.md in place using docs/lessons/teaching-guide.md.
-Read docs/mission.md, NOTES.md, and the prerequisite lesson pages first.
-Begin with a short check of the Actions prerequisites. Explain relevant YAML,
-expressions, and action contracts, one concept at a time. Let me predict and
-try each exercise before revealing its answer. Keep feedback local where possible.
-Finish with retrieval questions and a truthful handoff for the next thread.
+unsafe: marker created
+safe: exact text preserved; marker absent
+temporary directory removed; no inherited credentials or network calls
+report: 3/3 checks passed (data only)
 ```
+
+`injection_demo()` creates a temporary directory, generates the deliberately vulnerable Bash script from a fixed payload, checks that its marker exists, removes the marker, and runs a fixed script with `TITLE` supplied separately. Its subprocess environment contains only a basic PATH and the synthetic title. It checks exact stdout and marker absence, then removes the directory. The outer demo passes only when both the unsafe behavior and safe repair are observed.
+
+??? tip "Worked injection diagnosis"
+    The first script's generated source contains a closing quote, a command separator, and the marker command. In the repaired script, Bash expands `$TITLE` inside a quoted argument without recursively parsing its contents as shell source. A file-existence assertion and exact byte comparison establish the tested distinction. Printing the title alone would miss a silent side effect.
+
+## Consume an artifact without extracting or executing it
+
+`consume()` opens an in-memory ZIP and accepts exactly one entry, `report.json`. It rejects unexpected paths, extra entries, symlinks, archives above 16 KiB, and report entries above 1 KiB before parsing. It never extracts files into the checkout. The report must have exactly three keys:
+
+```json title="Accepted report schema example"
+{"schema": 1, "passed": 3, "total": 3}
+```
+
+The counters must be actual integers, with `0 <= passed <= total <= 100`. Rejecting booleans matters because Python treats `bool` as an integer subtype. The strict key set also rejects a supplied `command` field; report data must not grow an accidental execution interface.
+
+```python title="labs/0032/boundaries.py — producer boundary"
+if observed_producer != EXPECTED: # (1)!
+    raise ValueError("producer context mismatch")
+```
+
+1. `observed_producer` is a separate synthetic input, representing future trusted service metadata. It is not read from the ZIP. Both dictionaries are fixtures here, so this comparison demonstrates a selection rule without authenticating any real producer.
+
+The example's expected metadata identifies a fictional push run and source revision. For a PR reporting workflow, deliberately define a different event/PR contract and bind its target. Do not loosen event checks merely until a downloaded artifact is accepted. Real archive consumers also need threat-appropriate compression, parser, filesystem, and race limits; this bounded in-memory exercise is not a general extraction sandbox.
+
+```bash
+python3 -B -m unittest discover -s labs/0032 -p 'test_*.py' -v
+.tools/bin/actionlint labs/0032/data-only-pr.yml
+```
+
+Expected: seven test methods pass and actionlint returns 0 with no diagnostics. Cases cover wrong-run success, escaping/absolute/executable paths, extra files, invalid counts/types/keys, symlinks, and oversized reports. Inner `ValueError` failures are expected and asserted; the suite itself exits 0.
+
+## Deliberate failure and repair
+
+Consider a follow-up that downloads `report.zip` from the latest successful run, extracts it over the checkout, and executes `report.sh`. Name three independent defects before opening the solution.
+
+??? tip "Worked repair"
+    “Latest” can select a different revision/run; a familiar filename says nothing about provenance; extraction can overwrite trusted scripts; executing the result gives producer code the consumer's authority. Bind the triggering run and artifact ID, verify service metadata, isolate the data destination, reject unexpected entries, parse an explicit schema, and authorize a specific operation/target. A valid report remains untrusted evidence to evaluate, rather than a script to run. Keeping a privileged consumer on reviewed code is essential even when the producer succeeded.
+
+## Transfer and retrieval
+
+A report with the correct schema and checksum asks a release job to publish a different source revision. Should the job accept it? Design the missing check, then explain why a checksum inside the same untrusted archive is insufficient.
+
+??? tip "Worked transfer"
+    Compare the candidate revision to independently expected reviewed source and trusted producer evidence. Reject mismatches before considering any write. An attacker can replace both bytes and an unsigned checksum; content agreement alone does not authenticate the source. [0034](0034-caches-artifacts-and-reproducibility.md) separates those contracts in a runnable exercise.
+
+Retrieve without looking:
+
+1. At which stage does direct expression interpolation become dangerous?
+2. Why does upstream success fail to authorize artifact execution?
+3. Which metadata must come from outside the artifact?
+4. Why can schema-valid data still choose an unauthorized target?
+
+??? tip "Retrieval check"
+    Expression substitution writes source before the interpreter starts. Upstream success is a conclusion about a run, not a code review or permission grant. Producer identity and expected revision/run must have a trusted origin. Data parsing preserves syntax boundaries; authorization separately decides the permitted operation and target.
+
+## Verification boundary
+
+The host lab proves the tested Bash data boundary and synthetic archive checks. It does not verify `pull_request_target`/`workflow_run` admission, token access, hosted artifact identity, permissions, or an actual follow-up. No container or `act` execution occurred. Continue to [0033 · Identity and environment policy](0033-oidc-environments-and-hosted-policy.md), keeping policy simulation distinct from platform enforcement.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0031 · Least-privilege tokens, fork pull requests, and event trust boundaries](0031-github-token-forks-and-trust-boundaries.md) | [Curriculum](index.md) | [0033 · OIDC, deployment environments, approval, and real platform verification](0033-oidc-environments-and-hosted-policy.md) |
+| [0031 · Tokens, forks, and trust boundaries](0031-github-token-forks-and-trust-boundaries.md) | [Curriculum](index.md) | [0033 · OIDC, environments, and hosted policy](0033-oidc-environments-and-hosted-policy.md) |

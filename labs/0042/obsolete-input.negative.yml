@@ -1,0 +1,71 @@
+# Inactive composition exercise: no release, cloud identity, or registry push.
+name: Deliberate obsolete-input negative fixture
+on:
+  workflow_dispatch:
+    inputs:
+      include_image:
+        description: Also build the bounded OCI fixture
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+          always-auth: true
+          cache-dependency-path: package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build:action
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: module7-composed-bundle
+          path: examples/typescript-action/dist/index.cjs
+          if-no-files-found: error
+          retention-days: 3
+  image:
+    if: inputs.include_image
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DOCKER_BUILD_RECORD_UPLOAD: 'false'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+      - uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: labs/0040/image
+          push: false
+          outputs: type=oci,dest=${{ runner.temp }}/module7-composed.tar
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: module7-composed-image
+          path: ${{ runner.temp }}/module7-composed.tar
+          if-no-files-found: error
+          retention-days: 3
+  gate:
+    needs: [node, image]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Join the selected evidence
+        env:
+          INCLUDE_IMAGE: ${{ inputs.include_image }}
+          NODE_RESULT: ${{ needs.node.result }}
+          IMAGE_RESULT: ${{ needs.image.result }}
+        run: python3 labs/0042/gate.py

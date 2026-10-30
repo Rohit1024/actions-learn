@@ -1,0 +1,1 @@
+Module 7 synthetic OCI payload. This image has no executable entrypoint.

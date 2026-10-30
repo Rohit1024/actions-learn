@@ -1,0 +1,47 @@
+name: Module 5 typed fixture worker
+on:
+  workflow_call:
+    inputs:
+      label:
+        description: Nonblank single-line label, max 80 UTF-16 code units.
+        required: true
+        type: string
+      strict:
+        type: boolean
+        default: true
+      max-items:
+        description: Integer in range 1 through 3; validated by worker.
+        type: number
+        default: 2
+    secrets:
+      FIXTURE_TOKEN:
+        description: Synthetic fixture constant; no authorization or external API.
+        required: true
+    outputs:
+      summary:
+        description: Bounded worker summary.
+        value: ${{ jobs.check.outputs.summary }}
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      summary: ${{ steps.check.outputs.summary }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - id: check
+        shell: bash
+        env:
+          LABEL: ${{ inputs.label }}
+          STRICT: ${{ inputs.strict }}
+          MAX_ITEMS: ${{ inputs.max-items }}
+          FIXTURE_TOKEN: ${{ secrets.FIXTURE_TOKEN }}
+        run: node labs/0029/worker.cjs

@@ -72,18 +72,42 @@ tasks:
     cmds:
       - '"{{.ACTIONLINT}}" -color labs/0019/module4-contracts.yml labs/0024/module4-platforms.yml'
 
+  lint:module5:
+    desc: Check nine inactive composite and reusable-workflow recipes with their local interfaces
+    cmds:
+      - uv run --no-sync python labs/0029/lint_module.py
+
+  lint:module6:
+    desc: Check six inactive security, identity, release, and observability recipes
+    cmds:
+      - '"{{.ACTIONLINT}}" -color labs/0031/read-only-pr.yml labs/0032/data-only-pr.yml labs/0033/policy-shape.yml labs/0034/local-reuse.yml labs/0035/candidate-consumer.yml labs/0036/observable-check.yml'
+
+  lint:module7:
+    desc: Check five inactive pre-built action recipes, excluding diagnostic and Dependabot files
+    cmds:
+      - '"{{.ACTIONLINT}}" -color labs/0038/selective.yml labs/0039/exchange.yml labs/0040/build.yml labs/0041/release.yml labs/0042/pipeline.yml'
+
+  lint:module8:
+    desc: Check the inactive hand-written agentic schematic without compiling or running an agent
+    cmds:
+      - '"{{.ACTIONLINT}}" -color labs/0045/illustrative.lock.yml'
+
   lint:module9:
     desc: Check the five inactive custom-action consumer recipes
     cmds:
       - '"{{.ACTIONLINT}}" -color labs/0050/consumer.yml labs/0051/consumer.yml labs/0052/consumer.yml labs/0053/consumer.yml labs/0054/consumer.yml'
 
   lint:labs:
-    desc: Check all 23 syntax-valid workflow recipes across authored Modules 1–4 and 9
+    desc: Check 44 explicit syntax-valid workflow and schematic recipes across Modules 1–9
     cmds:
       - task: lint:module1
       - task: lint:module2
       - task: lint:module3
       - task: lint:module4
+      - task: lint:module5
+      - task: lint:module6
+      - task: lint:module7
+      - task: lint:module8
       - task: lint:module9
 
   test:module2:
@@ -117,6 +141,50 @@ tasks:
       - node labs/0020/mutation.cjs
       - node labs/0021/drift-demo.cjs
 
+  test:module5:
+    desc: Test composite transports, reusable worker inputs, and orchestration evidence on the host
+    cmds:
+      - uv run --no-sync python labs/0025/test_contract.py
+      - uv run --no-sync python labs/0026/paths.py
+      - uv run --no-sync python labs/0027/transport.py
+      - uv run --no-sync python labs/0028/direct.py
+      - node --test labs/0029/worker.test.cjs labs/0030/domain.test.cjs labs/0030/gate.test.cjs
+      - uv run --no-sync python labs/0030/exercise.py
+
+  test:module6:
+    desc: Test synthetic trust, artifact, release, and recovery policies on the host
+    cmds:
+      - uv run --no-sync python -B -m unittest discover -s labs/0031 -p 'test_*.py' -v
+      - uv run --no-sync python -B -m unittest discover -s labs/0032 -p 'test_*.py' -v
+      - uv run --no-sync python -B -m unittest discover -s labs/0033 -p 'test_*.py' -v
+      - uv run --no-sync python -B -m unittest discover -s labs/0034 -p 'test_*.py' -v
+      - uv run --no-sync python -B -m unittest discover -s labs/0035 -p 'test_*.py' -v
+      - uv run --no-sync python -B -m unittest discover -s labs/0036 -p 'test_*.py' -v
+      - node node_modules/typescript/bin/tsc --project labs/0035/tsconfig.json
+      - node labs/0035/build.cjs --check
+
+  test:module7:
+    desc: Assert 39 pre-built action lab outcomes, including expected policy failures and static contracts
+    cmds:
+      - uv run --no-sync python labs/0042/run_checks.py
+
+  test:module8:
+    desc: Test source inventory, capability policy, mock reports, and trial-plan fixtures without an agent
+    cmds:
+      - uv run --no-sync python labs/0043/inventory.py
+      - uv run --no-sync python labs/0043/exercise.py
+      - uv run --no-sync python labs/0044/boundary.py labs/0044/policy.json
+      - uv run --no-sync python labs/0044/exercise.py
+      - uv run --no-sync python labs/0045/inspect_lock.py labs/0045/illustrative.lock.yml
+      - uv run --no-sync python labs/0045/exercise.py
+      - uv run --no-sync python labs/0046/review.py labs/0046/valid.json
+      - uv run --no-sync python labs/0046/exercise.py
+      - uv run --no-sync python labs/0047/evaluate.py labs/0047/reports/grounded.json
+      - uv run --no-sync python labs/0047/exercise.py
+      - uv run --no-sync python labs/0048/plan.py labs/0048/plan.json
+      - uv run --no-sync python labs/0048/diagnose.py
+      - uv run --no-sync python labs/0048/exercise.py
+
   test:module9:
     desc: Check custom-action contracts and the local release candidate without publishing
     cmds:
@@ -131,11 +199,15 @@ tasks:
       - node labs/0054/failure-demo.cjs
 
   test:labs:
-    desc: Run host contracts for authored Modules 2–4 and 9 without documentation or hosted execution
+    desc: Run Modules 2–9 host lab contracts without documentation or hosted execution
     cmds:
       - task: test:module2
       - task: test:module3
       - task: test:module4
+      - task: test:module5
+      - task: test:module6
+      - task: test:module7
+      - task: test:module8
       - task: test:module9
 
   test:

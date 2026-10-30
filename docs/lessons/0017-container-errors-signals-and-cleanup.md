@@ -197,21 +197,9 @@ An action creates a temporary cloud resource before generating a report. Propose
 
 ## Evidence and next session
 
-Capture the learner's status trace, their repair to the swallowed return value, and the distinction between graceful and forced cleanup. Author evidence consists of six passing host tests, shell syntax and consumer lint. Container and GitHub cancellation checks remain deferred. Continue to [0018](0018-container-security-and-release-tradeoffs.md).
+Author evidence consists of six passing host tests, shell syntax and consumer lint. Container and GitHub cancellation checks remain deferred. Continue to [0018](0018-container-security-and-release-tradeoffs.md).
 
-Sources above were checked on **2026-10-30**; see the [library](../references/resources.md) and `labs/module-3-handoff.md`. Documentation validation is deferred to the coordinator's combined pass.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0017
-
-Use docs/lessons/0017-container-errors-signals-and-cleanup.md and labs/0017/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lessons
-0016, 0006, and 0005. Ask me to predict each status and leftover file.
-Pause before revealing the swallowed-status repair. Keep host signals,
-container stop, and GitHub cancellation evidence separate. Hand off to 0018.
-```
+Sources above were checked on **2026-10-30**; see the [library](../references/resources.md) and `labs/module-3-handoff.md`.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

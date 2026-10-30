@@ -1,0 +1,15 @@
+# Inactive design: no identity request, login action, or deployment operation.
+name: Module 6 identity policy shape
+on:
+  workflow_dispatch:
+permissions: {}
+jobs:
+  planned-identity-boundary:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    environment: staging
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - run: printf '%s\n' 'Design only; no OIDC token requested and no resource accessed'

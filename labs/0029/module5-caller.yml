@@ -1,0 +1,24 @@
+name: Module 5 typed caller
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  call:
+    uses: ./.github/workflows/module5-reusable.yml
+    permissions:
+      contents: read
+    with:
+      label: preview
+      strict: true
+      max-items: 2
+    secrets:
+      FIXTURE_TOKEN: fixture-only-not-a-credential
+  verify:
+    needs: call
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - shell: bash
+        env:
+          SUMMARY: ${{ needs.call.outputs.summary }}
+        run: test "$SUMMARY" = 'checked:2:strict'

@@ -170,23 +170,11 @@ Add a proposed `style` input to your contract worksheet with accepted values `fo
 ??? tip "Worked transfer and retrieval"
     Add a string input declaration and default, transport the style into the domain function, and validate the two accepted values before writing output. Test both styles, omission, empty data, unknown data, and unchanged prior records on failure. `main` identifies an action-package file executed by the declared runtime. Composite outputs map an internal step's result through `outputs.<name>.value`. A normal failed process makes the action step fail and later success-conditioned steps skip; no success output should be emitted. A caller can explicitly alter failure handling, so that policy also needs review.
 
-## Verification limits and handoff
+## Verification limits
 
 The probe checks real environment transport, output-file writes, and status. Static workflow analysis checks structure and some local action interfaces. Neither runs metadata defaults or GitHub's output-expression processing. The inactive consumer is the next integration check; invoking it on GitHub is a deliberate future exercise, with a five-minute timeout and read-only checkout permission.
 
-Primary sources were checked on **2026-10-30**; see the [source library](../references/resources.md) and `labs/module-9-handoff.md`. Documentation validation is deferred to the combined module pass. In a teaching session, capture the learner's predicted empty-input result and repair before proceeding to [0051](0051-own-composite-action-from-prebuilt-actions.md).
-
-## Start this lesson in a new thread
-
-```text
-/teach 0050
-
-Use docs/lessons/0050-own-action-metadata-and-contracts.md and labs/0050/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, lesson 0049,
-and lesson 0005. Ask me to distinguish metadata defaults from process fallbacks.
-Pause before running the valid and broken probes and before opening solutions.
-Record actual input/output traces and hand off to lesson 0051.
-```
+Primary sources were checked on **2026-10-30**; see the [source library](../references/resources.md) and `labs/module-9-handoff.md`. Continue to [0051](0051-own-composite-action-from-prebuilt-actions.md).
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

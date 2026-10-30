@@ -217,19 +217,7 @@ A build job computes `package_version` and creates a package file. Specify which
 
 ## Evidence and next session
 
-Capture the learner's channel choice, traced mapping chain, and failure repair. Direct scripts check real process output; static checks inspect interfaces; a selected workflow run exercises runner-style consumption. Actual GitHub output processing, secret suppression, and hosted artifact exchange remain platform contracts. Continue to [0006](0006-matrices-dependencies-and-cancellation.md). Primary sources were checked on **2026-10-30** and are listed in the [source library](../references/resources.md).
-
-## Start this lesson in a new thread
-
-```text
-/teach 0005
-
-Use docs/lessons/0005-environment-files-and-output-contracts.md and labs/0005/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lesson 0004.
-Ask me to trace each mapping and predict the stdout-only failure.
-Pause before solutions; distinguish adapter tests from runner consumption.
-Record actual evidence and hand off to lesson 0006.
-```
+Direct scripts check real process output; static checks inspect interfaces; a selected workflow run exercises runner-style consumption. Actual GitHub output processing, secret suppression, and hosted artifact exchange remain platform contracts. Continue to [0006](0006-matrices-dependencies-and-cancellation.md). Primary sources were checked on **2026-10-30** and are listed in the [source library](../references/resources.md).
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

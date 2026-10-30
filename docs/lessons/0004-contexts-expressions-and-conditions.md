@@ -162,19 +162,7 @@ A prior action returns the string output `changed=false`. Design a downstream st
 
 ## Evidence and next session
 
-Capture the learner's typed-value table, explanation of the text defect, and status predictions. Record static checks separately from any executed `act` cases; leave hosted cancellation behavior unproven until observed. Continue to [0005](0005-environment-files-and-output-contracts.md). Primary sources were checked on **2026-10-30** and are indexed in the [source library](../references/resources.md).
-
-## Start this lesson in a new thread
-
-```text
-/teach 0004
-
-Use docs/lessons/0004-contexts-expressions-and-conditions.md and labs/0004/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lesson 0003.
-Pause at the type table and status predictions. Let me repair the text flag
-and explain the implicit success condition before revealing solutions.
-Record actual evidence and hand off to lesson 0005.
-```
+Record static checks separately from any executed `act` cases; leave hosted cancellation behavior unproven until observed. Continue to [0005](0005-environment-files-and-output-contracts.md). Primary sources were checked on **2026-10-30** and are indexed in the [source library](../references/resources.md).
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

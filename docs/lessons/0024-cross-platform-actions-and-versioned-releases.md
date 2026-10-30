@@ -196,25 +196,11 @@ Retrieve without looking:
 ??? tip "Retrieval check"
     None: actual file execution was on macOS; Windows assertions used a lexical model. Filesystem behavior, runner images, shells, installed tools, and native dependencies require target-platform evidence. A small implementation change can break a documented result used by callers. Metadata, fresh shipped bytes, artifact tests, and the exact reviewed release revision together connect authored source to consumer execution.
 
-## Verification limits and handoff
+## Verification limits
 
-Local tests and actionlint pass for the cases recorded in the Module 4 handoff. Hosted OS/architecture runs, older-runner compatibility, release-reference resolution, dependency upgrades, and publication remain unexecuted. Sources were checked on **2026-10-30** using the [curated library](../references/resources.md) and its linked maintainer documentation. Documentation validation is deferred to the coordinator's combined authoring pass.
+Local tests and actionlint pass for the cases recorded in the Module 4 handoff. Hosted OS/architecture runs, older-runner compatibility, release-reference resolution, dependency upgrades, and publication remain unexecuted. Sources were checked on **2026-10-30** using the [curated library](../references/resources.md) and its linked maintainer documentation.
 
-During teaching, record the learner's portability diagnosis and versioning rationale. Continue sequentially to [0025 · Composite structure and output mapping](0025-composite-action-inputs-and-outputs.md), the start of Module 5.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0024
-
-Use docs/lessons/0024-cross-platform-actions-and-versioned-releases.md and labs/0024/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lesson 0023.
-Ask me to predict line endings and the hidden wc dependency before tests.
-Pause before portability, release-version, and transfer solutions.
-Keep host/path-model evidence separate from unexecuted hosted support.
-Record actual evidence and hand off to exact file
-docs/lessons/0025-composite-action-inputs-and-outputs.md.
-```
+Continue sequentially to [0025 · Composite structure and output mapping](0025-composite-action-inputs-and-outputs.md), the start of Module 5.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

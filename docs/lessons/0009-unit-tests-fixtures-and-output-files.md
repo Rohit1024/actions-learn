@@ -162,27 +162,11 @@ Answer from memory:
 ??? tip "Retrieval check"
     Transport names, file writes, and exit propagation live outside the pure function. Absence can trigger a default while empty text violates validation. A prior record detects accidental truncation and failure-path corruption. The bridge checks payload-to-input handling for a fixture, not trigger delivery, metadata evaluation, or permission policy. Downstream steps commonly trust both success status and outputs, so misleading evidence can admit invalid work.
 
-## Check sequence, limits, and handoff
+## Check sequence and limits
 
 Use the function/process tests while editing these isolated files. The shared `task test` checks the project's existing examples, so it does **not** automatically include new lab tests. A passing direct suite leaves action metadata, caller output mapping, image compatibility, and actual GitHub output processing outside its scope. The next lesson diagnoses the container environment before attempting that extra boundary.
 
-!!! note "Documentation validation timing"
-    Run only focused executable checks in this authoring thread. Root `task check` includes documentation validation and is excluded. The coordinator runs **one combined whole-site `task docs:verify` after all four modules, 24 lessons, and shared edits are complete**; do not run Markdown, link, Mermaid, or Zensical checks per lesson or per module.
-
-Primary Node and GitHub references linked above were checked on **2026-10-30** through the [source library](../references/resources.md). The module handoff records author test results. A future teaching record should capture the learner's own fixture, predicted failure, and repair rather than infer mastery from those results.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0009
-
-Use docs/lessons/0009-unit-tests-fixtures-and-output-files.md and labs/0009/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lessons 0005 and 0008.
-Ask me to predict function versus process evidence and inspect temporary output bytes.
-Let me diagnose the swallowed-error adapter before opening the worked solution.
-Use fixture copies under the lab; record actual learner evidence and remaining limits.
-Continue to lesson 0010; preserve this batch's coordinator-only documentation validation.
-```
+Primary Node and GitHub references linked above were checked on **2026-10-30** through the [source library](../references/resources.md). The module handoff records author test results.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

@@ -202,29 +202,11 @@ Answer without reopening the coverage matrix:
 ??? tip "Retrieval check"
     Honest gaps can form a consistent plan; a release requires those gaps to be closed. A different revision, subject, event, environment, or assertion can invalidate relevance. Aggregate execution counts every job instance, even when wall-clock overlap is high. This audit detects declared overruns and the workflow can enforce timeouts, but the JSON does not prevent dispatches or cap bills. Compilation checks a specification; hosted policy, model behavior, and actual usage remain separate evidence.
 
-## Module handoff and the next learning boundary
-
-For a live teaching handoff, preserve the learner's coverage matrix, rejected false claim, budget reasoning, actual commands, and remaining uncertainty. No technical learner mastery is established by authoring these pages.
+## The next learning boundary
 
 The course now moves from local testing to [0013 · Docker metadata and lifecycle](0013-docker-action-metadata-and-lifecycle.md), the start of Module 3. Continue in consecutive lesson order, using host checks before adding the image boundary.
 
-!!! note "One coordinator-owned documentation pass"
-    Finish the full four-module batch first. The coordinator then integrates shared catalog/source/notes changes and runs **one whole-site `task docs:verify` for all 24 lessons**. This thread runs no Markdown, link, Mermaid, or Zensical validation and no root `task check`. Focused executable evidence and documentation validation remain separately recorded.
-
-Primary sources linked here were checked on **2026-10-30** from the [curated source library](../references/resources.md). `labs/module-2-handoff.md` records the actual author checks, deferred engine/act execution, checked URLs, and proposed shared integration. The source index and learning notes remain coordinator-owned.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0012
-
-Use docs/lessons/0012-local-hosted-coverage-and-usage-budget.md and labs/0012/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lessons 0006 and 0011.
-Ask me to map claims to evidence and predict false OIDC, stale revision, and budget failures.
-Pause before solutions. Keep unexecuted checks explicit and hosted/model execution out of this lab.
-Record actual learner reasoning and continue to lesson 0013 in Module 3.
-Preserve the active batch's one coordinator-owned documentation-validation pass.
-```
+Primary sources linked here were checked on **2026-10-30** from the [curated source library](../references/resources.md). `labs/module-2-handoff.md` records the actual author checks, deferred engine/act execution, checked URLs, and proposed shared integration.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

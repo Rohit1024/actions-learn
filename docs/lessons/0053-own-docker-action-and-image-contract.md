@@ -187,19 +187,7 @@ Adapt the fixture to contain `A\n` followed by one non-ASCII character and a new
 
 ## Evidence and next lesson
 
-Record which of host, image, static consumer, local workflow, and GitHub checks actually ran. An unavailable engine is an explicit deferred boundary, not learner failure. Sources were checked on **2026-10-30**; see `labs/module-9-handoff.md` for exact commands and results. Continue to [0054](0054-own-action-release-and-marketplace.md) to assemble a local release candidate, then enter the Docker deep dive at 0013.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0053
-
-Use docs/lessons/0053-own-docker-action-and-image-contract.md and labs/0053/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lessons 0052,
-0010, and 0005. Ask me to trace metadata arguments, workspace mounts, and output
-paths. Pause at the guessed-path experiment. Keep unavailable image/act checks
-explicitly deferred; record actual evidence and hand off to lesson 0054.
-```
+Record which of host, image, static consumer, local workflow, and GitHub checks actually ran. An unavailable engine is an explicit deferred boundary, not learner failure. Sources were checked on **2026-10-30**; see `labs/module-9-handoff.md` for exact commands and results. Continue to [0054](0054-own-action-release-and-marketplace.md) to assemble a local release candidate before the production capstone.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

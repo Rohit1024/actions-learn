@@ -1,0 +1,35 @@
+# HAND-WRITTEN TEACHING SCHEMATIC. NOT gh-aw compiler output.
+# Inactive under labs/. printf steps simulate stage names only; no agent runs.
+name: Module 8 stage inspection schematic
+on:
+  workflow_dispatch:
+permissions: {}
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - run: printf '%s\n' 'SCHEMATIC prepare; no runtime setup'
+  agent:
+    needs: prepare
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: printf '%s\n' 'SCHEMATIC agent; no model or tools invoked'
+  safe_outputs:
+    needs: agent
+    permissions: {}
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - env:
+          STAGED: 'true'
+        run: test "$STAGED" = true
+  conclusion:
+    needs: safe_outputs
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - run: printf '%s\n' 'SCHEMATIC conclusion; no result attested'

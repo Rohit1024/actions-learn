@@ -1,0 +1,10 @@
+{
+  "run_id": "360", "attempt": 1, "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "jobs": [
+    {"id":"linux", "result":"success", "seconds":30, "artifact_bytes":1024},
+    {"id":"windows", "result":"success", "seconds":45, "artifact_bytes":2048}
+  ],
+  "model_calls": 0,
+  "budget": {"runner_seconds":90, "artifact_bytes":4096, "model_calls":0},
+  "private_payload": "SYNTHETIC-SECRET-MUST-NOT-APPEAR"
+}

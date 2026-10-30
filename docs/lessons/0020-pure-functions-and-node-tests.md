@@ -179,20 +179,7 @@ Answer from memory:
 
 Function tests establish deterministic policy examples. Process tests establish the real Node adapter's local I/O behavior. They do not measure real workflow duration, execute metadata, evaluate the gate expression, or prove GitHub output consumption. There are no API or hosted calls in this lab. The [local-testing guide](../cheatsheet/local-testing.md) explains when to add a workflow run.
 
-Primary references were checked on **2026-10-30** through the [curated library](../references/resources.md); commands and author-run evidence are recorded in the module handoff. In a teaching session capture the learner's explicit-interface design and mutation explanation. Continue to [0021](0021-typescript-bundling-and-dist-drift.md), where correct source code can still be packaged incorrectly.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0020
-
-Use docs/lessons/0020-pure-functions-and-node-tests.md and labs/0020/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lessons 0019 and 0009.
-Ask me to predict exact-budget and empty-list results before running tests.
-Let me explain which defect belongs to a function test versus a process test.
-Pause before the mutation solution and transfer design. Record actual evidence.
-Continue at docs/lessons/0021-typescript-bundling-and-dist-drift.md.
-```
+Primary references were checked on **2026-10-30** through the [curated library](../references/resources.md); commands and author-run evidence are recorded in the module handoff. Continue to [0021](0021-typescript-bundling-and-dist-drift.md), where correct source code can still be packaged incorrectly.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

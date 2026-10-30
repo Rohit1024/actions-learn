@@ -126,20 +126,7 @@ Answer without reopening the table:
 
 The decision record is a design artifact. The adapter tests give actual process evidence for existing examples; neither establishes that a chosen remote action executed successfully. A reviewed, bounded GitHub consumer remains necessary for platform services and intended runner compatibility. No hosted or model execution is part of this authoring work.
 
-Primary references were checked on **2026-10-30**; exact URLs and executed checks are recorded in `labs/module-9-handoff.md`. Continue to [0050](0050-own-action-metadata-and-contracts.md) to turn the chosen boundary into metadata and executable assertions. In a guided session, record the learner's decisions and explanations only after they supply them.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0049
-
-Use docs/lessons/0049-reuse-compose-or-create-an-action.md and
-labs/0049/decision-record.md. Read docs/mission.md, NOTES.md,
-docs/lessons/teaching-guide.md, the module guide, and lesson 0012.
-Ask me to choose each reuse boundary and write the release-key contract.
-Pause before worked answers. Explain the limits of the four-adapter check.
-Record demonstrated understanding only; hand off to lesson 0050.
-```
+Primary references were checked on **2026-10-30**; exact URLs and executed checks are recorded in `labs/module-9-handoff.md`. Continue to [0050](0050-own-action-metadata-and-contracts.md) to turn the chosen boundary into metadata and executable assertions.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

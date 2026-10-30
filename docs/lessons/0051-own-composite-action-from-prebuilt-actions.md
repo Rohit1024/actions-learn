@@ -128,7 +128,7 @@ For the static workflow boundary:
 .tools/bin/actionlint labs/0051/consumer.yml
 ```
 
-Expected: exit zero with no diagnostics for the unchanged recipe. This checks workflow structure, expression references, and supported local action interface information. It does not establish remote action behavior. The module handoff records the authoring checks; documentation checks wait for the coordinator's combined pass.
+Expected: exit zero with no diagnostics for the unchanged recipe. This checks workflow structure, expression references, and supported local action interface information. It does not establish remote action behavior. The module handoff records the executed checks.
 
 ## Break the file boundary deliberately
 
@@ -170,23 +170,11 @@ A monorepo puts its npm application under `apps/web/`. Adapt the consumer to use
 ??? tip "Worked transfer and retrieval"
     Set `cache-dependency-path: apps/web/package-lock.json`. Add `working-directory: apps/web` to the caller's install and test steps. The wrapper continues to express runtime/cache policy using a maintained action; it needs no custom installer. Its public output must map the internal step result. A download cache contains reusable package data rather than an installed dependency tree. Only executing an appropriately reviewed consumer on GitHub can establish the actual hosted setup/cache path; local `act` can provide selected wiring evidence with its own image and service limitations.
 
-## Verification limits and handoff
+## Verification limits
 
 This lab provides local file evidence and a static consumer check. It has not executed remote setup, registry installation, cache restore/save, or the hosted output assertion. A future bounded consumer run should record its commit, runner, installed version, cache behavior, and project test result. A self-hosted runner must support the chosen upstream action runtime; recheck upstream requirements when updating the pin.
 
-Sources were checked on **2026-10-30**. Record actual learner explanations and gaps before proceeding to [0052](0052-own-node-action-and-distribution.md), where custom domain behavior finally requires our own code. Do not convert a written recipe or preflight success into a completed hosted check.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0051
-
-Use docs/lessons/0051-own-composite-action-from-prebuilt-actions.md and labs/0051/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lesson 0050.
-Ask me to trace caller inputs, setup-node output, workspace paths, and npm cache
-responsibilities. Pause before missing-file experiments and worked solutions.
-Record file/static evidence separately from remote execution; continue to 0052.
-```
+Sources were checked on **2026-10-30**. Continue to [0052](0052-own-node-action-and-distribution.md), where custom domain behavior finally requires our own code. Do not convert a written recipe or preflight success into a completed hosted check.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

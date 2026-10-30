@@ -1,0 +1,42 @@
+[
+  {
+    "id": "fixture-1",
+    "signal": "compiler_missing",
+    "kind": "normalized synthetic event; not downloaded logs"
+  },
+  {
+    "id": "fixture-2",
+    "signal": "reference_resolution_denied",
+    "kind": "normalized synthetic event; not downloaded logs"
+  },
+  {
+    "id": "fixture-3",
+    "signal": "model_auth_denied",
+    "kind": "normalized synthetic event; not downloaded logs"
+  },
+  {
+    "id": "fixture-4",
+    "signal": "network_denied",
+    "kind": "normalized synthetic event; not downloaded logs"
+  },
+  {
+    "id": "fixture-5",
+    "signal": "tool_unavailable",
+    "kind": "normalized synthetic event; not downloaded logs"
+  },
+  {
+    "id": "fixture-6",
+    "signal": "unsupported_claim",
+    "kind": "normalized synthetic event; not downloaded logs"
+  },
+  {
+    "id": "fixture-7",
+    "signal": "handler_limit",
+    "kind": "normalized synthetic event; not downloaded logs"
+  },
+  {
+    "id": "fixture-8",
+    "signal": "cancelled_after_proposal",
+    "kind": "normalized synthetic event; not downloaded logs"
+  }
+]

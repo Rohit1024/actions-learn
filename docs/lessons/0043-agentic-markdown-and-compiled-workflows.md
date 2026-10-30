@@ -1,92 +1,137 @@
 ---
 icon: lucide/book-open
 lesson_id: "0043"
-lesson_status: placeholder
+lesson_status: authored
 ---
 
 # 0043 · Agentic Markdown sources, frontmatter, lock workflows, and execution stages
 
-!!! note "Placeholder for a future teaching thread"
-    This page is a teaching brief. Expand it into a full interactive lesson in its own thread. The planned exercises and outcomes have not been completed or demonstrated.
+!!! note "Authored reference lesson"
+    This begins Module 8's bounded repository-reporting path. The local labs use synthetic evidence and never call a model. Written lessons and assistant-run checks establish availability, not learner mastery.
 
-**Level:** Advanced.
+## Prerequisites and observable goals
 
-## Prerequisites
+Continue from [0042 · Action composition and dependency updates](0042-compose-maintained-actions-and-manage-updates.md). Retrieve [0036 · Usage and diagnostics](0036-observability-concurrency-and-usage-budgets.md) and [0012 · Verification boundaries](0012-local-hosted-coverage-and-usage-budget.md). You should be able to identify a trigger, job, step, token permission, and generated artifact before adding an agent.
 
-- [0042 · Compose an action-based pipeline and maintain its dependencies](0042-compose-maintained-actions-and-manage-updates.md)
-- [0036 · Logs, annotations, summaries, concurrency, and usage budgets](0036-observability-concurrency-and-usage-budgets.md)
-- [0012 · Define the local/hosted coverage boundary and usage budget](0012-local-hosted-coverage-and-usage-budget.md)
+By the end, trace a report from source configuration to a potential repository mutation, distinguish instruction edits from configuration edits, and reject an execution claim supported only by compilation. Success is an annotated source inventory plus the assertions in `labs/0043/exercise.py`. All commands run from the repository root with the existing [host tools](../cheatsheet/local-testing.md); no installation is required for the deterministic lab.
 
-## What you will learn to do
+## Add an agent at a defined boundary
 
-- Trace one Markdown workflow through compilation and runtime boundaries.
-- Explain what a successful local compile establishes and leaves unknown.
+A conventional Actions job runs commands selected by its author. An **agentic workflow** gives a configured coding agent a task and capabilities; the agent chooses steps within those constraints. Deterministic checks should still compute facts such as bundle drift or test status directly. An agent can summarize those facts and explain findings, but its prose does not replace the checks.
 
-## Explain the Actions behavior
-
-Start from the prerequisite workflow or action behavior and introduce these concepts with focused examples:
-
-1. GitHub Agentic Workflows separates Markdown authoring from compiled Actions execution.
-2. Frontmatter declares machine-readable configuration while the body describes the task.
-3. Compiler validation and agent behavior produce different kinds of evidence.
-
-Explain the relevant workflow YAML, expressions, and action code in context. Follow the [shared teaching guide](teaching-guide.md) for pacing, expected output, and progression toward independent design.
-
-## Planned local lab
-
-Create an isolated exercise under `labs/0043/` when the lesson is developed. Explain setup and expected output before each command; reuse installed tools rather than reinstalling them on every step.
-
-1. Read the existing repository-report example line by line.
-2. Identify its trigger, engine, permissions, tools, staged outputs, and task instructions.
-3. Compile without running an agent and inspect current source/lock rules using the installed CLI help and primary documentation.
-
-## Break it and diagnose it
-
-Treat a successful compile as proof that an agent inspected files or ran tests. Identify the missing execution evidence.
-
-Ask for a prediction first. Capture the smallest reproducer, the actual result, and the corrected behavior. State which remaining claim requires a real GitHub or external-service check.
-
-## Planning diagram
+GitHub's [tutorial](https://docs.github.com/en/actions/tutorials/develop-agentic-workflows-in-github-actions) describes Markdown sources compiled by the `gh aw` extension into Actions `.lock.yml` files. A **source** contains YAML frontmatter followed by instructions. A **lock workflow** is generated executable configuration consumed by Actions. The filename extension does not mean every runtime dependency, model response, or repository byte is frozen.
 
 ```mermaid
 flowchart TD
-    N0["Markdown task and frontmatter"]
-    N1["Local compiler"]
-    N0 --> N1
-    N2["Generated Actions workflow"]
-    N1 --> N2
-    N3["Configured agent execution"]
-    N2 --> N3
+    Source["Markdown source: configuration plus instructions"] --> Compile["Local compiler parses and validates configuration"]
+    Compile --> Lock["Generated lock workflow: review jobs and authority"]
+    Lock --> Admission["Later GitHub event and platform authorization"]
+    Admission --> Runtime["Configured engine loads instructions and reads allowed evidence"]
+    Runtime --> Proposal["Structured proposal or explicit verification limit"]
+    Proposal --> Handler["Separate handler validates configured output operation"]
+    Handler --> Preview["Staged preview for human review"]
 ```
 
-When expanding this lesson, refine the diagram to show the actual processes, branches, data exchange, and trust boundaries being taught.
+The arrows below the lock require runtime observations. Even runtime success is evidence about that revision, event, policy, and environment, rather than every possible future execution.
 
-## Retrieval questions
+## Read the source in two passes
 
-1. Who transforms the source into Actions configuration?
-2. Which part of the task is deterministic configuration?
-3. Which claims about model behavior still require evaluation?
+`labs/0043/repo-report.md` copies and narrows the shared repository-report example. The original `examples/agentic/repo-report.md` stays unchanged. This lab source remains outside the active `.github/workflows/` directory.
 
-## Evidence to capture in the teaching thread
+```yaml title="labs/0043/repo-report.md — frontmatter excerpt"
+on:
+  workflow_dispatch: # (1)!
+permissions:
+  contents: read
+engine: copilot
+network: defaults
+tools:
+  bash: []
+  github:
+    toolsets: [repos]
+    allowed: [get_file_contents] # (2)!
+safe-outputs:
+  staged: true
+  create-issue:
+    title-prefix: "[learning] "
+    max: 1 # (3)!
+timeout-minutes: 5
+max-turns: 4
+```
 
-- A working learner-produced example and an explanation of why it works.
-- A reproduced failure, a reasoned repair, and the smallest check that verifies it.
-- A short account of remaining limits, unresolved questions, and readiness for the next lesson.
+1. Manual dispatch declares an event contract. Keeping this source in `labs/` does not register a dispatchable workflow.
+2. The task needs file reads. It does not need arbitrary shell execution or issue-management tools. Availability, authorization, and reachability remain distinct boundaries.
+3. One requested issue is the operation limit. Staging previews the handler's operation; it does not make inference local.
 
-Use [primary references](../references/resources.md) to verify current syntax, runtime support, and tool behavior. Add learning records only for real statements or demonstrated understanding; a placeholder or generated page does not establish mastery.
+The [frontmatter reference](https://github.github.com/gh-aw/reference/frontmatter/) documents these fields. The five-minute setting bounds the agentic execution step in the current implementation; generated jobs have separate timeouts. Do not call five minutes the complete run budget. Likewise, four turns does not promise four billable API requests.
 
-## Start this lesson in a new thread
+The body asks the agent to inspect README, Taskfile, examples, and test scripts, cite actual paths, distinguish failures from suggestions, and name unavailable evidence. Its instruction “do not claim tests passed unless a tool result provides evidence” matters here: this source disables shell commands, so reading a test script cannot establish that it ran.
+
+!!! tip "Predict"
+    You replace the report's heading without changing frontmatter. You then change `max: 1` to `max: 2`. Which edit changes generated execution policy? Does either prove the report is accurate?
+
+??? tip "Worked prediction"
+    The heading changes instructions; the output limit changes configuration and requires regeneration/review of the lock. Neither verifies the report. The current [Markdown contract](https://github.github.com/gh-aw/reference/markdown/) loads instructions at runtime, so instruction-only changes can affect behavior without a new lock. Include both source revision and generated workflow in review evidence.
+
+## Lab: inspect real bytes without inventing execution
+
+Run the inventory with the already-installed Python environment and PyYAML:
+
+```bash
+.venv/bin/python labs/0043/inventory.py
+```
+
+Expected: JSON containing `workflow_dispatch`, engine `copilot`, permission `contents: read`, toolset `repos`, `staged: "true"`, `issue_limit: "1"`, two SHA-256 strings, and:
 
 ```text
-/teach 0043
-
-Expand docs/lessons/0043-agentic-markdown-and-compiled-workflows.md in place using docs/lessons/teaching-guide.md.
-Read docs/mission.md, NOTES.md, and the prerequisite lesson pages first.
-Begin with a short check of the Actions prerequisites. Explain relevant YAML,
-expressions, and action contracts, one concept at a time. Let me predict and
-try each exercise before revealing its answer. Keep feedback local where possible.
-Finish with retrieval questions and a truthful handoff for the next thread.
+"claim": "source inspected; compile and runtime unverified"
 ```
+
+The script uses `yaml.BaseLoader`, preserving scalars as strings, including the key `on`. Its output types reflect that loader choice, rather than a new gh-aw schema. The digests fingerprint literal frontmatter/body bytes for this exercise. They do not implement the compiler's normalization or hash algorithm.
+
+Predict the result, then run:
+
+```bash
+.venv/bin/python labs/0043/exercise.py
+```
+
+Expected, exit 0:
+
+```text
+body edit: lab frontmatter digest unchanged; body digest changed
+output-limit edit: lab frontmatter digest changed
+expected rejection: missing opening frontmatter delimiter
+PASS: source edits distinguished; invented runtime claims rejected
+```
+
+The script mutates strings in memory, checks changed policy, reproduces malformed frontmatter, and checks a small teaching ledger. It creates no workflow, lock, run, or model result. The parser rejection is a deliberate local failure, rather than a compiler diagnostic.
+
+## Diagnose a false success claim
+
+A report says, “The source passed inspection, therefore the agent inspected the repository and all tests passed.” Locate the unsupported transition before changing YAML.
+
+??? tip "Diagnosis and repair"
+    Inspection observed configuration bytes. It did not observe an engine reading files or a test process returning success. Replace the claim with the inventory's exact scope. Preserve `runtime unverified` until relevant runtime evidence exists, and `tests not executed` until a test actually ran at the target revision. Adding permissions or extending a prompt cannot turn static evidence into execution.
+
+A second failure is missing the closing frontmatter delimiter. The parser cannot separate instructions from configuration. Repair the delimiter in a disposable copy and rerun the inventory. A valid inventory still leaves the compiler's schema and reference resolution unchecked.
+
+## Transfer and retrieval
+
+Design a reporting task for an action's changed input contract. List the deterministic evidence producer, files the agent needs, output limit, and evidence it must mark unavailable. Keep the release decision outside the agent's prose.
+
+Explain from memory:
+
+1. What consumes the lock workflow, and what consumes the instructions?
+2. Why can a body-only change alter behavior without a lock diff?
+3. Which evidence distinguishes reading a test from executing it?
+4. What would a successful strict compile leave unknown?
+
+??? tip "Worked transfer and retrieval"
+    A direct metadata/adapter check should produce revision-specific evidence. The report can read it and the changed metadata, with at most one staged proposal. Actions consumes the lock; the configured engine receives instructions. Runtime body loading explains the separate review requirement. Command status and output support execution claims. Compilation leaves authentication, runtime tool access, model quality, and handler behavior unobserved.
+
+## Verification boundary
+
+The installed GitHub CLI was **2.96.0** on **2026-10-30**. `gh aw version` and `gh aw compile --help` reported the extension as available to install, rather than returning its version/help: **gh-aw is absent**. No compiler success is claimed. [0045](0045-agentic-local-compilation-and-generated-yaml.md) supplies a guarded compile path and a labeled inspection schematic. No credentials, agent execution, or active workflow registration are needed here.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

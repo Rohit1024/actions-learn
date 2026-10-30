@@ -40,7 +40,7 @@ Guide the user through multi-session learning grounded in the workspace state.
 4. **Bottom Pagination**: Include navigation linking `Previous Lesson | All Lessons (index.md) | Next Lesson`. Update the previous lesson's "Next" link when adding a lesson.
 5. **Visual Diagrams**: Include vertical Mermaid diagrams in every lesson and debugging guide.
 6. **Zensical Styling**: Use admonitions (`!!! note`, `!!! tip`), code annotations, and copy buttons.
-7. **Future-Thread Handoff**: Read mission, NOTES, the teaching guide, and prerequisite pages at the start of a thread. At handoff, persist actual work, learner evidence, executed/deferred checks, open questions, and the next lesson in NOTES and justified learning records. The prompt on each lesson page identifies its exact target file.
+7. **Future-Thread Handoff**: Read mission, NOTES, the teaching guide, and prerequisite pages at the start of a thread; resolve its exact file through the curriculum. Keep authored lesson pages focused on learner prerequisites, explanations, labs, and exercises. Remove lesson-creation prompts, thread-start blocks, and authoring coordination notes when expanding a placeholder. Persist actual work, learner evidence, executed/deferred checks, open questions, and the next lesson in NOTES, module handoffs, and justified learning records.
 
 ## Authoring Reference & Debugging Guides
 

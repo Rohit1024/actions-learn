@@ -196,21 +196,7 @@ Explain without rereading:
 
 The host suite exercises Node 24 on the current machine, real environment reads, file bytes, and child exit codes. It does not execute a GitHub runner or the uninstalled Toolkit excerpt. Actual runner selection, action input injection, output parsing, and hosted OS behavior remain integration checks. No container, `act`, API, or hosted run is needed to establish this greeting's function contract. Use the [local-testing guide](../cheatsheet/local-testing.md) to choose the next layer deliberately.
 
-Capture actual learner predictions, their traced interface, and their diagnosis during teaching. Continue to [0020](0020-pure-functions-and-node-tests.md), separating application logic from the process adapter. The Module 4 handoff records source checks dated **2026-10-30**; the [curated source library](../references/resources.md) remains the entry point for references.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0019
-
-Use docs/lessons/0019-javascript-action-runtime-and-toolkit.md and labs/0019/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lessons 0018 and 0005.
-Begin by asking me to trace with.name into the greeting output.
-Pause before the missing-input prediction and collapsed solutions.
-Keep Toolkit excerpts distinct from the installed dependency-free lab.
-Record only demonstrated understanding and hand off to exact file
-docs/lessons/0020-pure-functions-and-node-tests.md.
-```
+Continue to [0020](0020-pure-functions-and-node-tests.md), separating application logic from the process adapter. The Module 4 handoff records source checks dated **2026-10-30**; the [curated source library](../references/resources.md) remains the entry point for references.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

@@ -1,0 +1,318 @@
+{
+  "checked_at_utc": "2026-10-30T14:56:39.578744+00:00",
+  "scope": "Module 7 host programs and explicit-file workflow/metadata checks only; documentation validation deferred.",
+  "results": [
+    {
+      "command": ".venv/bin/python -m unittest discover -s labs/0037 -p test_selection.py -v",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "OK",
+      "passed": true,
+      "output": "test_badge_does_not_replace_review (test_selection.SelectionTests.test_badge_does_not_replace_review) ... ok\ntest_community_requires_exception (test_selection.SelectionTests.test_community_requires_exception) ... ok\ntest_mutable_tag_rejected (test_selection.SelectionTests.test_mutable_tag_rejected) ... ok\ntest_record_is_admissible (test_selection.SelectionTests.test_record_is_admissible) ... ok\ntest_stars_do_not_repair_identity (test_selection.SelectionTests.test_stars_do_not_repair_identity) ... ok\ntest_wrong_commit_rejected (test_selection.SelectionTests.test_wrong_commit_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.002s\n\nOK\n"
+    },
+    {
+      "command": ".venv/bin/python -m unittest discover -s labs/0038 -p test_route.py -v",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "OK",
+      "passed": true,
+      "output": "test_missing_is_not_false (test_route.RoutingTests.test_missing_is_not_false) ... ok\ntest_table (test_route.RoutingTests.test_table) ... ok\ntest_typo_in_actual_mapping (test_route.RoutingTests.test_typo_in_actual_mapping) ... ok\ntest_unsafe_policy_demonstrates_regression (test_route.RoutingTests.test_unsafe_policy_demonstrates_regression) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.009s\n\nOK\n"
+    },
+    {
+      "command": ".venv/bin/python -m unittest discover -s labs/0039 -p test_contract.py -v",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "OK",
+      "passed": true,
+      "output": "PASS: synthetic dependency materialized; real Node build and local file consumer verified\ntest_cache_is_not_install (test_contract.DataContractTests.test_cache_is_not_install) ... ok\ntest_key_declares_relevant_inputs (test_contract.DataContractTests.test_key_declares_relevant_inputs) ... ok\ntest_local_build_and_copy (test_contract.DataContractTests.test_local_build_and_copy) ... ok\ntest_name_is_part_of_contract (test_contract.DataContractTests.test_name_is_part_of_contract) ... ok\ntest_tamper_is_rejected (test_contract.DataContractTests.test_tamper_is_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.265s\n\nOK\n"
+    },
+    {
+      "command": ".venv/bin/python -m unittest discover -s labs/0040 -p test_policy.py -v",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "OK",
+      "passed": true,
+      "output": "test_build_only (test_policy.CompositionPolicyTests.test_build_only) ... ok\ntest_every_policy_field_matters (test_policy.CompositionPolicyTests.test_every_policy_field_matters) ... ok\ntest_exact_identity_plan (test_policy.CompositionPolicyTests.test_exact_identity_plan) ... ok\ntest_push_rejected (test_policy.CompositionPolicyTests.test_push_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.003s\n\nOK\n"
+    },
+    {
+      "command": ".venv/bin/python -m unittest discover -s labs/0041 -p test_effects.py -v",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "OK",
+      "passed": true,
+      "output": "test_approval_must_be_boolean (test_effects.EffectsTests.test_approval_must_be_boolean) ... ok\ntest_bad_plans (test_effects.EffectsTests.test_bad_plans) ... ok\ntest_empty_report_rejected (test_effects.EffectsTests.test_empty_report_rejected) ... ok\ntest_release_plan (test_effects.EffectsTests.test_release_plan) ... ok\ntest_report_counts (test_effects.EffectsTests.test_report_counts) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.002s\n\nOK\n"
+    },
+    {
+      "command": ".venv/bin/python -m unittest discover -s labs/0042 -p test_maintenance.py -v",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "OK",
+      "passed": true,
+      "output": "test_exact_metadata_contracts (test_maintenance.MaintenanceTests.test_exact_metadata_contracts) ... ok\ntest_node_always_required (test_maintenance.MaintenanceTests.test_node_always_required) ... ok\ntest_optional_skip_is_explicit (test_maintenance.MaintenanceTests.test_optional_skip_is_explicit) ... ok\ntest_required_failure_missing_skip_cancel (test_maintenance.MaintenanceTests.test_required_failure_missing_skip_cancel) ... ok\ntest_string_false_is_parsed_explicitly (test_maintenance.MaintenanceTests.test_string_false_is_parsed_explicitly) ... ok\ntest_unknown_input_rejected (test_maintenance.MaintenanceTests.test_unknown_input_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.010s\n\nOK\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0042/check_contracts.py",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "20 exact-pin",
+      "passed": true,
+      "output": "PASS: 5 explicit recipes; 20 exact-pin action input contracts\n"
+    },
+    {
+      "command": ".tools/bin/actionlint -no-color labs/0038/selective.yml labs/0039/exchange.yml labs/0040/build.yml labs/0041/release.yml labs/0042/pipeline.yml",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "",
+      "passed": true,
+      "output": ""
+    },
+    {
+      "command": ".venv/bin/python labs/0037/selection.py labs/0037/accepted.json",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "ADMIT RECORD:",
+      "passed": true,
+      "output": "ADMIT RECORD: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1; code audit and hosted execution remain separate\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0037/selection.py labs/0037/mismatched.json",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expected_text": "Marketplace repository mismatch",
+      "passed": true,
+      "output": "BLOCKED: Marketplace repository mismatch\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0038/route.py code",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "selected=code",
+      "passed": true,
+      "output": "selected=code\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0038/route.py docs",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "selected=docs",
+      "passed": true,
+      "output": "selected=docs\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0038/route.py mixed",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "selected=code,docs",
+      "passed": true,
+      "output": "selected=code,docs\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0038/route.py unrelated",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "selected=none",
+      "passed": true,
+      "output": "selected=none\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0038/route.py manual",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "selected=code,docs",
+      "passed": true,
+      "output": "selected=code,docs\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0038/route.py unrelated --bare",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "selected=code,docs",
+      "passed": true,
+      "output": "selected=code,docs\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0038/route.py code --typo",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expected_text": "missing or invalid output: codes",
+      "passed": true,
+      "output": "BLOCKED: missing or invalid output: codes\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0038/route.py missing",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expected_text": "missing or invalid output: docs",
+      "passed": true,
+      "output": "BLOCKED: missing or invalid output: docs\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0039/contract.py",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "PASS:",
+      "passed": true,
+      "output": "PASS: synthetic dependency materialized; real Node build and local file consumer verified\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0039/contract.py --skip-install",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expected_text": "MODULE_NOT_FOUND",
+      "passed": true,
+      "output": "BLOCKED: BUILD FAILED: MODULE_NOT_FOUND; download bytes did not install the module\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0039/contract.py --wrong-name",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expected_text": "artifact name mismatch",
+      "passed": true,
+      "output": "BLOCKED: artifact name mismatch\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0039/contract.py --tamper",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expected_text": "consumer digest mismatch",
+      "passed": true,
+      "output": "BLOCKED: consumer digest mismatch\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0040/policy.py build",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "image execution unverified",
+      "passed": true,
+      "output": "PASS: build-only recipe policy; image execution unverified\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0040/policy.py push",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expected_text": "rejects registry push",
+      "passed": true,
+      "output": "BLOCKED: build-only policy rejects registry push; design a separate authenticated job\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0040/policy.py oidc-ok",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "no token or cloud authorization verified",
+      "passed": true,
+      "output": "PASS: intended identity plan; no token or cloud authorization verified\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0040/policy.py oidc-wrong-subject",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expected_text": "rejected: subject",
+      "passed": true,
+      "output": "BLOCKED: identity plan rejected: subject\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0040/policy.py oidc-no-permission",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expected_text": "rejected: id_token_permission",
+      "passed": true,
+      "output": "BLOCKED: identity plan rejected: id_token_permission\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0041/effects.py release",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "ALLOW PLAN:",
+      "passed": true,
+      "output": "ALLOW PLAN: release-pr; no API operation performed\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0041/effects.py fork",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expected_text": "requires dispatch from main",
+      "passed": true,
+      "output": "BLOCKED: write policy requires dispatch from main\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0041/effects.py no-write",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expected_text": "permissions do not match",
+      "passed": true,
+      "output": "BLOCKED: permissions do not match the selected effect\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0041/effects.py untrusted",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expected_text": "untrusted producer",
+      "passed": true,
+      "output": "BLOCKED: untrusted producer cannot supply privileged executable content\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0041/effects.py excess",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expected_text": "permissions do not match",
+      "passed": true,
+      "output": "BLOCKED: permissions do not match the selected effect\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0041/report.py labs/0041/pass.xml",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "total=2 failed=0 skipped=0",
+      "passed": true,
+      "output": "REPORT DATA: total=2 failed=0 skipped=0; no check published\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0041/report.py labs/0041/fail.xml",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expected_text": "total=2 failed=1 skipped=0",
+      "passed": true,
+      "output": "REPORT DATA: total=2 failed=1 skipped=0; no check published\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0042/check_contracts.py labs/0042/obsolete-input.negative.yml",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expected_text": "unknown inputs: always-auth",
+      "passed": true,
+      "output": "BLOCKED: obsolete-input.negative.yml: actions/setup-node unknown inputs: always-auth\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0042/gate.py --image false --node-result success --image-result skipped",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "READY:",
+      "passed": true,
+      "output": "READY: selected evidence complete; no release or deployment authorized\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0042/gate.py --image true --node-result success --image-result success",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "expected_text": "READY:",
+      "passed": true,
+      "output": "READY: selected evidence complete; no release or deployment authorized\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0042/gate.py --image true --node-result success --image-result skipped",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expected_text": "image result is skipped; expected success",
+      "passed": true,
+      "output": "BLOCKED: image result is skipped; expected success\n"
+    },
+    {
+      "command": ".venv/bin/python labs/0042/gate.py --image false --node-result failure --image-result skipped",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "expected_text": "required node result is failure",
+      "passed": true,
+      "output": "BLOCKED: required node result is failure\n"
+    }
+  ]
+}

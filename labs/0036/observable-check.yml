@@ -1,0 +1,26 @@
+name: Module 6 observable read-only checks
+on:
+  workflow_dispatch:
+permissions: {}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  contracts:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # existing course pin
+        with:
+          persist-credentials: false
+      - id: policy
+        run: python3 -B labs/0036/operations.py pass
+      - name: Record check status without dumping context
+        if: ${{ !cancelled() }}
+        env:
+          POLICY_OUTCOME: ${{ steps.policy.outcome }}
+        shell: bash
+        run: |
+          printf 'Policy step outcome: %s\n' "$POLICY_OUTCOME" >> "$GITHUB_STEP_SUMMARY"

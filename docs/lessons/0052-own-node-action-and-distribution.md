@@ -175,19 +175,7 @@ A team wants a `nightly` channel. Write the compatibility decision and changed c
 
 The lab gives local type, policy, process, distribution, and static consumer evidence. GitHub runner download/runtime behavior, the intended OS matrix, and public output mapping remain integration checks. No hosted run has been performed by this authoring task. Sources were checked on **2026-10-30**, including the [Node 24 test-runner documentation](https://nodejs.org/docs/latest-v24.x/api/test.html); exact check results are in `labs/module-9-handoff.md`.
 
-Record actual learner predictions and failure explanations during teaching. Continue to [0053](0053-own-docker-action-and-image-contract.md) for a different runtime/package boundary. Revisit [Module 4](0019-javascript-action-runtime-and-toolkit.md) for toolkit APIs, lifecycle hooks, cross-platform behavior, and dependency maintenance.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0052
-
-Use docs/lessons/0052-own-node-action-and-distribution.md and labs/0052/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lessons 0051
-and 0005. Ask me to trace inputs into the domain rule and the shipped bundle.
-Pause before the stale-artifact prediction and worked diagnosis.
-Capture actual type/process/distribution evidence and hand off to lesson 0053.
-```
+Continue to [0053](0053-own-docker-action-and-image-contract.md) for a different runtime/package boundary. Revisit [Module 4](0019-javascript-action-runtime-and-toolkit.md) for toolkit APIs, lifecycle hooks, cross-platform behavior, and dependency maintenance.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

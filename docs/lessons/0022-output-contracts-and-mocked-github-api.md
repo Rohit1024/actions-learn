@@ -191,21 +191,7 @@ Retrieve without looking:
 
 This suite establishes report rules, request sequencing, simulated waits, and real child-process output/failure behavior. It does not establish HTTP-client integration, DNS/TLS behavior, rate-limit enforcement, live data consistency, real API-version compatibility, or hosted permissions. All source checking was read-only; the lab itself has no real API client. Sources checked on **2026-10-30** are recorded in the Module 4 handoff and connected to the [curated source library](../references/resources.md).
 
-During teaching, record the learner's failure diagnosis and chosen write-retry policy. Continue to [0023](0023-javascript-action-lifecycle-and-state.md), where one action uses separate primary and cleanup processes.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0022
-
-Use docs/lessons/0022-output-contracts-and-mocked-github-api.md and labs/0022/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lessons 0021 and 0009.
-Ask me to distinguish empty 200, denied 403, rate limiting, and partial pagination.
-Pause before the broken-catch solution and transfer exercises.
-Use local fixtures only. Separate normalized fake contracts from real Octokit behavior.
-Record actual evidence and continue at exact file
-docs/lessons/0023-javascript-action-lifecycle-and-state.md.
-```
+Continue to [0023](0023-javascript-action-lifecycle-and-state.md), where one action uses separate primary and cleanup processes.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

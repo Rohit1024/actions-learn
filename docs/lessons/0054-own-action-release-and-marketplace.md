@@ -186,23 +186,11 @@ You discover that the release-key action now trims component whitespace, accepts
 ??? tip "Worked transfer and retrieval"
     The key prefix is a breaking output change, so the combined release requires a major version regardless of the compatible channel addition. Test the new accepted-input policy and key spelling, rebuild/recompare, rerun package checks, and obtain bounded hosted consumer evidence for the declared platforms. Explain the new key prefix and any migration of artifact or downstream names. An old full-SHA consumer continues to execute the old package. Root metadata identifies the standalone action; `dist/index.cjs` supplies its runtime. Local checks do not prove remote resolution, permissions, hosted runner compatibility, or Marketplace eligibility. Restore the consumer's known-good SHA to roll back, and issue a separately reviewed fixed release.
 
-## Verification limits and module handoff
+## Verification limits
 
-Local readiness includes working program contracts, matching distribution, a complete candidate package, and static recipes. It does not include a successful remote consumer, the full intended OS matrix, a container run when the engine is unavailable, or any publication. Exact executed and deferred checks, sources checked on **2026-10-30**, and unresolved integration boundaries are persisted in `labs/module-9-handoff.md`. Documentation validation remains for the coordinator's combined 24-lesson pass.
+Local readiness includes working program contracts, matching distribution, a complete candidate package, and static recipes. It does not include a successful remote consumer, the full intended OS matrix, a container run when the engine is unavailable, or any publication. Exact executed and deferred checks, sources checked on **2026-10-30**, and unresolved integration boundaries are persisted in `labs/module-9-handoff.md`.
 
-A guided teaching handoff should record the learner's package diagnosis, compatibility reasoning, and rollback explanation only when demonstrated. Module 9's creation path is complete as authored material. Continue sequentially to [0055 · Capstone specification and orchestrator design](0055-capstone-specification-and-orchestrator-design.md), the start of Module 10.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0054
-
-Use docs/lessons/0054-own-action-release-and-marketplace.md and labs/0054/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, lessons 0053,
-0052, and 0012. Ask me to inspect the package and predict both broken snapshots.
-Pause before solutions. Keep release/Marketplace steps as future exercises
-unless separately requested; record actual evidence and continue to lesson 0013.
-```
+Continue sequentially to [0055 · Capstone specification and orchestrator design](0055-capstone-specification-and-orchestrator-design.md), the start of Module 10.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

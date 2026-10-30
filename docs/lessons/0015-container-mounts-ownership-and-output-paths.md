@@ -191,21 +191,9 @@ A formatter reads a caller checkout and should return a report while leaving sou
 
 ## Evidence and next session
 
-The author executed both host modes and linted the consumer. Mount behavior, image ownership and GitHub runner ingestion remain deferred. In a live session, capture the learner's two-view path map, failure diagnosis and narrow repair. Continue to [0016](0016-docker-action-direct-and-image-tests.md).
+The author executed both host modes and linted the consumer. Mount behavior, image ownership and GitHub runner ingestion remain deferred. Continue to [0016](0016-docker-action-direct-and-image-tests.md).
 
-Primary sources were checked on **2026-10-30**; see the [reference library](../references/resources.md) and `labs/module-3-handoff.md`. Documentation checks are deferred to the coordinator's combined pass.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0015
-
-Use docs/lessons/0015-container-mounts-ownership-and-output-paths.md and labs/0015/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lessons
-0014, 0005, and 0010. Ask me to map host and container paths before running.
-Pause at private-output and read-only predictions. Distinguish partial files
-from success, record observed ownership, and hand off to lesson 0016.
-```
+Primary sources were checked on **2026-10-30**; see the [reference library](../references/resources.md) and `labs/module-3-handoff.md`.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

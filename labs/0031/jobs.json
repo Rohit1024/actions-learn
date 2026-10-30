@@ -1,0 +1,7 @@
+{
+  "fork-read": {"event":"pull_request","code_origin":"fork-head","operation":"checkout","permissions":{"contents":"read"},"secret_names":[]},
+  "fork-write": {"event":"pull_request","code_origin":"fork-head","operation":"comment","permissions":{"issues":"write"},"secret_names":[]},
+  "target-head": {"event":"pull_request_target","code_origin":"fork-head","operation":"comment","permissions":{"issues":"write"},"secret_names":[]},
+  "trusted-comment": {"event":"pull_request_target","code_origin":"reviewed-base","operation":"comment","permissions":{"issues":"write"},"secret_names":[]},
+  "missing-scope": {"event":"workflow_dispatch","code_origin":"reviewed-base","operation":"comment","permissions":{"contents":"read"},"secret_names":[]}
+}

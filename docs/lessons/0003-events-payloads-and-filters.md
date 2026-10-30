@@ -158,19 +158,7 @@ Design a policy that tests PRs targeting `main` when either `examples/**` or `te
 
 ## Evidence and next session
 
-Capture the learner's admission table, event-field explanation, corrected mismatch, and actually executed checks. A targeted hosted experiment should use small changes with known paths, comparing one admitted and one rejected event. Local fixtures and linting cannot establish that result. Primary references were checked on **2026-10-30** and are indexed in the [source library](../references/resources.md).
-
-## Start this lesson in a new thread
-
-```text
-/teach 0003
-
-Use docs/lessons/0003-events-payloads-and-filters.md and labs/0003/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lesson 0002.
-Ask me to predict branch/path admission and inspect each event fixture.
-Pause before solutions; let me diagnose the dispatch-as-PR failure.
-Record actual evidence and hand off to lesson 0004.
-```
+A targeted hosted experiment should use small changes with known paths, comparing one admitted and one rejected event. Local fixtures and linting cannot establish that result. Primary references were checked on **2026-10-30** and are indexed in the [source library](../references/resources.md).
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

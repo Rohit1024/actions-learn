@@ -1,0 +1,12 @@
+name: Local release candidate
+description: Synthetic release exercise that emits a greeting and performs no publication
+inputs:
+  name:
+    description: Nonempty single-line name
+    default: World
+outputs:
+  greeting:
+    description: Greeting text
+runs:
+  using: node24
+  main: dist/index.cjs

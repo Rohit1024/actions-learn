@@ -1,0 +1,13 @@
+name: Deliberate interface defect
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  call:
+    uses: ./.github/workflows/module5-reusable.yml
+    with:
+      label: preview
+      strict: true
+      max-items: two
+    secrets:
+      FIXTURE_TOKEN: fixture-only-not-a-credential

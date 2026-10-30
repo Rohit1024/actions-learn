@@ -1,0 +1,61 @@
+{
+  "release": {
+    "operation": "release-pr",
+    "event": "workflow_dispatch",
+    "ref": "refs/heads/main",
+    "approved": true,
+    "producer": "reviewed-main",
+    "permissions": {
+      "contents": "write",
+      "issues": "write",
+      "pull-requests": "write"
+    }
+  },
+  "fork": {
+    "operation": "release-pr",
+    "event": "pull_request",
+    "ref": "refs/heads/main",
+    "approved": true,
+    "producer": "reviewed-main",
+    "permissions": {
+      "contents": "write",
+      "issues": "write",
+      "pull-requests": "write"
+    }
+  },
+  "no-write": {
+    "operation": "release-pr",
+    "event": "workflow_dispatch",
+    "ref": "refs/heads/main",
+    "approved": true,
+    "producer": "reviewed-main",
+    "permissions": {
+      "contents": "read"
+    }
+  },
+  "untrusted": {
+    "operation": "release-pr",
+    "event": "workflow_dispatch",
+    "ref": "refs/heads/main",
+    "approved": true,
+    "producer": "untrusted-pr",
+    "permissions": {
+      "contents": "write",
+      "issues": "write",
+      "pull-requests": "write"
+    }
+  },
+  "excess": {
+    "operation": "release-pr",
+    "event": "workflow_dispatch",
+    "ref": "refs/heads/main",
+    "approved": true,
+    "producer": "reviewed-main",
+    "permissions": {
+      "contents": "write",
+      "issues": "write",
+      "pull-requests": "write",
+      "actions": "write"
+    }
+  }
+}

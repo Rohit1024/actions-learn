@@ -207,25 +207,9 @@ Retrieve without opening the examples:
 
 Actual token permissions, OIDC federation, environment approvals, concurrency/cancellation, hosted services, and the target OS matrix require deliberate platform evidence. The [support limitations](https://nektosact.com/not_supported.html) document important gaps. Continue to 0012 to record those claims and bound the remaining verification work.
 
-## Verification timing and evidence handoff
+## Verification evidence
 
 Record the event and fixture, revision, exact job graph, act version, image digest, architecture, assertion output, and final status. Here act **0.2.89** listed both event selections; both script tests and static callers passed. No container-backed good or broken workflow was executed. Primary references were checked on **2026-10-30**, starting from the [curated library](../references/resources.md).
-
-!!! note "Documentation validation timing"
-    The coordinator runs **one combined whole-site `task docs:verify` after all four modules, 24 lessons, and shared edits are ready**. Do not run root `task check` or any Markdown/link/Mermaid/Zensical checks in this module thread. An act run is separate evidence and does not replace documentation validation.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0011
-
-Use docs/lessons/0011-act-targeted-workflow-smoke-tests.md and labs/0011/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lessons 0005, 0009, and 0010.
-Ask me to select the workflow/event/job and predict the broken composite mapping.
-Pause before solutions. Run only the reviewed smoke path with an existing compatible engine.
-If unavailable, record deferred runtime evidence and keep direct/static observations distinct.
-Continue to lesson 0012; preserve coordinator-only documentation validation for this batch.
-```
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

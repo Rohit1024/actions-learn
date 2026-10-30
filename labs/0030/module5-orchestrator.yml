@@ -1,0 +1,79 @@
+name: Module 5 fan-out and evidence join
+on:
+  workflow_dispatch:
+    inputs:
+      fail-kind:
+        description: Deliberate synthetic worker failure.
+        type: choice
+        options: [none, build, test]
+        default: none
+permissions:
+  contents: read
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      candidate: ${{ steps.plan.outputs.candidate }}
+    steps:
+      - id: plan
+        shell: bash
+        run: printf '%s\n' 'candidate=preview-1' >> "$GITHUB_OUTPUT"
+  build:
+    needs: plan
+    uses: ./.github/workflows/module5-worker.yml
+    permissions:
+      contents: read
+    with:
+      kind: build
+      candidate: ${{ needs.plan.outputs.candidate }}
+      fail-kind: ${{ inputs.fail-kind }}
+  test:
+    needs: plan
+    uses: ./.github/workflows/module5-worker.yml
+    permissions:
+      contents: read
+    with:
+      kind: test
+      candidate: ${{ needs.plan.outputs.candidate }}
+      fail-kind: ${{ inputs.fail-kind }}
+  join:
+    needs: [plan, build, test]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      ready: ${{ steps.gate.outputs.ready }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./labs/0030/setup
+      - if: ${{ !cancelled() && needs.build.result == 'success' }}
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: evidence-build
+          path: ${{ runner.temp }}/module5-join/build
+      - if: ${{ !cancelled() && needs.test.result == 'success' }}
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: evidence-test
+          path: ${{ runner.temp }}/module5-join/test
+      - id: gate
+        if: ${{ !cancelled() }}
+        shell: bash
+        env:
+          CANDIDATE: ${{ needs.plan.outputs.candidate }}
+          BUILD_RESULT: ${{ needs.build.result }}
+          TEST_RESULT: ${{ needs.test.result }}
+          EVIDENCE_DIR: ${{ runner.temp }}/module5-join
+        run: node labs/0030/gate.cjs
+  publish-plan:
+    needs: join
+    if: needs.join.outputs.ready == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - shell: bash
+        run: |
+          printf '%s\n' 'PLAN ONLY: evidence ready; no release or deployment occurs'

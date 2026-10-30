@@ -9,19 +9,9 @@ lesson_status: authored
 !!! note "Authored reference lesson"
     Work through predictions and experiments before opening solutions. Available lesson content and passing author checks do not establish learner mastery.
 
-## Prerequisites and thread prompt
+## Prerequisites
 
 Start with [0001 · The execution model](0001-execution-model.md). Explain why a program, action metadata, and a workflow are separate test boundaries. Reuse the installed tools from the [local testing guide](../cheatsheet/local-testing.md); run all commands from the repository root.
-
-```text
-/teach 0002
-
-Use docs/lessons/0002-local-feedback-loop.md and labs/0002/probe.py.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lesson 0001.
-Start with the smallest direct adapter test. Pause for predictions, let me
-reproduce and diagnose a failure, then retrieve the local/hosted limits.
-Record actual evidence and hand off to lesson 0003.
-```
 
 ## Goal
 
@@ -107,7 +97,7 @@ task lint:module1
 !!! note "Rebuild only after changing TypeScript source"
     `task test` compares the generated TypeScript bundle against the committed distribution file without repairing it. After an intentional source change, run `task actions:build`, review the bundle, and repeat `task test`. Consumers execute the distribution file, so rebuilding silently inside the comparison would hide drift.
 
-For a complete host handoff, use `task check`. It includes documentation validation and the site build. For an authoring batch, finish all lesson edits first, then run `task docs:verify` once. Avoid rebuilding the site after each small exercise.
+For a complete host handoff, use `task check`. It includes documentation validation and the site build.
 
 ## Add the execution boundary when needed
 
@@ -150,9 +140,9 @@ A greeting function test passes, but an action consumer receives an empty output
 ??? tip "Check your explanation"
     A process adapter can drop a value or use the wrong channel; metadata can then map a different name. A fixture controls input to a selected path, not GitHub's decision to deliver the event. Bundle comparison exposes stale shipped code. Actual authorization enforcement needs GitHub evidence; a local mock only tests your response to a simulated denial.
 
-## Handoff
+## Next lesson
 
-Record the learner's prediction, failing assertion, repair, executed checks, and deferred integration boundaries. Keep unknown proficiency explicit. Next is [0003](0003-events-payloads-and-filters.md), where events become structured inputs and admission rules. Primary references were checked on **2026-10-30** and are indexed in the [source library](../references/resources.md).
+Next is [0003](0003-events-payloads-and-filters.md), where events become structured inputs and admission rules. Primary references were checked on **2026-10-30** and are indexed in the [source library](../references/resources.md).
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

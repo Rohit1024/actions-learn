@@ -9,19 +9,9 @@ lesson_status: authored
 !!! note "Authored reference lesson"
     This page and its lab are ready for a guided session. Written content does not establish learner mastery. Predict each result before opening the worked explanation.
 
-## Prerequisites and thread prompt
+## Prerequisites
 
 This is the course entry point; no earlier lesson is required. You need a local checkout and the host tools in the [local testing guide](../cheatsheet/local-testing.md#install-the-host-tools) to run the lab. Supporting syntax is explained as it appears.
-
-```text
-/teach 0001
-
-Use docs/lessons/0001-execution-model.md and its labs/0001/ files.
-Read docs/mission.md, NOTES.md, and docs/lessons/teaching-guide.md first.
-Teach the execution model one concept at a time. Pause at predictions and
-exercises; let me explain failures before opening the worked solutions.
-Record only demonstrated understanding and leave a truthful handoff.
-```
 
 ## What you will be able to explain
 
@@ -155,11 +145,11 @@ Explain without reopening the examples:
 ??? tip "Check your explanation"
     The definition is reusable configuration; a run is one event-driven execution. A local action must already exist in the workspace. Two `run` steps use fresh shell processes but share job files. Hosted jobs use separate runner instances. A direct program test does not evaluate action metadata, workflow expressions, or job output mappings.
 
-## Verification limits and handoff
+## Verification limits
 
 The host lab checks process behavior. Static linting checks workflow structure and known interfaces. Neither proves GitHub event delivery, runner provisioning, or token policy. The optional `act` path and the existing four-runtime smoke workflow are covered in [0002](0002-local-feedback-loop.md) and the [local testing guide](../cheatsheet/local-testing.md).
 
-For a live teaching handoff, record the learner's boundary explanation, their failure diagnosis, commands actually run, and remaining uncertainty. Continue to 0002 even though this authored page alone is not evidence of mastery. Primary sources were checked on **2026-10-30**; the [source library](../references/resources.md) records the trusted references.
+Primary sources were checked on **2026-10-30**; the [source library](../references/resources.md) records the trusted references.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

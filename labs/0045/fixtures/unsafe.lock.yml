@@ -1,0 +1,10 @@
+# Intentionally unsafe review fixture, not compiler output. Do not execute.
+name: Broad authority fixture
+on:
+  workflow_dispatch:
+permissions: write-all
+jobs:
+  agent:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: example/unknown-action@main

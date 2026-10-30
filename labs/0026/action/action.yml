@@ -1,0 +1,20 @@
+name: Read caller fixture
+description: Locate action code separately from caller data; requires Bash and Node 24.
+inputs:
+  file:
+    description: Trusted fixture path relative to the caller workspace.
+    default: labs/0026/fixtures/input with spaces.txt
+outputs:
+  lines:
+    description: Logical lines in the fixture.
+    value: ${{ steps.inspect.outputs.lines }}
+runs:
+  using: composite
+  steps:
+    - id: inspect
+      shell: bash
+      env:
+        ACTION_DIR: ${{ github.action_path }}
+        WORKSPACE_DIR: ${{ github.workspace }}
+        REPORT_FILE: ${{ inputs.file }}
+      run: bash "$ACTION_DIR/inspect.sh" "$WORKSPACE_DIR/$REPORT_FILE"

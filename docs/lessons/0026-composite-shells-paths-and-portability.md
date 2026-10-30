@@ -1,90 +1,163 @@
 ---
 icon: lucide/book-open
 lesson_id: "0026"
-lesson_status: placeholder
+lesson_status: authored
 ---
 
 # 0026 · Explicit shells, action paths, paths with spaces, and portability
 
-!!! note "Placeholder for a future teaching thread"
-    This page is a teaching brief. Expand it into a full interactive lesson in its own thread. The planned exercises and outcomes have not been completed or demonstrated.
+!!! note "Reference lesson"
+    `labs/0026/` separates downloaded action code, caller data, and the current directory. Its failures use disposable local copies. Completing a written exercise is separate from demonstrating understanding.
 
-**Level:** Intermediate to advanced.
+## Prerequisites and observable goal
 
-## Prerequisites
+Read [0025 · Composite interfaces](0025-composite-action-inputs-and-outputs.md) and retrieve the portability distinction from [0024](0024-cross-platform-actions-and-versioned-releases.md): a lexical path model does not execute another OS.
 
-- [0025 · Composite action structure, step IDs, and output mapping](0025-composite-action-inputs-and-outputs.md)
+Invoke an action-owned script against a caller-owned file while both paths contain spaces and the current directory belongs to neither. Success means the process receives exactly one file argument, publishes `lines=2`, and you can explain why the broken relative and unquoted invocations fail.
 
-## What you will learn to do
+## Name the owner of each path
 
-- Resolve a script belonging to the action regardless of the caller working directory.
-- Explain shell and platform requirements as part of the action contract.
+Three locations often happen to coincide in a small checkout. They are different contracts:
 
-## Explain the Actions behavior
+| Location | Owner and purpose |
+| --- | --- |
+| `github.action_path` / `GITHUB_ACTION_PATH` | Directory containing the executing composite action and its bundled helpers |
+| `github.workspace` / `GITHUB_WORKSPACE` | Caller workspace, normally containing checked-out project files |
+| Current working directory | Directory against which the running process resolves relative paths |
 
-Start from the prerequisite workflow or action behavior and introduce these concepts with focused examples:
+A remote action may be installed outside the caller checkout. A successful `bash inspect.sh` from your development directory does not prove a consumer can locate that file. Conversely, locating a caller's input fixture inside the action directory gives the action the wrong data owner.
 
-1. The caller workspace and the action installation directory are different locations.
-2. A shell choice determines syntax and available process behavior.
-3. Quoting and path construction must preserve actual file names across environments.
-
-Explain the relevant workflow YAML, expressions, and action code in context. Follow the [shared teaching guide](teaching-guide.md) for pacing, expected output, and progression toward independent design.
-
-## Planned local lab
-
-Create an isolated exercise under `labs/0026/` when the lesson is developed. Explain setup and expected output before each command; reuse installed tools rather than reinstalling them on every step.
-
-1. Run the composite script from a working directory unrelated to its own source.
-2. Repeat using a directory name with spaces and inspect the resulting argument list.
-3. Use the action-path context deliberately and state the supported shell/OS assumptions.
-
-## Break it and diagnose it
-
-Resolve a bundled script relative to the caller workspace. Reproduce the failure from a different directory and fix the ownership of the path.
-
-Ask for a prediction first. Capture the smallest reproducer, the actual result, and the corrected behavior. State which remaining claim requires a real GitHub or external-service check.
-
-## Planning diagram
+GitHub's [composite tutorial](https://docs.github.com/en/actions/tutorials/create-actions/create-a-composite-action) demonstrates the action path; the [contexts reference](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts) describes the workspace and context availability. Prefer explicit environment mapping when a context path is needed inside shell source.
 
 ```mermaid
 flowchart TD
-    N0["Caller working directory"]
-    N1["Action installation path"]
-    N0 --> N1
-    N2["Explicit shell and quoted script path"]
-    N1 --> N2
-    N3["Portable invocation contract"]
-    N2 --> N3
+    Call["Caller checks out its project and invokes composite"] --> Roots["Resolve two owners explicitly"]
+    Roots --> Action["ACTION_DIR: downloaded action and inspect.sh"]
+    Roots --> Data["WORKSPACE_DIR plus trusted relative fixture path"]
+    Action --> Invoke["bash quoted action script path, quoted data argument"]
+    Data --> Invoke
+    Invoke --> Node["Node receives one file argument from any cwd"]
+    Node --> Read["Read caller fixture and count logical lines"]
+    Read --> Output["Append lines=2; composite maps its public output"]
 ```
 
-When expanding this lesson, refine the diagram to show the actual processes, branches, data exchange, and trust boundaries being taught.
+## Make the shell and tool contract explicit
 
-## Retrieval questions
+Every composite `run` step needs a `shell`. This lab requires Bash and Node 24; declaring `shell: bash` selects a shell but does not install Node. The inactive consumer uses maintained setup-node before the local composite. Its runtime selection is distinct from the Node runtime the setup action itself uses.
 
-1. Who owns the file being located: the caller or the action?
-2. What syntax depends on the selected shell?
-3. How would a caller discover unsupported platform assumptions?
+```yaml title="labs/0026/action/action.yml — internal step"
+- id: inspect
+  shell: bash # (1)!
+  env:
+    ACTION_DIR: ${{ github.action_path }}
+    WORKSPACE_DIR: ${{ github.workspace }}
+    REPORT_FILE: ${{ inputs.file }}
+  run: bash "$ACTION_DIR/inspect.sh" "$WORKSPACE_DIR/$REPORT_FILE" # (2)!
+```
 
-## Evidence to capture in the teaching thread
+1. Bash syntax includes `[[ ... ]]` and the strict-mode behavior used by the scripts. A shebang in a file does not choose the interpreter for an inline YAML `run` block.
+2. The code path belongs to the action; the data path belongs to the caller. Both arguments are quoted after environment expansion, preserving spaces.
 
-- A working learner-produced example and an explanation of why it works.
-- A reproduced failure, a reasoned repair, and the smallest check that verifies it.
-- A short account of remaining limits, unresolved questions, and readiness for the next lesson.
+`inspect.sh` checks that it received exactly one argument, then calls its bundled Node helper:
 
-Use [primary references](../references/resources.md) to verify current syntax, runtime support, and tool behavior. Add learning records only for real statements or demonstrated understanding; a placeholder or generated page does not establish mastery.
+```bash title="Invocation inside labs/0026/action/inspect.sh"
+node "$ACTION_DIR/inspect.cjs" "$1" # (1)!
+```
 
-## Start this lesson in a new thread
+1. Node opens the file directly. It does not construct another shell command containing the filename.
+
+The helper counts logical lines after normalizing CRLF and lone CR to LF. Empty content counts zero; a final terminator ends a line without adding another. The checked-in fixture has `alpha` and `beta`, so it produces two. Its stdout is JSON containing the received path and count, which lets the harness assert the exact argument rather than infer it from a successful exit.
+
+!!! note "Path lookup is not a filesystem sandbox"
+    The `file` input in this exercise is a trusted relative fixture path. Concatenating a workspace path does not reject `..`, symlinks, or races, and quoting does not make an arbitrary input path safe to read. For an untrusted file selector, define and test a containment policy before granting access. Lesson 0024 demonstrates additional path validation.
+
+## Reproduce the failures and the repair locally
+
+Run from the repository root:
+
+```bash
+.venv/bin/python labs/0026/paths.py
+```
+
+The harness creates three independent directories under one temporary root: `downloaded action`, `caller workspace`, and `unrelated working directory`. It copies code and the file `input with spaces.txt`, uses a temporary output path, and runs all commands from the unrelated directory. It removes the entire fixture afterward.
+
+Expected, exit **0**:
 
 ```text
-/teach 0026
-
-Expand docs/lessons/0026-composite-shells-paths-and-portability.md in place using docs/lessons/teaching-guide.md.
-Read docs/mission.md, NOTES.md, and the prerequisite lesson pages first.
-Begin with a short check of the Actions prerequisites. Explain relevant YAML,
-expressions, and action contracts, one concept at a time. Let me predict and
-try each exercise before revealing its answer. Keep feedback local where possible.
-Finish with retrieval questions and a truthful handoff for the next thread.
+relative script: EXPECTED FAILURE (inspect.sh absent from cwd)
+unquoted action path: EXPECTED FAILURE (space splits script path)
+quoted action path + workspace file: PASS (one argument, lines=2)
 ```
+
+The harness's successful exit means both deliberate child failures and the repaired child behaved as expected. It does not mean the broken child commands succeeded.
+
+!!! tip "Predict each invocation"
+    From the unrelated directory, which path does `bash inspect.sh "$file"` use? What changes if you write `bash $ACTION_DIR/inspect.sh "$file"`? Does quoting only the data filename fix both problems?
+
+??? tip "Worked diagnosis"
+    The first command looks for `inspect.sh` in the current directory and fails because the code is elsewhere. The second expands an unquoted action path containing a space into multiple shell words, so Bash receives a truncated script path. The repaired command is `bash "$ACTION_DIR/inspect.sh" "$file"`. The code location and argument boundary are independent problems; fix both.
+
+The final assertion checks JSON `argument` equals the exact fixture path and the output file contains precisely `lines=2` plus LF. The test does not use the shell's printed command line as proof of `argv`.
+
+## Inspect the complete inactive consumer
+
+`labs/0026/consumer.yml` checks out the caller repository, sets Node, calls the composite, and asserts the public string output:
+
+```yaml title="Runtime setup and invocation excerpt"
+- uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+  with:
+    node-version: '24'
+    package-manager-cache: false # (1)!
+- id: fixture
+  uses: ./labs/0026/action
+- shell: bash
+  env:
+    LINES: ${{ steps.fixture.outputs.lines }}
+  run: test "$LINES" = 2
+```
+
+1. The fixture uses Node built-ins and installs no project packages. Disabling automatic package-manager caching avoids introducing a cache/lockfile contract that this exercise does not need.
+
+The `file` input defaults to `labs/0026/fixtures/input with spaces.txt`. It is a scalar value in YAML and stays a single argument through quoted shell expansion. Quote YAML when its own syntax requires it; YAML quoting and shell quoting act at different stages.
+
+Static-check this exact consumer:
+
+```bash
+.tools/bin/actionlint -no-color labs/0026/consumer.yml
+```
+
+Expected: exit **0**, no diagnostics. This does not execute setup-node, open the fixture through the composite runner, or test another OS.
+
+## Supporting platforms is an evidence decision
+
+The runnable contract targets a Unix-style Bash/Node environment, with the inactive workflow choosing `ubuntu-latest`. The host harness is useful on the current macOS system too. Do not infer a Windows support promise from Bash being available on one Windows installation, or from a filename test on macOS.
+
+A PowerShell implementation would use its own variable syntax, argument rules, encoding choices, and native path handling. Replacing `shell: bash` with `shell: pwsh` leaves Bash source invalid. Adding `runs-on` inside composite metadata is also not a solution: runner selection belongs to the job. If consumers need different runner families, expose that policy at a workflow/job boundary and execute representative runner cases.
+
+For repository project commands that intentionally depend on a working directory, use an explicit `working-directory` on the appropriate `run` step. Do not rely on `defaults.run` to locate bundled action code. Keep action-owned helper paths anchored to the action directory even if the caller changes where it runs project commands.
+
+## Transfer exercise and retrieval
+
+A remote composite packages `scripts/report.cjs`, but reads the consumer's `config/build rules.json`. Sketch the invocation. The caller sometimes checks out its repository into `source/` under the workspace. What must the interface specify?
+
+??? tip "Worked transfer"
+    Anchor the helper to an environment value mapped from `github.action_path`, and resolve the data path from the documented caller root. If checkout uses `path: source`, the input could be explicitly workspace-relative `source/config/build rules.json`, or the interface could accept a separately validated project-root value. `GITHUB_WORKSPACE` itself does not become the checkout subdirectory just because checkout uses that path. Quote each argument and test from an unrelated cwd with spaces in both roots.
+
+Retrieve without looking:
+
+1. Which root contains code from a remote composite?
+2. Why does selecting Bash not provide a Node executable?
+3. Which failure survives quoting the data path correctly?
+4. Does the path exercise prove containment or Windows execution?
+
+??? tip "Retrieval check"
+    The action installation directory owns the bundled code. Runtime setup is a separate operation. A relative or split script path still fails even with a correct data argument. This harness checks path transport on its actual host; it is neither a filesystem sandbox nor an OS matrix.
+
+## Verification boundary and sources
+
+The deterministic host exercise tests real files and processes. An engine-backed selected caller checks runner expansion and mappings, while intended OS images and GitHub action acquisition need separate execution evidence. Keep [0012 · Coverage boundaries](0012-local-hosted-coverage-and-usage-budget.md) available when describing support.
+
+Sources checked **2026-10-30**: the linked GitHub composite and contexts references, the [metadata shell contract](https://docs.github.com/en/actions/reference/workflows-and-actions/metadata-syntax#runsstepsshell), and the pinned [setup-node metadata](https://raw.githubusercontent.com/actions/setup-node/949feb2413d6458794dcd2491c4babbbce0c15c1/action.yml). Continue to [0027](0027-untrusted-input-and-shell-quoting.md) for untrusted text transport.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

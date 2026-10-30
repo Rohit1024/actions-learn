@@ -1,92 +1,132 @@
 ---
 icon: lucide/book-open
 lesson_id: "0044"
-lesson_status: placeholder
+lesson_status: authored
 ---
 
 # 0044 · Agent engines, authentication, tools, and network boundaries
 
-!!! note "Placeholder for a future teaching thread"
-    This page is a teaching brief. Expand it into a full interactive lesson in its own thread. The planned exercises and outcomes have not been completed or demonstrated.
+!!! note "Authored reference lesson"
+    This lab evaluates a declared capability policy against synthetic requests. No credential is loaded and no service is contacted. Passing it does not establish GitHub authorization or model behavior.
 
-**Level:** Advanced.
+## Prerequisites and observable goals
 
-## Prerequisites
+Read [0043 · Source and execution stages](0043-agentic-markdown-and-compiled-workflows.md). Recall [0031 · Token and event trust](0031-github-token-forks-and-trust-boundaries.md) and [0033 · Hosted identity and approvals](0033-oidc-environments-and-hosted-policy.md): identity, scope, and approval are separate contracts.
 
-- [0043 · Agentic Markdown sources, frontmatter, lock workflows, and execution stages](0043-agentic-markdown-and-compiled-workflows.md)
-- [0031 · Least-privilege tokens, fork pull requests, and event trust boundaries](0031-github-token-forks-and-trust-boundaries.md)
-- [0033 · OIDC, deployment environments, approval, and real platform verification](0033-oidc-environments-and-hosted-policy.md)
+Map each report requirement to a capability and identity. Predict whether requests fail at the tool, network, permission, credential-role, or operation boundary. Reject an overbroad configuration without attempting a remote write. Success is a minimal capability inventory plus the decisions produced by `labs/0044/`. Run all commands from the repository root with the installed environment.
 
-## What you will learn to do
+## Separate identities before choosing an engine
 
-- Map the engine, tool, network, and credential boundaries of an agentic task.
-- Choose the minimum capabilities needed to inspect repository evidence.
+An **engine** is the coding-agent implementation performing the task. Its inference authentication is separate from the identity reading repository files or publishing an output. A working developer `gh` login does not establish that a future runner can authenticate an engine.
 
-## Explain the Actions behavior
+The current [authentication reference](https://github.github.com/gh-aw/reference/auth/) distinguishes Copilot organization billing through `copilot-requests: write` from the personal-repository `COPILOT_GITHUB_TOKEN` path. The Module 8 source selects `copilot` but configures neither new credentials nor organization inference permission. That remains a hosted prerequisite. Other engines have their own supported routes; verify the selected route and installed version before a hosted experiment.
 
-Start from the prerequisite workflow or action behavior and introduce these concepts with focused examples:
+Separate four responsibilities:
 
-1. An engine runs the agent; tools and network access determine the operations it can attempt.
-2. Credential scope and configured tool policy enforce boundaries beyond natural-language instructions.
-3. External model/service usage is separate from GitHub runner execution.
+| Identity or policy | Purpose | Evidence still needed |
+| --- | --- | --- |
+| Compiler's reference resolution | Read required action/import references | Local compile and resolution diagnostics |
+| Engine authentication | Reach selected inference service | Authentication result and service usage |
+| Repository-read identity | Retrieve intended source/evidence | Tool result, revision, and access scope |
+| Output-handler identity | Apply configured output operations | Handler permissions, preview, and policy result |
 
-Explain the relevant workflow YAML, expressions, and action code in context. Follow the [shared teaching guide](teaching-guide.md) for pacing, expected output, and progression toward independent design.
-
-## Planned local lab
-
-Create an isolated exercise under `labs/0044/` when the lesson is developed. Explain setup and expected output before each command; reuse installed tools rather than reinstalling them on every step.
-
-1. Inventory the exact observations needed for a repository report.
-2. Map each to a read tool and a narrowly scoped identity in the design.
-3. Compile a constrained configuration and identify authentication or network behavior that requires a deliberate live test later.
-
-## Break it and diagnose it
-
-Grant broad tool or credential access merely to compensate for a missing capability. Explain the unnecessary authority and redesign the task.
-
-Ask for a prediction first. Capture the smallest reproducer, the actual result, and the corrected behavior. State which remaining claim requires a real GitHub or external-service check.
-
-## Planning diagram
+Do not supply an administrator credential simply because a file read fails. First determine whether the file exists, is in the intended repository/ref, and is supported by the available tool. A missing capability and a denied request have different repairs.
 
 ```mermaid
 flowchart TD
-    N0["Bounded agent task"]
-    N1["Engine and scoped identity"]
-    N0 --> N1
-    N2["Allowed tools and network"]
-    N1 --> N2
-    N3["Observable evidence or access limit"]
-    N2 --> N3
+    Need["Report needs one repository file"] --> Tool{"Is the read tool available?"}
+    Tool -->|"No"| Limit["Report missing capability or unavailable evidence"]
+    Tool -->|"Yes"| Network{"Is the destination reachable under policy?"}
+    Network -->|"No"| Limit
+    Network -->|"Yes"| Identity{"Does the scoped identity authorize the read?"}
+    Identity -->|"No"| Limit
+    Identity -->|"Yes"| Read["Read versioned evidence and retain tool result"]
+    Read --> Propose["Propose a report through the separate output boundary"]
 ```
 
-When expanding this lesson, refine the diagram to show the actual processes, branches, data exchange, and trust boundaries being taught.
+## Capabilities intersect
 
-## Retrieval questions
+`tools.github.toolsets: [repos]` selects an API group; `allowed: [get_file_contents]` narrows available operations. The [GitHub tools reference](https://github.github.com/gh-aw/reference/github-tools/) describes toolsets, allowlists, and separate tool authentication. Selection does not mint a token or guarantee success. Imported configuration can contribute tools, so review the resolved configuration.
 
-1. What can an instruction ask for that the available tools cannot perform?
-2. Which boundary limits an actual write?
-3. Which usage depends on the chosen engine rather than Actions minutes?
+```yaml title="Reporting-source excerpt; compilation remains unverified"
+permissions:
+  contents: read # (1)!
+tools:
+  bash: [] # (2)!
+  github:
+    toolsets: [repos]
+    allowed: [get_file_contents]
+network: defaults # (3)!
+```
 
-## Evidence to capture in the teaching thread
+1. Contents read supports the observation. Inspect every generated job for its own authority.
+2. An empty Bash allowlist disables commands under the current [tools contract](https://github.github.com/gh-aw/reference/tools/). Omitting a field does not establish that all defaults are disabled.
+3. `defaults` is a maintained domain group, not a synonym for offline or unrestricted internet. Review its expansion and engine transport against the installed release.
 
-- A working learner-produced example and an explanation of why it works.
-- A reproduced failure, a reasoned repair, and the smallest check that verifies it.
-- A short account of remaining limits, unresolved questions, and readiness for the next lesson.
+The [network reference](https://github.github.com/gh-aw/reference/network/) describes firewall controls and their runtime scope. An allowed domain says where traffic may go; it does not authorize every API operation there. Host setup steps, custom tools, and external servers have additional boundaries requiring separate review.
 
-Use [primary references](../references/resources.md) to verify current syntax, runtime support, and tool behavior. Add learning records only for real statements or demonstrated understanding; a placeholder or generated page does not establish mastery.
+!!! warning "Prompt text is not authorization"
+    “Read only” expresses intended behavior. Tool restrictions, scoped credentials, network policy, and output handlers enforce different parts of that intent. If a separate shell tool has a write credential, handler staging cannot guard that route.
 
-## Start this lesson in a new thread
+## Lab: predict the first failing boundary
+
+`labs/0044/policy.json` is a **normalized teaching model**, not gh-aw frontmatter. Its only data-service destination is `api.github.com`; it does not model inference transport, setup traffic, DNS, or real firewall enforcement. Credential values are role labels, never tokens.
+
+Predict four decisions: read README with a repository-reader role, invoke an unavailable issue-creation tool, upload to `upload.invalid`, and use a model-provider role as a repository credential.
+
+```bash
+.venv/bin/python labs/0044/boundary.py labs/0044/policy.json
+.venv/bin/python labs/0044/exercise.py
+```
+
+The first command exits 0 with:
 
 ```text
-/teach 0044
-
-Expand docs/lessons/0044-agentic-engines-tools-and-authentication.md in place using docs/lessons/teaching-guide.md.
-Read docs/mission.md, NOTES.md, and the prerequisite lesson pages first.
-Begin with a short check of the Actions prerequisites. Explain relevant YAML,
-expressions, and action contracts, one concept at a time. Let me predict and
-try each exercise before revealing its answer. Keep feedback local where possible.
-Finish with retrieval questions and a truthful handoff for the next thread.
+read-readme: allow
+write-issue: tool unavailable
+upload-text: network destination denied
+PASS: declared capability decisions match; no service contacted
 ```
+
+The exercise changes one field at a time so earlier checks do not mask later checks. It expects independent denials for tool, destination, permission, credential role, and direct mutation, then detects four excessive grants:
+
+```text
+PASS: five independent denials and four overbroad grants detected
+```
+
+The evaluation order explains the first reported denial, rather than prescribing GitHub's enforcement order. Several real layers could reject the same request.
+
+??? tip "Worked prediction"
+    The file read satisfies the model's requirements. The issue request fails because its tool is absent. The upload has an allowed tool label but the wrong destination. A model-provider role cannot satisfy repository authentication in this design. These decisions read nothing from GitHub.
+
+## Reproduce excess authority and repair the design
+
+```bash
+.venv/bin/python labs/0044/boundary.py labs/0044/overbroad.json
+```
+
+Expected **exit 1**, with four `REJECT` diagnostics: unexpected tools, destination, repository authority, and credential role. This fixture deliberately grants shell/issue tools, a wildcard destination, write permission, and an administrator role. The audit never attempts those operations.
+
+??? tip "Diagnosis and repair"
+    Compare each grant to the requirement: one file read. Restore `policy.json` as the minimal declaration and rerun its audit. If a later report needs an unavailable file, report that limit or review a specific read route. General writes cannot repair missing read evidence. The positive policy passes after excessive grants are removed; hosted authentication remains unverified.
+
+## Transfer and retrieval
+
+A report must summarize tests, but the only tool reads files. Choose between claiming success, reading a revision-bound evidence artifact, or describing unexecuted tests. Explain what a trustworthy artifact must identify.
+
+Answer without reopening the examples:
+
+1. Which identity authenticates inference, and which authorizes repository reads?
+2. Can API-group selection guarantee access to every repository?
+3. Does an allowed destination make an operation read-only?
+4. Why does staged issue creation leave a direct shell write relevant?
+
+??? tip "Worked transfer and retrieval"
+    Read an artifact identifying command, revision, result, and observing environment, or state that tests were not executed. Inference and repository credentials serve different consumers. Tool selection cannot guarantee scope or visibility. Network controls permit destinations; API authorization constrains operations. Direct writes need independent controls because they bypass the staged handler.
+
+## Verification boundary
+
+Primary documentation was checked on **2026-10-30**. This exercise verifies the teaching model's decisions. The gh-aw extension is absent, so effective source capabilities have not been compiled or exercised. `docker info` failed to connect to the Podman socket; no container or `act` execution occurred. Inference, GitHub authorization, firewall enforcement, and target runner behavior require a later bounded platform experiment.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

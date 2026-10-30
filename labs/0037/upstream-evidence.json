@@ -1,0 +1,1544 @@
+{
+  "checked_on": "2026-10-30",
+  "scope": "Read-only primary-source observations; no action execution or code audit. Existing shared snapshot remains historical.",
+  "records": [
+    {
+      "repository": "actions/checkout",
+      "checked_on": "2026-10-30",
+      "requested_tag": "v7.0.1",
+      "requested_sha": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "checks": [
+        {
+          "kind": "tag",
+          "url": "https://api.github.com/repos/actions/checkout/git/ref/tags/v7.0.1",
+          "result": "ok"
+        },
+        {
+          "kind": "metadata",
+          "url": "https://raw.githubusercontent.com/actions/checkout/3d3c42e5aac5ba805825da76410c181273ba90b1/action.yml",
+          "result": "ok"
+        },
+        {
+          "kind": "repository",
+          "url": "https://api.github.com/repos/actions/checkout",
+          "result": "ok"
+        },
+        {
+          "kind": "marketplace",
+          "url": "https://github.com/marketplace/actions/checkout",
+          "result": "ok"
+        },
+        {
+          "kind": "publisher markup retry",
+          "url": "https://github.com/marketplace/actions/checkout",
+          "result": "ok"
+        },
+        {
+          "kind": "release metadata",
+          "url": "https://api.github.com/repos/actions/checkout/releases/tags/v7.0.1",
+          "result": "ok"
+        }
+      ],
+      "resolved_sha": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "pin_matches": true,
+      "metadata": {
+        "inputs": {
+          "repository": {
+            "default": "${{ github.repository }}"
+          },
+          "ref": {},
+          "token": {
+            "default": "${{ github.token }}"
+          },
+          "ssh-key": {},
+          "ssh-known-hosts": {},
+          "ssh-strict": {
+            "default": true
+          },
+          "ssh-user": {
+            "default": "git"
+          },
+          "persist-credentials": {
+            "default": true
+          },
+          "path": {},
+          "clean": {
+            "default": true
+          },
+          "filter": {
+            "default": null
+          },
+          "sparse-checkout": {
+            "default": null
+          },
+          "sparse-checkout-cone-mode": {
+            "default": true
+          },
+          "fetch-depth": {
+            "default": 1
+          },
+          "fetch-tags": {
+            "default": false
+          },
+          "show-progress": {
+            "default": true
+          },
+          "lfs": {
+            "default": false
+          },
+          "submodules": {
+            "default": false
+          },
+          "set-safe-directory": {
+            "default": true
+          },
+          "github-server-url": {
+            "required": false
+          },
+          "allow-unsafe-pr-checkout": {
+            "default": false
+          }
+        },
+        "outputs": [
+          "ref",
+          "commit"
+        ],
+        "using": "node24"
+      },
+      "metadata_sha256": "d59219cb79590abdb877deaa14e3b65a00c05318bf5a6f3b989b9162b5d08c35",
+      "observation": {
+        "full_name": "actions/checkout",
+        "stargazers_count": 8985,
+        "archived": false,
+        "pushed_at": "2026-10-17T10:14:02Z"
+      },
+      "publisher": {
+        "matched_repository": true,
+        "badge_observed": true,
+        "unverified_owner_field_observed": false,
+        "status": "verified creator observed",
+        "method": "Exact repository link plus Marketplace verified-owner markup; absence alone is not proof."
+      },
+      "release_observation": {
+        "tag_name": "v7.0.1",
+        "html_url": "https://github.com/actions/checkout/releases/tag/v7.0.1",
+        "published_at": "2026-07-20T15:10:05Z",
+        "draft": false,
+        "prerelease": false
+      }
+    },
+    {
+      "repository": "actions/cache",
+      "checked_on": "2026-10-30",
+      "requested_tag": "v6.1.0",
+      "requested_sha": "55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+      "checks": [
+        {
+          "kind": "tag",
+          "url": "https://api.github.com/repos/actions/cache/git/ref/tags/v6.1.0",
+          "result": "ok"
+        },
+        {
+          "kind": "metadata",
+          "url": "https://raw.githubusercontent.com/actions/cache/55cc8345863c7cc4c66a329aec7e433d2d1c52a9/action.yml",
+          "result": "ok"
+        },
+        {
+          "kind": "repository",
+          "url": "https://api.github.com/repos/actions/cache",
+          "result": "ok"
+        },
+        {
+          "kind": "marketplace",
+          "url": "https://github.com/marketplace/actions/cache",
+          "result": "ok"
+        },
+        {
+          "kind": "publisher markup retry",
+          "url": "https://github.com/marketplace/actions/cache",
+          "result": "ok"
+        },
+        {
+          "kind": "release metadata",
+          "url": "https://api.github.com/repos/actions/cache/releases/tags/v6.1.0",
+          "result": "ok"
+        }
+      ],
+      "resolved_sha": "55cc8345863c7cc4c66a329aec7e433d2d1c52a9",
+      "pin_matches": true,
+      "metadata": {
+        "inputs": {
+          "path": {
+            "required": true
+          },
+          "key": {
+            "required": true
+          },
+          "restore-keys": {
+            "required": false
+          },
+          "upload-chunk-size": {
+            "required": false
+          },
+          "enableCrossOsArchive": {
+            "required": false,
+            "default": "false"
+          },
+          "fail-on-cache-miss": {
+            "required": false,
+            "default": "false"
+          },
+          "lookup-only": {
+            "required": false,
+            "default": "false"
+          },
+          "save-always": {
+            "required": false,
+            "default": "false"
+          }
+        },
+        "outputs": [
+          "cache-hit"
+        ],
+        "using": "node24"
+      },
+      "metadata_sha256": "c04edf35104c16c8944076df01561748bac9cd10941417e467a236e508e52dda",
+      "observation": {
+        "full_name": "actions/cache",
+        "stargazers_count": 5590,
+        "archived": false,
+        "pushed_at": "2026-07-15T18:13:46Z"
+      },
+      "publisher": {
+        "matched_repository": true,
+        "badge_observed": true,
+        "unverified_owner_field_observed": false,
+        "status": "verified creator observed",
+        "method": "Exact repository link plus Marketplace verified-owner markup; absence alone is not proof."
+      },
+      "release_observation": {
+        "tag_name": "v6.1.0",
+        "html_url": "https://github.com/actions/cache/releases/tag/v6.1.0",
+        "published_at": "2026-06-26T19:17:06Z",
+        "draft": false,
+        "prerelease": false
+      }
+    },
+    {
+      "repository": "docker/build-push-action",
+      "checked_on": "2026-10-30",
+      "requested_tag": "v7.4.0",
+      "requested_sha": "c3c9e263c25d99ce0380d002d59b67737d91b0dc",
+      "checks": [
+        {
+          "kind": "tag",
+          "url": "https://api.github.com/repos/docker/build-push-action/git/ref/tags/v7.4.0",
+          "result": "ok"
+        },
+        {
+          "kind": "metadata",
+          "url": "https://raw.githubusercontent.com/docker/build-push-action/c3c9e263c25d99ce0380d002d59b67737d91b0dc/action.yml",
+          "result": "ok"
+        },
+        {
+          "kind": "repository",
+          "url": "https://api.github.com/repos/docker/build-push-action",
+          "result": "ok"
+        },
+        {
+          "kind": "marketplace",
+          "url": "https://github.com/marketplace/actions/build-and-push-docker-images",
+          "result": "ok"
+        },
+        {
+          "kind": "publisher markup retry",
+          "url": "https://github.com/marketplace/actions/build-and-push-docker-images",
+          "result": "ok"
+        },
+        {
+          "kind": "release metadata",
+          "url": "https://api.github.com/repos/docker/build-push-action/releases/tags/v7.4.0",
+          "result": "ok"
+        }
+      ],
+      "resolved_sha": "c3c9e263c25d99ce0380d002d59b67737d91b0dc",
+      "pin_matches": true,
+      "metadata": {
+        "inputs": {
+          "add-hosts": {
+            "required": false
+          },
+          "allow": {
+            "required": false
+          },
+          "annotations": {
+            "required": false
+          },
+          "attests": {
+            "required": false
+          },
+          "build-args": {
+            "required": false
+          },
+          "build-contexts": {
+            "required": false
+          },
+          "builder": {
+            "required": false
+          },
+          "cache-from": {
+            "required": false
+          },
+          "cache-to": {
+            "required": false
+          },
+          "call": {
+            "required": false
+          },
+          "cgroup-parent": {
+            "required": false
+          },
+          "context": {
+            "required": false
+          },
+          "file": {
+            "required": false
+          },
+          "labels": {
+            "required": false
+          },
+          "load": {
+            "required": false,
+            "default": "false"
+          },
+          "network": {
+            "required": false
+          },
+          "no-cache": {
+            "required": false,
+            "default": "false"
+          },
+          "no-cache-filters": {
+            "required": false
+          },
+          "outputs": {
+            "required": false
+          },
+          "platforms": {
+            "required": false
+          },
+          "provenance": {
+            "required": false
+          },
+          "pull": {
+            "required": false,
+            "default": "false"
+          },
+          "push": {
+            "required": false,
+            "default": "false"
+          },
+          "sbom": {
+            "required": false
+          },
+          "secrets": {
+            "required": false
+          },
+          "secret-envs": {
+            "required": false
+          },
+          "secret-files": {
+            "required": false
+          },
+          "shm-size": {
+            "required": false
+          },
+          "ssh": {
+            "required": false
+          },
+          "tags": {
+            "required": false
+          },
+          "target": {
+            "required": false
+          },
+          "ulimit": {
+            "required": false
+          },
+          "github-token": {
+            "required": false,
+            "default": "${{ github.token }}"
+          }
+        },
+        "outputs": [
+          "imageid",
+          "digest",
+          "metadata"
+        ],
+        "using": "node24"
+      },
+      "metadata_sha256": "5c1ade75252eabe541b96cc39a2165a07c8850f9bcd3f9b75f5394fbdfb215fd",
+      "observation": {
+        "full_name": "docker/build-push-action",
+        "stargazers_count": 5421,
+        "archived": false,
+        "pushed_at": "2026-10-30T02:16:22Z"
+      },
+      "publisher": {
+        "matched_repository": true,
+        "badge_observed": true,
+        "unverified_owner_field_observed": false,
+        "status": "verified creator observed",
+        "method": "Exact repository link plus Marketplace verified-owner markup; absence alone is not proof."
+      },
+      "release_observation": {
+        "tag_name": "v7.4.0",
+        "html_url": "https://github.com/docker/build-push-action/releases/tag/v7.4.0",
+        "published_at": "2026-09-15T08:22:01Z",
+        "draft": false,
+        "prerelease": false
+      }
+    },
+    {
+      "repository": "actions/setup-node",
+      "checked_on": "2026-10-30",
+      "requested_tag": "v7.1.0",
+      "requested_sha": "949feb2413d6458794dcd2491c4babbbce0c15c1",
+      "checks": [
+        {
+          "kind": "tag",
+          "url": "https://api.github.com/repos/actions/setup-node/git/ref/tags/v7.1.0",
+          "result": "ok"
+        },
+        {
+          "kind": "metadata",
+          "url": "https://raw.githubusercontent.com/actions/setup-node/949feb2413d6458794dcd2491c4babbbce0c15c1/action.yml",
+          "result": "ok"
+        },
+        {
+          "kind": "repository",
+          "url": "https://api.github.com/repos/actions/setup-node",
+          "result": "ok"
+        },
+        {
+          "kind": "marketplace",
+          "url": "https://github.com/marketplace/actions/setup-node-js-environment",
+          "result": "ok"
+        },
+        {
+          "kind": "publisher markup retry",
+          "url": "https://github.com/marketplace/actions/setup-node-js-environment",
+          "result": "ok"
+        },
+        {
+          "kind": "release metadata",
+          "url": "https://api.github.com/repos/actions/setup-node/releases/tags/v7.1.0",
+          "result": "ok"
+        }
+      ],
+      "resolved_sha": "949feb2413d6458794dcd2491c4babbbce0c15c1",
+      "pin_matches": true,
+      "metadata": {
+        "inputs": {
+          "node-version": {},
+          "node-version-file": {},
+          "architecture": {},
+          "check-latest": {
+            "default": false
+          },
+          "registry-url": {},
+          "scope": {},
+          "token": {
+            "default": "${{ github.server_url == 'https://github.com' && github.token || '' }}"
+          },
+          "cache": {},
+          "package-manager-cache": {
+            "default": true
+          },
+          "cache-dependency-path": {},
+          "mirror": {},
+          "mirror-token": {}
+        },
+        "outputs": [
+          "cache-hit",
+          "cache-primary-key",
+          "cache-matched-key",
+          "node-version"
+        ],
+        "using": "node24"
+      },
+      "metadata_sha256": "84cd55863dbadfb83ed786c0bb4336553c2f4ceb52e102fccec01848f1977387",
+      "observation": {
+        "full_name": "actions/setup-node",
+        "stargazers_count": 5012,
+        "archived": false,
+        "pushed_at": "2026-10-17T10:35:01Z"
+      },
+      "publisher": {
+        "matched_repository": true,
+        "badge_observed": true,
+        "unverified_owner_field_observed": false,
+        "status": "verified creator observed",
+        "method": "Exact repository link plus Marketplace verified-owner markup; absence alone is not proof."
+      },
+      "release_observation": {
+        "tag_name": "v7.1.0",
+        "html_url": "https://github.com/actions/setup-node/releases/tag/v7.1.0",
+        "published_at": "2026-10-08T02:52:34Z",
+        "draft": false,
+        "prerelease": false
+      }
+    },
+    {
+      "repository": "actions/upload-artifact",
+      "checked_on": "2026-10-30",
+      "requested_tag": "v7.0.2",
+      "requested_sha": "cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+      "checks": [
+        {
+          "kind": "tag",
+          "url": "https://api.github.com/repos/actions/upload-artifact/git/ref/tags/v7.0.2",
+          "result": "ok"
+        },
+        {
+          "kind": "metadata",
+          "url": "https://raw.githubusercontent.com/actions/upload-artifact/cf430e030ddbb5b0abf93d22962f4752f3646cd9/action.yml",
+          "result": "ok"
+        },
+        {
+          "kind": "repository",
+          "url": "https://api.github.com/repos/actions/upload-artifact",
+          "result": "ok"
+        },
+        {
+          "kind": "marketplace",
+          "url": "https://github.com/marketplace/actions/upload-a-build-artifact",
+          "result": "ok"
+        },
+        {
+          "kind": "publisher markup retry",
+          "url": "https://github.com/marketplace/actions/upload-a-build-artifact",
+          "result": "ok"
+        },
+        {
+          "kind": "release metadata",
+          "url": "https://api.github.com/repos/actions/upload-artifact/releases/tags/v7.0.2",
+          "result": "ok"
+        }
+      ],
+      "resolved_sha": "cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+      "pin_matches": true,
+      "metadata": {
+        "inputs": {
+          "name": {
+            "default": "artifact"
+          },
+          "path": {
+            "required": true
+          },
+          "if-no-files-found": {
+            "default": "warn"
+          },
+          "retention-days": {},
+          "compression-level": {
+            "default": "6"
+          },
+          "overwrite": {
+            "default": "false"
+          },
+          "include-hidden-files": {
+            "default": "false"
+          },
+          "archive": {
+            "default": "true"
+          }
+        },
+        "outputs": [
+          "artifact-id",
+          "artifact-url",
+          "artifact-digest"
+        ],
+        "using": "node24"
+      },
+      "metadata_sha256": "c5979822866a72362e609844b6ebe77d4b7e759af68cc1c2c425dcf51481fab4",
+      "observation": {
+        "full_name": "actions/upload-artifact",
+        "stargazers_count": 4244,
+        "archived": false,
+        "pushed_at": "2026-10-07T10:18:23Z"
+      },
+      "publisher": {
+        "matched_repository": true,
+        "badge_observed": true,
+        "unverified_owner_field_observed": false,
+        "status": "verified creator observed",
+        "method": "Exact repository link plus Marketplace verified-owner markup; absence alone is not proof."
+      },
+      "release_observation": {
+        "tag_name": "v7.0.2",
+        "html_url": "https://github.com/actions/upload-artifact/releases/tag/v7.0.2",
+        "published_at": "2026-10-07T10:08:14Z",
+        "draft": false,
+        "prerelease": false
+      }
+    },
+    {
+      "repository": "dorny/paths-filter",
+      "checked_on": "2026-10-30",
+      "requested_tag": "v4.0.3",
+      "requested_sha": "ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d",
+      "checks": [
+        {
+          "kind": "tag",
+          "url": "https://api.github.com/repos/dorny/paths-filter/git/ref/tags/v4.0.3",
+          "result": "ok"
+        },
+        {
+          "kind": "metadata",
+          "url": "https://raw.githubusercontent.com/dorny/paths-filter/ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d/action.yml",
+          "result": "ok"
+        },
+        {
+          "kind": "repository",
+          "url": "https://api.github.com/repos/dorny/paths-filter",
+          "result": "ok"
+        },
+        {
+          "kind": "marketplace",
+          "url": "https://github.com/marketplace/actions/paths-changes-filter",
+          "result": "ok"
+        },
+        {
+          "kind": "publisher markup retry",
+          "url": "https://github.com/marketplace/actions/paths-changes-filter",
+          "result": "ok"
+        },
+        {
+          "kind": "release metadata",
+          "url": "https://api.github.com/repos/dorny/paths-filter/releases/tags/v4.0.3",
+          "result": "ok"
+        }
+      ],
+      "resolved_sha": "ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d",
+      "pin_matches": true,
+      "metadata": {
+        "inputs": {
+          "token": {
+            "required": false,
+            "default": "${{ github.token }}"
+          },
+          "working-directory": {
+            "required": false
+          },
+          "ref": {
+            "required": false
+          },
+          "base": {
+            "required": false
+          },
+          "filters": {
+            "required": true
+          },
+          "list-files": {
+            "required": false,
+            "default": "none"
+          },
+          "initial-fetch-depth": {
+            "required": false,
+            "default": "100"
+          },
+          "predicate-quantifier": {
+            "required": false,
+            "default": "some"
+          }
+        },
+        "outputs": [
+          "changes"
+        ],
+        "using": "node24"
+      },
+      "metadata_sha256": "6565cd2dd74b55b3b17d4e9a8c7d6ee7688e0cc9a5c7c905570c04987cc0ed85",
+      "observation": {
+        "full_name": "dorny/paths-filter",
+        "stargazers_count": 3382,
+        "archived": false,
+        "pushed_at": "2026-09-27T22:03:36Z"
+      },
+      "publisher": {
+        "matched_repository": true,
+        "badge_observed": false,
+        "unverified_owner_field_observed": true,
+        "status": "no badge observed",
+        "method": "Exact repository link plus Marketplace verified-owner markup; absence alone is not proof."
+      },
+      "release_observation": {
+        "tag_name": "v4.0.3",
+        "html_url": "https://github.com/dorny/paths-filter/releases/tag/v4.0.3",
+        "published_at": "2026-08-05T12:17:06Z",
+        "draft": false,
+        "prerelease": false
+      }
+    },
+    {
+      "repository": "peter-evans/create-pull-request",
+      "checked_on": "2026-10-30",
+      "requested_tag": "v8.1.1",
+      "requested_sha": "5f6978faf089d4d20b00c7766989d076bb2fc7f1",
+      "checks": [
+        {
+          "kind": "tag",
+          "url": "https://api.github.com/repos/peter-evans/create-pull-request/git/ref/tags/v8.1.1",
+          "result": "ok"
+        },
+        {
+          "kind": "metadata",
+          "url": "https://raw.githubusercontent.com/peter-evans/create-pull-request/5f6978faf089d4d20b00c7766989d076bb2fc7f1/action.yml",
+          "result": "ok"
+        },
+        {
+          "kind": "repository",
+          "url": "https://api.github.com/repos/peter-evans/create-pull-request",
+          "result": "ok"
+        },
+        {
+          "kind": "marketplace",
+          "url": "https://github.com/marketplace/actions/create-pull-request",
+          "result": "ok"
+        },
+        {
+          "kind": "publisher markup retry",
+          "url": "https://github.com/marketplace/actions/create-pull-request",
+          "result": "ok"
+        },
+        {
+          "kind": "release metadata",
+          "url": "https://api.github.com/repos/peter-evans/create-pull-request/releases/tags/v8.1.1",
+          "result": "ok"
+        }
+      ],
+      "resolved_sha": "5f6978faf089d4d20b00c7766989d076bb2fc7f1",
+      "pin_matches": true,
+      "metadata": {
+        "inputs": {
+          "token": {
+            "default": "${{ github.token }}"
+          },
+          "branch-token": {},
+          "path": {},
+          "add-paths": {},
+          "commit-message": {
+            "default": "[create-pull-request] automated change"
+          },
+          "committer": {
+            "default": "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          },
+          "author": {
+            "default": "${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>"
+          },
+          "signoff": {
+            "default": false
+          },
+          "branch": {
+            "default": "create-pull-request/patch"
+          },
+          "delete-branch": {
+            "default": false
+          },
+          "branch-suffix": {},
+          "base": {},
+          "push-to-fork": {},
+          "sign-commits": {
+            "default": false
+          },
+          "title": {
+            "default": "Changes by create-pull-request action"
+          },
+          "body": {
+            "default": "Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action"
+          },
+          "body-path": {},
+          "labels": {},
+          "assignees": {},
+          "reviewers": {},
+          "team-reviewers": {},
+          "milestone": {},
+          "draft": {
+            "default": false
+          },
+          "maintainer-can-modify": {
+            "default": true
+          }
+        },
+        "outputs": [
+          "pull-request-number",
+          "pull-request-url",
+          "pull-request-operation",
+          "pull-request-head-sha",
+          "pull-request-branch"
+        ],
+        "using": "node24"
+      },
+      "metadata_sha256": "497b8150b90e3771de7a8e6de08a370695b3a08b316b608609f9ea2ea28a1070",
+      "observation": {
+        "full_name": "peter-evans/create-pull-request",
+        "stargazers_count": 2872,
+        "archived": false,
+        "pushed_at": "2026-10-30T02:13:47Z"
+      },
+      "publisher": {
+        "matched_repository": true,
+        "badge_observed": false,
+        "unverified_owner_field_observed": true,
+        "status": "no badge observed",
+        "method": "Exact repository link plus Marketplace verified-owner markup; absence alone is not proof."
+      },
+      "release_observation": {
+        "tag_name": "v8.1.1",
+        "html_url": "https://github.com/peter-evans/create-pull-request/releases/tag/v8.1.1",
+        "published_at": "2026-04-10T16:27:57Z",
+        "draft": false,
+        "prerelease": false
+      }
+    },
+    {
+      "repository": "googleapis/release-please-action",
+      "checked_on": "2026-10-30",
+      "requested_tag": "v5.0.0",
+      "requested_sha": "45996ed1f6d02564a971a2fa1b5860e934307cf7",
+      "checks": [
+        {
+          "kind": "tag",
+          "url": "https://api.github.com/repos/googleapis/release-please-action/git/ref/tags/v5.0.0",
+          "result": "ok"
+        },
+        {
+          "kind": "metadata",
+          "url": "https://raw.githubusercontent.com/googleapis/release-please-action/45996ed1f6d02564a971a2fa1b5860e934307cf7/action.yml",
+          "result": "<urlopen error _ssl.c:1064: The handshake operation timed out>"
+        },
+        {
+          "kind": "repository",
+          "url": "https://api.github.com/repos/googleapis/release-please-action",
+          "result": "ok"
+        },
+        {
+          "kind": "marketplace",
+          "url": "https://github.com/marketplace/actions/release-please-action",
+          "result": "ok"
+        },
+        {
+          "kind": "metadata retry",
+          "url": "https://raw.githubusercontent.com/googleapis/release-please-action/45996ed1f6d02564a971a2fa1b5860e934307cf7/action.yml",
+          "result": "ok"
+        },
+        {
+          "kind": "publisher markup retry",
+          "url": "https://github.com/marketplace/actions/release-please-action",
+          "result": "ok"
+        },
+        {
+          "kind": "publisher embedded listing match",
+          "url": "https://github.com/marketplace/actions/release-please-action",
+          "result": "ok"
+        },
+        {
+          "kind": "release metadata",
+          "url": "https://api.github.com/repos/googleapis/release-please-action/releases/tags/v5.0.0",
+          "result": "ok"
+        }
+      ],
+      "resolved_sha": "45996ed1f6d02564a971a2fa1b5860e934307cf7",
+      "pin_matches": true,
+      "observation": {
+        "full_name": "googleapis/release-please-action",
+        "stargazers_count": 2560,
+        "archived": false,
+        "pushed_at": "2026-08-28T14:42:38Z"
+      },
+      "publisher": {
+        "matched_repository": true,
+        "badge_observed": true,
+        "unverified_owner_field_observed": false,
+        "status": "verified creator observed",
+        "method": "Exact externalUsesPathPrefix in Marketplace embedded listing data plus verified-owner markup. Absolute-link-only attempts were inconclusive."
+      },
+      "metadata": {
+        "inputs": {
+          "token": {
+            "required": false,
+            "default": "${{ github.token }}"
+          },
+          "release-type": {
+            "required": false,
+            "default": ""
+          },
+          "path": {
+            "required": false,
+            "default": ""
+          },
+          "target-branch": {
+            "required": false,
+            "default": ""
+          },
+          "config-file": {
+            "required": false,
+            "default": ""
+          },
+          "manifest-file": {
+            "required": false,
+            "default": ""
+          },
+          "repo-url": {
+            "required": false,
+            "default": "${{ github.repository }}"
+          },
+          "github-api-url": {
+            "required": false,
+            "default": "${{ github.api_url }}"
+          },
+          "github-graphql-url": {
+            "required": false,
+            "default": "${{ github.graphql_url }}"
+          },
+          "fork": {
+            "required": false,
+            "default": false
+          },
+          "include-component-in-tag": {
+            "required": false,
+            "default": false
+          },
+          "proxy-server": {
+            "required": false,
+            "default": ""
+          },
+          "skip-github-release": {
+            "required": false,
+            "default": false
+          },
+          "skip-github-pull-request": {
+            "required": false,
+            "default": false
+          },
+          "skip-labeling": {
+            "required": false,
+            "default": false
+          },
+          "changelog-host": {
+            "required": false,
+            "default": "${{ github.server_url }}"
+          },
+          "versioning-strategy": {
+            "required": false,
+            "default": "default"
+          },
+          "release-as": {
+            "required": false,
+            "default": ""
+          }
+        },
+        "outputs": [],
+        "using": "node24"
+      },
+      "release_observation": {
+        "tag_name": "v5.0.0",
+        "html_url": "https://github.com/googleapis/release-please-action/releases/tag/v5.0.0",
+        "published_at": "2026-04-22T18:03:34Z",
+        "draft": false,
+        "prerelease": false
+      }
+    },
+    {
+      "repository": "actions/download-artifact",
+      "checked_on": "2026-10-30",
+      "requested_tag": "v8.0.2",
+      "requested_sha": "9000827ccba6bdab643e8b6fd33ac0654aef8333",
+      "checks": [
+        {
+          "kind": "tag",
+          "url": "https://api.github.com/repos/actions/download-artifact/git/ref/tags/v8.0.2",
+          "result": "ok"
+        },
+        {
+          "kind": "metadata",
+          "url": "https://raw.githubusercontent.com/actions/download-artifact/9000827ccba6bdab643e8b6fd33ac0654aef8333/action.yml",
+          "result": "ok"
+        },
+        {
+          "kind": "repository",
+          "url": "https://api.github.com/repos/actions/download-artifact",
+          "result": "ok"
+        },
+        {
+          "kind": "marketplace",
+          "url": "https://github.com/marketplace/actions/download-a-build-artifact",
+          "result": "ok"
+        },
+        {
+          "kind": "publisher markup retry",
+          "url": "https://github.com/marketplace/actions/download-a-build-artifact",
+          "result": "ok"
+        },
+        {
+          "kind": "release metadata",
+          "url": "https://api.github.com/repos/actions/download-artifact/releases/tags/v8.0.2",
+          "result": "ok"
+        }
+      ],
+      "resolved_sha": "9000827ccba6bdab643e8b6fd33ac0654aef8333",
+      "pin_matches": true,
+      "metadata": {
+        "inputs": {
+          "name": {
+            "required": false
+          },
+          "artifact-ids": {
+            "required": false
+          },
+          "path": {
+            "required": false
+          },
+          "pattern": {
+            "required": false
+          },
+          "merge-multiple": {
+            "required": false,
+            "default": "false"
+          },
+          "github-token": {
+            "required": false
+          },
+          "repository": {
+            "required": false,
+            "default": "${{ github.repository }}"
+          },
+          "run-id": {
+            "required": false,
+            "default": "${{ github.run_id }}"
+          },
+          "skip-decompress": {
+            "required": false,
+            "default": "false"
+          },
+          "digest-mismatch": {
+            "required": false,
+            "default": "error"
+          }
+        },
+        "outputs": [
+          "download-path"
+        ],
+        "using": "node24"
+      },
+      "metadata_sha256": "e98559b7a31ba31be4709f20d22102dc2737fa630f69a339eb89981151e505fe",
+      "observation": {
+        "full_name": "actions/download-artifact",
+        "stargazers_count": 1920,
+        "archived": false,
+        "pushed_at": "2026-10-07T10:19:59Z"
+      },
+      "publisher": {
+        "matched_repository": true,
+        "badge_observed": true,
+        "unverified_owner_field_observed": false,
+        "status": "verified creator observed",
+        "method": "Exact repository link plus Marketplace verified-owner markup; absence alone is not proof."
+      },
+      "release_observation": {
+        "tag_name": "v8.0.2",
+        "html_url": "https://github.com/actions/download-artifact/releases/tag/v8.0.2",
+        "published_at": "2026-10-07T10:09:51Z",
+        "draft": false,
+        "prerelease": false
+      }
+    },
+    {
+      "repository": "docker/login-action",
+      "checked_on": "2026-10-30",
+      "requested_tag": "v4.7.0",
+      "requested_sha": "81c6f93d4bc991e510b342a00b419b3bb4efc5c6",
+      "checks": [
+        {
+          "kind": "tag",
+          "url": "https://api.github.com/repos/docker/login-action/git/ref/tags/v4.7.0",
+          "result": "ok"
+        },
+        {
+          "kind": "metadata",
+          "url": "https://raw.githubusercontent.com/docker/login-action/81c6f93d4bc991e510b342a00b419b3bb4efc5c6/action.yml",
+          "result": "ok"
+        },
+        {
+          "kind": "repository",
+          "url": "https://api.github.com/repos/docker/login-action",
+          "result": "ok"
+        },
+        {
+          "kind": "marketplace",
+          "url": "https://github.com/marketplace/actions/docker-login",
+          "result": "ok"
+        },
+        {
+          "kind": "publisher markup retry",
+          "url": "https://github.com/marketplace/actions/docker-login",
+          "result": "ok"
+        },
+        {
+          "kind": "release metadata",
+          "url": "https://api.github.com/repos/docker/login-action/releases/tags/v4.7.0",
+          "result": "ok"
+        }
+      ],
+      "resolved_sha": "81c6f93d4bc991e510b342a00b419b3bb4efc5c6",
+      "pin_matches": true,
+      "metadata": {
+        "inputs": {
+          "registry": {
+            "required": false
+          },
+          "username": {
+            "required": false
+          },
+          "password": {
+            "required": false
+          },
+          "ecr": {
+            "required": false
+          },
+          "scope": {
+            "required": false
+          },
+          "logout": {
+            "required": false,
+            "default": "true"
+          },
+          "registry-auth": {
+            "required": false
+          }
+        },
+        "outputs": [],
+        "using": "node24"
+      },
+      "metadata_sha256": "e65e6bdc57fc10adcee036a393229aae6b9a9f451b69528f4ff50d4b0e93f156",
+      "observation": {
+        "full_name": "docker/login-action",
+        "stargazers_count": 1497,
+        "archived": false,
+        "pushed_at": "2026-10-26T06:04:04Z"
+      },
+      "publisher": {
+        "matched_repository": true,
+        "badge_observed": true,
+        "unverified_owner_field_observed": false,
+        "status": "verified creator observed",
+        "method": "Exact repository link plus Marketplace verified-owner markup; absence alone is not proof."
+      },
+      "release_observation": {
+        "tag_name": "v4.7.0",
+        "html_url": "https://github.com/docker/login-action/releases/tag/v4.7.0",
+        "published_at": "2026-10-23T15:22:45Z",
+        "draft": false,
+        "prerelease": false
+      }
+    },
+    {
+      "repository": "docker/setup-buildx-action",
+      "checked_on": "2026-10-30",
+      "requested_tag": "v4.4.1",
+      "requested_sha": "f87e5991a6d7451dcb8d9637bfbc97413f497069",
+      "checks": [
+        {
+          "kind": "tag",
+          "url": "https://api.github.com/repos/docker/setup-buildx-action/git/ref/tags/v4.4.1",
+          "result": "ok"
+        },
+        {
+          "kind": "metadata",
+          "url": "https://raw.githubusercontent.com/docker/setup-buildx-action/f87e5991a6d7451dcb8d9637bfbc97413f497069/action.yml",
+          "result": "ok"
+        },
+        {
+          "kind": "repository",
+          "url": "https://api.github.com/repos/docker/setup-buildx-action",
+          "result": "ok"
+        },
+        {
+          "kind": "marketplace",
+          "url": "https://github.com/marketplace/actions/docker-setup-buildx",
+          "result": "ok"
+        },
+        {
+          "kind": "publisher markup retry",
+          "url": "https://github.com/marketplace/actions/docker-setup-buildx",
+          "result": "ok"
+        },
+        {
+          "kind": "release metadata",
+          "url": "https://api.github.com/repos/docker/setup-buildx-action/releases/tags/v4.4.1",
+          "result": "ok"
+        }
+      ],
+      "resolved_sha": "f87e5991a6d7451dcb8d9637bfbc97413f497069",
+      "pin_matches": true,
+      "metadata": {
+        "inputs": {
+          "version": {
+            "required": false
+          },
+          "driver": {
+            "required": false,
+            "default": "docker-container"
+          },
+          "driver-opts": {
+            "required": false
+          },
+          "buildkitd-flags": {
+            "required": false
+          },
+          "buildkitd-config": {
+            "required": false
+          },
+          "buildkitd-config-inline": {
+            "required": false
+          },
+          "use": {
+            "required": false,
+            "default": "true"
+          },
+          "name": {
+            "required": false
+          },
+          "endpoint": {
+            "required": false
+          },
+          "platforms": {
+            "required": false
+          },
+          "append": {
+            "required": false
+          },
+          "keep-state": {
+            "required": false,
+            "default": "false"
+          },
+          "cache-binary": {
+            "required": false,
+            "default": "true"
+          },
+          "cleanup": {
+            "required": false,
+            "default": "true"
+          }
+        },
+        "outputs": [
+          "name",
+          "driver",
+          "platforms",
+          "nodes",
+          "endpoint",
+          "status",
+          "flags"
+        ],
+        "using": "node24"
+      },
+      "metadata_sha256": "9c55229011a0566758962f36c74309c8ab06f8905a5997591a6a46319401ab38",
+      "observation": {
+        "full_name": "docker/setup-buildx-action",
+        "stargazers_count": 1392,
+        "archived": false,
+        "pushed_at": "2026-10-29T20:48:27Z"
+      },
+      "publisher": {
+        "matched_repository": true,
+        "badge_observed": true,
+        "unverified_owner_field_observed": false,
+        "status": "verified creator observed",
+        "method": "Exact repository link plus Marketplace verified-owner markup; absence alone is not proof."
+      },
+      "release_observation": {
+        "tag_name": "v4.4.1",
+        "html_url": "https://github.com/docker/setup-buildx-action/releases/tag/v4.4.1",
+        "published_at": "2026-09-16T07:50:21Z",
+        "draft": false,
+        "prerelease": false
+      }
+    },
+    {
+      "repository": "docker/metadata-action",
+      "checked_on": "2026-10-30",
+      "requested_tag": "v6.2.0",
+      "requested_sha": "dc802804100637a589fabce1cb79ff13a1411302",
+      "checks": [
+        {
+          "kind": "tag",
+          "url": "https://api.github.com/repos/docker/metadata-action/git/ref/tags/v6.2.0",
+          "result": "ok"
+        },
+        {
+          "kind": "metadata",
+          "url": "https://raw.githubusercontent.com/docker/metadata-action/dc802804100637a589fabce1cb79ff13a1411302/action.yml",
+          "result": "ok"
+        },
+        {
+          "kind": "repository",
+          "url": "https://api.github.com/repos/docker/metadata-action",
+          "result": "ok"
+        },
+        {
+          "kind": "marketplace",
+          "url": "https://github.com/marketplace/actions/docker-metadata-action",
+          "result": "ok"
+        },
+        {
+          "kind": "publisher markup retry",
+          "url": "https://github.com/marketplace/actions/docker-metadata-action",
+          "result": "ok"
+        },
+        {
+          "kind": "release metadata",
+          "url": "https://api.github.com/repos/docker/metadata-action/releases/tags/v6.2.0",
+          "result": "ok"
+        }
+      ],
+      "resolved_sha": "dc802804100637a589fabce1cb79ff13a1411302",
+      "pin_matches": true,
+      "metadata": {
+        "inputs": {
+          "context": {
+            "required": true,
+            "default": "workflow"
+          },
+          "images": {
+            "required": false
+          },
+          "tags": {
+            "required": false
+          },
+          "flavor": {
+            "required": false
+          },
+          "labels": {
+            "required": false
+          },
+          "annotations": {
+            "required": false
+          },
+          "sep-tags": {
+            "required": false
+          },
+          "sep-labels": {
+            "required": false
+          },
+          "sep-annotations": {
+            "required": false
+          },
+          "bake-target": {
+            "required": false
+          },
+          "github-token": {
+            "required": true,
+            "default": "${{ github.token }}"
+          }
+        },
+        "outputs": [
+          "version",
+          "tags",
+          "tag-names",
+          "labels",
+          "annotations",
+          "json",
+          "bake-file-tags",
+          "bake-file-labels",
+          "bake-file-annotations",
+          "bake-file"
+        ],
+        "using": "node24"
+      },
+      "metadata_sha256": "b339c251938cde1297c3aacfe3af62132e1a4f27e625672c7d5cd85050848e25",
+      "observation": {
+        "full_name": "docker/metadata-action",
+        "stargazers_count": 1154,
+        "archived": false,
+        "pushed_at": "2026-10-30T12:48:51Z"
+      },
+      "publisher": {
+        "matched_repository": true,
+        "badge_observed": true,
+        "unverified_owner_field_observed": false,
+        "status": "verified creator observed",
+        "method": "Exact repository link plus Marketplace verified-owner markup; absence alone is not proof."
+      },
+      "release_observation": {
+        "tag_name": "v6.2.0",
+        "html_url": "https://github.com/docker/metadata-action/releases/tag/v6.2.0",
+        "published_at": "2026-07-02T08:55:18Z",
+        "draft": false,
+        "prerelease": false
+      }
+    },
+    {
+      "repository": "astral-sh/setup-uv",
+      "checked_on": "2026-10-30",
+      "requested_tag": "v10.3.3",
+      "requested_sha": "68559e99cc807c1eb7e9238fd43a15bba460eec2",
+      "checks": [
+        {
+          "kind": "tag",
+          "url": "https://api.github.com/repos/astral-sh/setup-uv/git/ref/tags/v10.3.3",
+          "result": "ok"
+        },
+        {
+          "kind": "metadata",
+          "url": "https://raw.githubusercontent.com/astral-sh/setup-uv/68559e99cc807c1eb7e9238fd43a15bba460eec2/action.yml",
+          "result": "ok"
+        },
+        {
+          "kind": "repository",
+          "url": "https://api.github.com/repos/astral-sh/setup-uv",
+          "result": "ok"
+        },
+        {
+          "kind": "marketplace",
+          "url": "https://github.com/marketplace/actions/astral-sh-setup-uv",
+          "result": "ok"
+        },
+        {
+          "kind": "publisher markup retry",
+          "url": "https://github.com/marketplace/actions/astral-sh-setup-uv",
+          "result": "ok"
+        },
+        {
+          "kind": "publisher embedded listing match",
+          "url": "https://github.com/marketplace/actions/astral-sh-setup-uv",
+          "result": "ok"
+        },
+        {
+          "kind": "release metadata",
+          "url": "https://api.github.com/repos/astral-sh/setup-uv/releases/tags/v10.3.3",
+          "result": "ok"
+        }
+      ],
+      "resolved_sha": "68559e99cc807c1eb7e9238fd43a15bba460eec2",
+      "pin_matches": true,
+      "metadata": {
+        "inputs": {
+          "version": {
+            "default": ""
+          },
+          "version-file": {
+            "default": ""
+          },
+          "python-version": {
+            "required": false
+          },
+          "python-arch": {
+            "required": false
+          },
+          "activate-environment": {
+            "default": "false"
+          },
+          "venv-path": {
+            "default": ""
+          },
+          "no-project": {
+            "default": "false"
+          },
+          "working-directory": {
+            "default": "${{ github.workspace }}"
+          },
+          "checksum": {
+            "required": false
+          },
+          "github-token": {
+            "required": false,
+            "default": "${{ github.token }}"
+          },
+          "enable-cache": {
+            "default": "auto"
+          },
+          "cache-dependency-glob": {
+            "default": "**/*requirements*.txt\n**/*requirements*.in\n**/*constraints*.txt\n**/*constraints*.in\n**/pyproject.toml\n**/uv.lock\n**/*.py.lock\n"
+          },
+          "restore-cache": {
+            "default": "true"
+          },
+          "save-cache": {
+            "default": "auto"
+          },
+          "cache-suffix": {
+            "required": false
+          },
+          "cache-local-path": {
+            "default": ""
+          },
+          "prune-cache": {
+            "default": "false"
+          },
+          "cache-python": {
+            "default": "false"
+          },
+          "ignore-nothing-to-cache": {
+            "default": "false"
+          },
+          "ignore-empty-workdir": {
+            "default": "false"
+          },
+          "tool-dir": {
+            "required": false
+          },
+          "tool-bin-dir": {
+            "required": false
+          },
+          "manifest-file": {
+            "required": false
+          },
+          "download-from-astral-mirror": {
+            "default": "true"
+          },
+          "add-problem-matchers": {
+            "default": "true"
+          },
+          "quiet": {
+            "default": "false"
+          },
+          "resolution-strategy": {
+            "default": "highest"
+          }
+        },
+        "outputs": [
+          "uv-version",
+          "uv-path",
+          "uvx-path",
+          "cache-hit",
+          "cache-key",
+          "venv",
+          "python-version",
+          "python-runtime-id",
+          "python-cache-hit"
+        ],
+        "using": "node24"
+      },
+      "metadata_sha256": "d673bd5ea2cdb9af0c2c2e0d392afe966637bd49e4397313b9086ae582548b37",
+      "observation": {
+        "full_name": "astral-sh/setup-uv",
+        "stargazers_count": 898,
+        "archived": false,
+        "pushed_at": "2026-10-28T14:45:35Z"
+      },
+      "publisher": {
+        "matched_repository": true,
+        "badge_observed": true,
+        "unverified_owner_field_observed": false,
+        "status": "verified creator observed",
+        "method": "Exact externalUsesPathPrefix in Marketplace embedded listing data plus verified-owner markup. Absolute-link-only attempts were inconclusive."
+      },
+      "release_observation": {
+        "tag_name": "v10.3.3",
+        "html_url": "https://github.com/astral-sh/setup-uv/releases/tag/v10.3.3",
+        "published_at": "2026-10-28T14:35:19Z",
+        "draft": false,
+        "prerelease": false
+      }
+    }
+  ]
+}

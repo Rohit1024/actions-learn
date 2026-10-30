@@ -1,0 +1,16 @@
+name: Module 6 deterministic reuse contract
+on:
+  workflow_dispatch:
+permissions: {}
+jobs:
+  reuse:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # existing course pin
+        with:
+          persist-credentials: false
+      - run: python3 -B labs/0034/reuse.py
+      - run: python3 -B -m unittest discover -s labs/0034 -p 'test_*.py' -v

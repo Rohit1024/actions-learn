@@ -187,21 +187,7 @@ Explain from memory:
 
 Local checks prove the listed source, bytes, and process behaviors on this host. They do not prove a remote tag contains these files, a release points to the reviewed revision, older runners support the runtime, or a native dependency works on every supported OS. No release, push, container, or hosted execution occurs here. The inactive `labs/0019/module4-contracts.yml` can later test all six local action interfaces in one runner job; static linting is not execution evidence.
 
-Primary sources were checked on **2026-10-30** and are indexed in the module handoff alongside the [curated library](../references/resources.md). Capture the learner's stale-bundle prediction and review rationale during teaching. Continue to [0022](0022-output-contracts-and-mocked-github-api.md) for asynchronous service adapters.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0021
-
-Use docs/lessons/0021-typescript-bundling-and-dist-drift.md and labs/0021/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lesson 0020.
-Ask what the consumer executes before running the safe drift experiment.
-Let me distinguish type, packaging, behavior, and release-reference evidence.
-Pause before worked solutions. Use installed tools without dependency changes.
-Record actual learner evidence and continue at exact file
-docs/lessons/0022-output-contracts-and-mocked-github-api.md.
-```
+Primary sources were checked on **2026-10-30** and are indexed in the module handoff alongside the [curated library](../references/resources.md). Continue to [0022](0022-output-contracts-and-mocked-github-api.md) for asynchronous service adapters.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

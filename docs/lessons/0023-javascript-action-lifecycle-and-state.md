@@ -211,21 +211,7 @@ Answer without reopening the example:
 
 The lab proves actual process isolation, its explicit state-record handoff, filesystem ownership checks, and failure/cleanup examples on this host. It does not execute runner hooks, conditions, cancellation, job-end ordering, or a remote service. The inactive `labs/0019/module4-contracts.yml` references the local main/post action, but has not been run on GitHub or `act`. Source checks dated **2026-10-30** and all executed commands are recorded in the module handoff through the [curated references](../references/resources.md).
 
-During teaching, capture the learner's lifecycle drawing and explanation of the lost-state leak. Continue to [0024](0024-cross-platform-actions-and-versioned-releases.md) for portability and release compatibility.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0023
-
-Use docs/lessons/0023-javascript-action-lifecycle-and-state.md and labs/0023/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lesson 0022.
-Ask me to draw main, persisted state, and job-end cleanup as separate processes.
-Pause at partial-setup and lost-state predictions before showing solutions.
-Distinguish local-main setup from the remote-only pre-hook reference.
-Record actual evidence and continue at exact file
-docs/lessons/0024-cross-platform-actions-and-versioned-releases.md.
-```
+Continue to [0024](0024-cross-platform-actions-and-versioned-releases.md) for portability and release compatibility.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

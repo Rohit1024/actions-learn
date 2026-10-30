@@ -100,7 +100,7 @@ The two function assertions verify trimmed formatting and empty-input rejection.
 ??? tip "Worked prediction"
     A stdout-only adapter can pass the pure function and log assertions but fails the file assertion. A validation failure that leaves a new success-shaped greeting violates this contract even with a nonzero exit. The suite requires the seeded file to remain byte-for-byte unchanged on the tested failures.
 
-For a broader existing baseline, `task test` checks the project's four starter adapters and TypeScript distribution consistency. It does not automatically discover this new lab. Use the explicit command above for Module 3. No `task check` or documentation validator is needed in this authoring thread.
+For a broader existing baseline, `task test` checks the project's four starter adapters and TypeScript distribution consistency. It does not automatically discover this new lab. Use the explicit command above for Module 3.
 
 ## Run the same matrix through the real image
 
@@ -213,21 +213,9 @@ A file-checking action passes its pure tests but fails on a Linux runner because
 
 ## Evidence and next session
 
-Record the learner's own boundary selection, a failing assertion and its repair. Host checks and consumer lint passed during authoring; image/caller execution and hosted integration remain deferred. Continue to [0017](0017-container-errors-signals-and-cleanup.md) for interruptions and cleanup, where an ordinary return is no longer guaranteed.
+Host checks and consumer lint passed during authoring; image/caller execution and hosted integration remain deferred. Continue to [0017](0017-container-errors-signals-and-cleanup.md) for interruptions and cleanup, where an ordinary return is no longer guaranteed.
 
-Primary references were checked on **2026-10-30** and are recorded in `labs/module-3-handoff.md` alongside the [source library](../references/resources.md). The coordinator owns the combined documentation validation pass.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0016
-
-Use docs/lessons/0016-docker-action-direct-and-image-tests.md and labs/0016/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lessons
-0015, 0009, and 0012. Ask me which assertions distinguish rejection from
-startup failure. Run host tests first, predict the scratch-image defect,
-pause before solutions, and record evidence before lesson 0017.
-```
+Primary references were checked on **2026-10-30** and are recorded in `labs/module-3-handoff.md` alongside the [source library](../references/resources.md).
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

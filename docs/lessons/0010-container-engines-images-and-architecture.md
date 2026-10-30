@@ -193,23 +193,7 @@ Retrieve from memory:
 
 Use the read-only map and direct probe first. Run the image helper only when its engine prerequisite is satisfied. Do not claim that a Python host result verifies a Docker action or that a probe image verifies GitHub orchestration. Continue to [0011 · A selected act job](0011-act-targeted-workflow-smoke-tests.md).
 
-!!! note "Documentation validation timing"
-    No Markdown, link, Mermaid, or Zensical checks run in this module thread, and root `task check` is excluded. The coordinator runs **one whole-site `task docs:verify` after all 24 lessons and shared edits are complete**. Engine failure does not justify provisioning infrastructure or reporting a documentation pass.
-
-The linked act sources and [curated library](../references/resources.md) were checked on **2026-10-30**. Capture a future learner's own map and diagnosis, with unknown rows explicit. The module handoff records the authoring environment without inventing learner evidence.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0010
-
-Use docs/lessons/0010-container-engines-images-and-architecture.md and labs/0010/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lesson 0009.
-Ask me to map host, client, socket, Linux engine, image, and process architecture.
-Pause before the absent-socket diagnosis. Reuse existing tools and engine configuration.
-If the engine is unavailable, keep host exercises useful and record image evidence as deferred.
-Continue to lesson 0011; preserve coordinator-only documentation validation for this batch.
-```
+The linked act sources and [curated library](../references/resources.md) were checked on **2026-10-30**. The module handoff records the authoring environment without inventing learner evidence.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

@@ -1,0 +1,35 @@
+{
+  "oidc-ok": {
+    "event": "workflow_dispatch",
+    "ref": "refs/heads/main",
+    "environment": "preview",
+    "id_token_permission": "write",
+    "issuer": "https://token.actions.githubusercontent.com",
+    "audience": "sts.amazonaws.com",
+    "subject": "repo:example/course:environment:preview",
+    "role_scope": "preview-read-only",
+    "approved": true
+  },
+  "oidc-wrong-subject": {
+    "event": "workflow_dispatch",
+    "ref": "refs/heads/main",
+    "environment": "preview",
+    "id_token_permission": "write",
+    "issuer": "https://token.actions.githubusercontent.com",
+    "audience": "sts.amazonaws.com",
+    "subject": "repo:attacker/fork:environment:preview",
+    "role_scope": "preview-read-only",
+    "approved": true
+  },
+  "oidc-no-permission": {
+    "event": "workflow_dispatch",
+    "ref": "refs/heads/main",
+    "environment": "preview",
+    "id_token_permission": "none",
+    "issuer": "https://token.actions.githubusercontent.com",
+    "audience": "sts.amazonaws.com",
+    "subject": "repo:example/course:environment:preview",
+    "role_scope": "preview-read-only",
+    "approved": true
+  }
+}

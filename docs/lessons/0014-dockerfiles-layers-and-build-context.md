@@ -162,21 +162,9 @@ A real action adds a requirements lockfile and a dependency install. Place those
 
 ## Evidence and next session
 
-Record the learner's cache prediction and the first failing build boundary they identify. Host program evidence is available; engine/cache/image experiments remain deferred. A future GitHub check must still exercise actual action building, runtime workspace behavior and runner output processing. Continue to [0015](0015-container-mounts-ownership-and-output-paths.md).
+Host program evidence is available; engine/cache/image experiments remain deferred. A future GitHub check must still exercise actual action building, runtime workspace behavior and runner output processing. Continue to [0015](0015-container-mounts-ownership-and-output-paths.md).
 
-Primary sources above were checked on **2026-10-30**; the [curated library](../references/resources.md) and `labs/module-3-handoff.md` preserve source context and unexecuted boundaries. Documentation validation is reserved for the coordinator's combined authoring pass.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0014
-
-Use docs/lessons/0014-dockerfiles-layers-and-build-context.md and labs/0014/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lesson 0013.
-Ask me to predict the program-only rebuild and the outside-context failure.
-Run the host probe first; inspect the existing engine before image work.
-Pause before solutions and record actual evidence before lesson 0015.
-```
+Primary sources above were checked on **2026-10-30**; the [curated library](../references/resources.md) and `labs/module-3-handoff.md` preserve source context and unexecuted boundaries.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

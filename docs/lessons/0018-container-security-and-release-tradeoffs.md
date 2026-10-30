@@ -211,21 +211,9 @@ A team wants to wrap a native document renderer used by many repositories. It mu
 
 Authoring ran the inventory, four policy tests, the stale-review failure and the current-date policy success. A single host measurement smoke check validates the harness; it supports no speed comparison. The engine connection was refused, so base/image digests, scans, container measurements and release integration are deferred. No container-safety or release-readiness claim is made.
 
-Record the learner's dependency map, stale-pin diagnosis and packaging justification in a live session. Continue in catalog order to [0019 · JavaScript runtime and Toolkit](0019-javascript-action-runtime-and-toolkit.md), even though its lower startup boundary must still be tested on its own terms.
+Continue in catalog order to [0019 · JavaScript runtime and Toolkit](0019-javascript-action-runtime-and-toolkit.md), even though its lower startup boundary must still be tested on its own terms.
 
-Primary sources were checked on **2026-10-30**; details are preserved in `labs/module-3-handoff.md` with proposed additions to the [curated source library](../references/resources.md). Documentation validation is deferred to the coordinator's combined 24-lesson pass.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0018
-
-Use docs/lessons/0018-container-security-and-release-tradeoffs.md and labs/0018/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lessons
-0017, 0014, and 0054. Ask me what each pin freezes and what a scan misses.
-Pause at the stale-review and performance predictions. Populate only actual
-evidence in the worksheet; no release or hosted run is implied. Hand off to 0019.
-```
+Primary sources were checked on **2026-10-30**; details are preserved in `labs/module-3-handoff.md` with proposed additions to the [curated source library](../references/resources.md).
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

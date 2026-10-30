@@ -23,7 +23,7 @@ Start with **workflows, events, jobs, steps, and runners**, establish a **local 
 
 - :lucide-graduation-cap: **60 GitHub Actions lessons**
 
-    Follow 10 modules from workflow execution and local testing to custom actions, security, agentic workflows, and a production capstone. Each planned page has a teaching brief and a prompt for its own thread.
+    Follow 10 modules from workflow execution and local testing to custom actions, security, agentic workflows, and a production capstone. Authored pages contain runnable exercises; the remaining capstone pages contain teaching briefs.
 
     [Open the curriculum](lessons/index.md)
 
@@ -70,9 +70,9 @@ flowchart TD
 
 ## Learn one lesson in each thread
 
-Open the [curriculum](lessons/index.md), select a lesson, and copy its thread prompt. The [teaching guide](lessons/teaching-guide.md) keeps explanations focused on Actions behavior, relevant YAML and code, and learner predictions and exercises. Start with `/teach 0001` for the execution model.
+Open the [curriculum](lessons/index.md), select a lesson, and use `/teach` with its four-digit ID for a guided session. The [teaching guide](lessons/teaching-guide.md) keeps explanations focused on Actions behavior, relevant YAML and code, and learner predictions and exercises. Start with `/teach 0001` for the execution model.
 
-Modules 1–4 and 9 now have 30 authored reference lessons and local labs. The remaining 30 pages in Modules 5–8 and 10 are detailed teaching briefs for future sessions; there are no starter pages. Written pages and checkmarks are separate from demonstrated understanding.
+Modules 1–9 now have 54 authored reference lessons and local labs. The remaining six pages in Module 10 are detailed capstone briefs for future sessions; there are no starter pages. Written pages and checkmarks are separate from demonstrated understanding.
 
 ## Local workspace commands
 
@@ -84,7 +84,7 @@ task check
 task docs:serve
 ```
 
-`task check` runs workflow linting, host tests for all four action adapters, link checks, Mermaid validation, and an incremental site build. Use `task test:labs` for host exercises in Modules 2–4 and 9, and `task lint:labs` for the 23 syntax-valid lab workflow recipes. For documentation-only edits, use `task docs:verify` once after the complete authoring batch. Successful diagram renders are reused until their content or validation tools change. These checks do not dispatch GitHub Actions or call an AI model. The first setup downloads dependencies and a browser used to render diagrams.
+`task check` runs workflow linting, host tests for all four action adapters, link checks, Mermaid validation, and an incremental site build. Use `task test:labs` for host exercises in Modules 2–9, and `task lint:labs` for 44 explicit workflow/schematic recipes across Modules 1–9. For documentation-only edits, use `task docs:verify` once after the complete authoring batch. Successful diagram renders are reused until their content or validation tools change. These checks do not dispatch GitHub Actions or call an AI model. The first setup downloads dependencies and a browser used to render diagrams.
 
 When a Docker-compatible daemon is running:
 

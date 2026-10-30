@@ -1,0 +1,11 @@
+name: Broken output fixture
+description: Deliberately missing output bridge
+outputs:
+  greeting:
+    description: Declared but not mapped
+runs:
+  using: composite
+  steps:
+    - id: greet
+      shell: bash
+      run: printf '%s\n' 'greeting=Hello, Ada!' >> "$GITHUB_OUTPUT"

@@ -1,0 +1,36 @@
+# Inactive recipe. Moving it into .github/workflows enables intended writes.
+name: Module 7 release proposal
+on:
+  workflow_dispatch:
+    inputs:
+      acknowledge_writes:
+        description: Deliberately create or update a release pull request
+        type: boolean
+        required: true
+        default: false
+permissions: {}
+jobs:
+  propose:
+    if: inputs.acknowledge_writes && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check intended effect policy
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REF_NAME: ${{ github.ref }}
+          ACKNOWLEDGE: ${{ inputs.acknowledge_writes }}
+        run: python3 labs/0041/effects.py --env
+      - id: release
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        with:
+          release-type: simple
+          skip-github-release: true
+          target-branch: main

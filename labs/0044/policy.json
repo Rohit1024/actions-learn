@@ -1,0 +1,44 @@
+{
+  "description": "Normalized lab policy; domain list covers the simulated data request only, not engine transport or gh-aw schema.",
+  "tools": [
+    "get_file_contents"
+  ],
+  "domains": [
+    "api.github.com"
+  ],
+  "permissions": [
+    "contents:read"
+  ],
+  "credential_roles": [
+    "repository-reader"
+  ],
+  "requests": [
+    {
+      "id": "read-readme",
+      "tool": "get_file_contents",
+      "domain": "api.github.com",
+      "permission": "contents:read",
+      "credential": "repository-reader",
+      "operation": "read",
+      "expected": "allow"
+    },
+    {
+      "id": "write-issue",
+      "tool": "create_issue",
+      "domain": "api.github.com",
+      "permission": "contents:read",
+      "credential": "repository-reader",
+      "operation": "write",
+      "expected": "tool unavailable"
+    },
+    {
+      "id": "upload-text",
+      "tool": "get_file_contents",
+      "domain": "upload.invalid",
+      "permission": "contents:read",
+      "credential": "repository-reader",
+      "operation": "read",
+      "expected": "network destination denied"
+    }
+  ]
+}

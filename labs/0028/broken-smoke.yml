@@ -1,0 +1,22 @@
+name: Module 5 deliberately broken public report smoke
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: report
+        uses: ./labs/0028/broken-action
+        with:
+          name: Ada
+      - shell: bash
+        env:
+          ACTUAL: ${{ steps.report.outputs.report }}
+        run: |
+          printf 'caller report=%s\n' "$ACTUAL"
+          test "$ACTUAL" = 'Ready, Ada!'

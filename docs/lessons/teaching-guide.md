@@ -10,15 +10,15 @@ The course has [60 Actions lessons in 10 modules](index.md), starting at [0001 Â
 
 ## Start a lesson in a new thread
 
-Open its page from the [curriculum](index.md), then copy its **Start this lesson in a new thread** prompt. The prompt identifies the exact file to expand. A new thread should read the mission, learner notes, this guide, and prerequisite pages before deciding where to begin.
+Select the lesson in the [curriculum](index.md) and use `/teach` with its four-digit ID. A new thread should read the mission, learner notes, this guide, and prerequisite pages before deciding where to begin. Keep thread-start instructions here; completed lesson pages contain learner-facing content.
 
 For example:
 
 ```text
 /teach 0001
 
-Expand docs/lessons/0001-execution-model.md
-using docs/lessons/teaching-guide.md. Read docs/mission.md and NOTES.md.
+Use docs/lessons/0001-execution-model.md
+and docs/lessons/teaching-guide.md. Read docs/mission.md and NOTES.md.
 Start with events, workflows, jobs, steps, and runners, one concept at a time.
 Ask me to predict and try examples before showing their solutions.
 ```
@@ -73,7 +73,7 @@ Pause the live conversation at exercises and questions. A self-contained referen
 
 ## What a fully developed lesson should contain
 
-Replace the placeholder note with its actual authored status, preserving its ID and file path. Develop its existing brief into:
+Replace the placeholder note with its actual authored status, preserving its ID and file path. Remove the placeholder's lesson-creation prompt, thread-start section, and authoring coordination notes. Keep prerequisites and lab instructions directed at the learner; store production handoffs and batch-validation scheduling in NOTES or module handoffs. Develop its existing brief into:
 
 - Clear prerequisites, a concrete goal, and observable outcomes.
 - Explanations of Actions behavior with definitions at first use and links to relevant prerequisite lessons.

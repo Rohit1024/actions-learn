@@ -1,0 +1,8 @@
+{
+  "repository": "actions/checkout",
+  "listing_repository": "lookalike/checkout",
+  "sha": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+  "task_fit": "Fixture decision: checkout materializes project files before local commands.",
+  "release_review": "TEACHING FIXTURE ONLY: reviewed tag resolution and declared interface; a complete code audit is deferred.",
+  "community_exception": ""
+}

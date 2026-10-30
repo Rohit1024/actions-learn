@@ -1,0 +1,11 @@
+{
+  "checked_on": "2026-10-30",
+  "url": "https://raw.githubusercontent.com/actions/setup-node/v4.0.0/action.yml",
+  "purpose": "Historical interface evidence only; no old action execution.",
+  "always-auth": {
+    "description": "Set always-auth in npmrc.",
+    "default": "false"
+  },
+  "runtime": "node20",
+  "current_metadata_receipt": "labs/0037/upstream-evidence.json"
+}

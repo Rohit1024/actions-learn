@@ -167,23 +167,7 @@ Answer from memory:
 
 The lab observes actual Task invocation, file fingerprints, ordering, and exit propagation. It does not prove runner provisioning or GitHub policy. Continue to [0008 · Linting layers](0008-workflow-shell-and-security-linting.md) to choose static checks for the shared command's workflow caller.
 
-!!! note "Documentation validation timing"
-    This parallel authoring batch reserves **one whole-site `task docs:verify` for the coordinator after all four modules, 24 lessons, and shared edits are complete**. Do not run root `task check`, Markdown/link/Mermaid validators, or a site build during individual lessons or this module handoff. The lab Taskfile's explicitly selected `check` is only a Python host check.
-
-Primary Task pages above and the [curated source library](../references/resources.md) were checked on **2026-10-30**. The module handoff records executed commands and environment limits. A teaching handoff should separately record the learner's dependency explanation and stale-cache repair; no such learner evidence is implied here.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0007
-
-Use docs/lessons/0007-taskfile-shared-command-contract.md and labs/0007/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lessons 0002 and 0006.
-Ask me to predict preconditions, ordering, and the omitted-policy cache failure.
-Pause before collapsed solutions. Use the lab's explicit Taskfile path.
-Record actual learner evidence and deferred checks; continue to lesson 0008.
-Respect the active authoring batch's coordinator-only documentation-validation timing.
-```
+Primary Task pages above and the [curated source library](../references/resources.md) were checked on **2026-10-30**. The module handoff records executed commands and environment limits.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

@@ -1,0 +1,19 @@
+name: Ready report
+description: Render a bounded report through a public output.
+inputs:
+  name:
+    description: Nonblank single-line report recipient.
+    default: Ada
+outputs:
+  report:
+    description: Ready report for the caller.
+    value: ${{ steps.render.outputs.summary }}
+runs:
+  using: composite
+  steps:
+    - id: render
+      shell: bash
+      env:
+        REPORT_NAME: ${{ inputs.name }}
+        ACTION_DIR: ${{ github.action_path }}
+      run: bash "$ACTION_DIR/report.sh"

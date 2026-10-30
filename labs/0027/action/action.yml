@@ -1,0 +1,19 @@
+name: Literal label
+description: Transport bounded untrusted text without generating shell source.
+inputs:
+  label:
+    description: Nonblank label, at most 160 JavaScript UTF-16 code units.
+    required: true
+outputs:
+  label-json:
+    description: Label serialized as one JSON string, including escaped line endings.
+    value: ${{ steps.accept.outputs.label-json }}
+runs:
+  using: composite
+  steps:
+    - id: accept
+      shell: bash
+      env:
+        RAW_LABEL: ${{ inputs.label }}
+        ACTION_DIR: ${{ github.action_path }}
+      run: bash "$ACTION_DIR/accept.sh"

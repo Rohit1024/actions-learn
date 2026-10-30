@@ -1,0 +1,47 @@
+# Inactive recipe. No workflow is installed by this lab.
+name: Module 7 selective jobs
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+      docs: ${{ steps.filter.outputs.docs }}
+    steps:
+      - id: filter
+        if: github.event_name == 'pull_request'
+        uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
+        with:
+          filters: |
+            code:
+              - 'examples/**'
+              - 'scripts/**'
+              - 'tests/**'
+              - 'package*.json'
+              - '.github/workflows/**'
+            docs:
+              - 'docs/**'
+              - 'zensical.toml'
+              - '.github/workflows/**'
+  code:
+    needs: changes
+    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: echo 'Code checks selected; place explicit project commands here'
+  docs:
+    needs: changes
+    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.docs == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: echo 'Documentation checks selected; place explicit project commands here'

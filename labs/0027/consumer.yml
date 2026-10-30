@@ -1,0 +1,30 @@
+name: Module 5 literal event data
+on:
+  workflow_dispatch:
+    inputs:
+      label:
+        type: string
+        default: A literal label
+permissions:
+  contents: read
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - id: label
+        uses: ./labs/0027/action
+        with:
+          label: ${{ inputs.label }}
+      - shell: bash
+        env:
+          LABEL_JSON: ${{ steps.label.outputs.label-json }}
+          EXPECTED: ${{ inputs.label }}
+        run: node -e 'require("node:assert/strict").equal(JSON.parse(process.env.LABEL_JSON), process.env.EXPECTED)'

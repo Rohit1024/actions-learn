@@ -1,0 +1,19 @@
+name: Ready report with deliberately empty public mapping
+description: Negative runtime fixture; the real script still writes summary correctly.
+inputs:
+  name:
+    description: Nonblank single-line report recipient.
+    default: Ada
+outputs:
+  report:
+    description: Intentional defect; caller receives no summary.
+    value: ''
+runs:
+  using: composite
+  steps:
+    - id: render
+      shell: bash
+      env:
+        REPORT_NAME: ${{ inputs.name }}
+        ACTION_DIR: ${{ github.action_path }}
+      run: bash "$ACTION_DIR/report.sh"

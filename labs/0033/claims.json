@@ -1,0 +1,12 @@
+{
+  "iss": "https://token.actions.githubusercontent.com",
+  "aud": "urn:lesson:deploy",
+  "sub": "repo:example@100/lesson@200:environment:staging",
+  "repository_id": "200",
+  "repository_owner_id": "100",
+  "environment": "staging",
+  "ref": "refs/heads/main",
+  "event_name": "workflow_dispatch",
+  "nbf": 1000,
+  "exp": 1300
+}

@@ -189,23 +189,7 @@ Retrieve without reopening the examples:
 
 For these labs, use explicit workflow linting and the direct argument probe. A changed program also needs its behavior tests; credentials, environment approvals, and actual event admission still require selected GitHub evidence. The next lesson develops fixture and output-file assertions.
 
-!!! note "Documentation validation timing"
-    Do not add root `task check` to this sequence: it includes documentation checks. The coordinator will run **one whole-site `task docs:verify` only after all 24 lessons and shared edits are integrated**. No Markdown, link, Mermaid, or Zensical validation runs in this module thread.
-
 Primary tool and GitHub references linked above were checked on **2026-10-30**, starting from the [curated library](../references/resources.md). Record unavailable optional analyzers separately from passing installed-tool checks. No learner-produced diagnosis has yet been observed.
-
-## Start this lesson in a new thread
-
-```text
-/teach 0008
-
-Use docs/lessons/0008-workflow-shell-and-security-linting.md and labs/0008/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lessons 0004 and 0007.
-Ask me to classify expression, metadata, argument, and template-injection defects.
-Pause for predictions before solutions; inspect the unsafe workflow without running it.
-Use installed analyzers only. Record unavailable coverage and actual learner evidence.
-Continue to lesson 0009; preserve coordinator-only documentation validation for this batch.
-```
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

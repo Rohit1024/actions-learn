@@ -1,0 +1,44 @@
+{
+  "code": {
+    "event": "pull_request",
+    "step_outputs": {
+      "code": "true",
+      "docs": "false"
+    },
+    "source": "Synthetic expected action outputs, not results of executing paths-filter"
+  },
+  "docs": {
+    "event": "pull_request",
+    "step_outputs": {
+      "code": "false",
+      "docs": "true"
+    },
+    "source": "Synthetic expected action outputs, not results of executing paths-filter"
+  },
+  "mixed": {
+    "event": "pull_request",
+    "step_outputs": {
+      "code": "true",
+      "docs": "true"
+    },
+    "source": "Synthetic expected action outputs, not results of executing paths-filter"
+  },
+  "unrelated": {
+    "event": "pull_request",
+    "step_outputs": {
+      "code": "false",
+      "docs": "false"
+    },
+    "source": "Synthetic expected action outputs, not results of executing paths-filter"
+  },
+  "manual": {
+    "event": "workflow_dispatch",
+    "step_outputs": {}
+  },
+  "missing": {
+    "event": "pull_request",
+    "step_outputs": {
+      "code": "true"
+    }
+  }
+}

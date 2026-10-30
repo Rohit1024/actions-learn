@@ -21,7 +21,7 @@ Learn to design, build, test, secure, and operate GitHub Actions through **60 le
 | 9. Create your own GitHub action | 0049–0054 | Choose a runtime, define action metadata, test a consumer, and prepare a release |
 | 10. Production capstone | 0055–0060 | Verified workers, orchestration, release gates, and an operating playbook |
 
-Follow the module order above; lesson IDs, filenames, and lab paths run consecutively from 0001 to 0060. Modules 1–4 and 9 contain 30 authored reference lessons with [local labs](labs/README.md); the remaining 30 pages in Modules 5–8 and 10 are detailed teaching briefs for future sessions. There are no starter pages. Written lesson status and demonstrated learner understanding are tracked separately. Supporting syntax is explained within the relevant Actions example.
+Follow the module order above; lesson IDs, filenames, and lab paths run consecutively from 0001 to 0060. Modules 1–9 contain 54 authored reference lessons with [local labs](labs/README.md); the remaining six pages in Module 10 are detailed capstone briefs for future sessions. There are no starter pages. Written lesson status and demonstrated learner understanding are tracked separately. Supporting syntax is explained within the relevant Actions example.
 
 Explore the [pre-built action module](docs/lessons/prebuilt-actions.md), [29-action catalog with dated stars and publisher evidence](docs/references/prebuilt-actions.md), and [create-your-own-action module](docs/lessons/create-your-own-action.md).
 
@@ -47,8 +47,8 @@ task docs:serve
 | `task lint:workflows` | Check active workflow syntax and expressions with actionlint |
 | `task lint:recipes` | Check inactive workflow recipes and their local composite action interface |
 | `task lint:module1` | Check all seven inactive Module 1 workflows and local reusable-call interfaces |
-| `task lint:labs` | Check all 23 syntax-valid workflow recipes across Modules 1–4 and 9 |
-| `task test:labs` | Run host lab suites for Modules 2–4 and 9, without documentation or container execution |
+| `task lint:labs` | Check 44 explicit workflow/schematic recipes across Modules 1–9 |
+| `task test:labs` | Run host lab suites for Modules 2–9, without documentation or container execution |
 | `task docs:verify` | Check documentation links and diagrams, then build the site |
 | `task actions:build` | Rebuild the TypeScript action's committed distribution file |
 | `task test:container` | Build and test the Docker action's image and output mount |
@@ -67,7 +67,7 @@ Container checks need a running Docker-compatible engine; the selected workflow 
 - [GitHub Agentic Workflows lab](docs/lessons/agentic-workflows.md)
 - [Debugging guide](docs/debugging/index.md)
 
-In an agent workspace that supports the bundled teach skill, start with `/teach 0001`. Each lesson provides an exact file target and a prompt for its guided session, including predictions, a local experiment, a failure to diagnose, and retrieval questions.
+In an agent workspace that supports the bundled teach skill, start with `/teach 0001`. Select later lessons by their four-digit IDs in the curriculum. Lessons include predictions, a local experiment, a failure to diagnose, and retrieval questions; the teaching guide contains instructions for guided sessions.
 
 ## Site publishing and CI
 

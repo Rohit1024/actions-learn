@@ -1,0 +1,8 @@
+# Proposal only. Not installed in .github and not a workflow-lint target.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5

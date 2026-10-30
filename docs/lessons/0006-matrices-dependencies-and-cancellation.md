@@ -182,19 +182,7 @@ Design a graph with a plan, two required checks, one optional experimental check
 
 ## Evidence and next session
 
-Record the learner's DAG, job count, unsuccessful gate cases, and explanation of a skipped gate. Separate policy-function tests, static linting, emulator execution, and hosted observations. Completing the authored module does not establish those skills. Continue in curriculum order to [0007 · Taskfile as the shared command contract](0007-taskfile-shared-command-contract.md) in Module 2. Primary references were checked on **2026-10-30** and are indexed in the [source library](../references/resources.md).
-
-## Start this lesson in a new thread
-
-```text
-/teach 0006
-
-Use docs/lessons/0006-matrices-dependencies-and-cancellation.md and labs/0006/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lessons 0004–0005.
-Ask me to draw the DAG, predict failures, and diagnose a skipped gate.
-Pause before solutions; separate policy tests from GitHub scheduling evidence.
-Record actual evidence and hand off to lesson 0007 in Module 2.
-```
+Separate policy-function tests, static linting, emulator execution, and hosted observations. Continue in curriculum order to [0007 · Taskfile as the shared command contract](0007-taskfile-shared-command-contract.md) in Module 2. Primary references were checked on **2026-10-30** and are indexed in the [source library](../references/resources.md).
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |

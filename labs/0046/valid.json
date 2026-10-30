@@ -1,0 +1,21 @@
+{
+  "policy": {
+    "staged": true,
+    "max_operations": 1,
+    "max_body_bytes": 1024,
+    "direct_write_tools": [],
+    "known_paths": [
+      "broken/action.yml"
+    ]
+  },
+  "proposals": [
+    {
+      "type": "create_issue",
+      "title": "Restore composite output mapping",
+      "body": "Static evidence: broken/action.yml declares a greeting without a value mapping. No runner test was executed.",
+      "citations": [
+        "broken/action.yml"
+      ]
+    }
+  ]
+}
