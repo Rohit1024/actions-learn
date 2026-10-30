@@ -163,4 +163,4 @@ For a live teaching handoff, record the learner's boundary explanation, their fa
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [Mission and starting point](../mission.md) | [Curriculum](index.md) | [0002 · Local feedback](0002-local-feedback-loop.md) |
+| [Mission and starting point](../mission.md) | [Curriculum](index.md) | [0002 · Build a local feedback loop](0002-local-feedback-loop.md) |

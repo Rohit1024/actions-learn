@@ -156,4 +156,4 @@ Record the learner's prediction, failing assertion, repair, executed checks, and
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0001 · Execution model](0001-execution-model.md) | [Curriculum](index.md) | [0003 · Event payloads and filters](0003-events-payloads-and-filters.md) |
+| [0001 · The GitHub Actions execution model](0001-execution-model.md) | [Curriculum](index.md) | [0003 · Event payloads, branch filters, path filters, and manual dispatch](0003-events-payloads-and-filters.md) |

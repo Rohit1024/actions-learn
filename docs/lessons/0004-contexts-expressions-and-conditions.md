@@ -178,4 +178,4 @@ Record actual evidence and hand off to lesson 0005.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0003 · Events and filters](0003-events-payloads-and-filters.md) | [Curriculum](index.md) | [0005 · Output contracts](0005-environment-files-and-output-contracts.md) |
+| [0003 · Event payloads, branch filters, path filters, and manual dispatch](0003-events-payloads-and-filters.md) | [Curriculum](index.md) | [0005 · Environment files and step, job, and workflow output contracts](0005-environment-files-and-output-contracts.md) |

@@ -100,7 +100,7 @@ The two function assertions verify trimmed formatting and empty-input rejection.
 ??? tip "Worked prediction"
     A stdout-only adapter can pass the pure function and log assertions but fails the file assertion. A validation failure that leaves a new success-shaped greeting violates this contract even with a nonzero exit. The suite requires the seeded file to remain byte-for-byte unchanged on the tested failures.
 
-For a broader existing baseline, `task test` checks the project's four starter adapters and TypeScript distribution consistency. It does not automatically discover this new lab. Use the explicit command above for Module 4. No `task check` or documentation validator is needed in this authoring thread.
+For a broader existing baseline, `task test` checks the project's four starter adapters and TypeScript distribution consistency. It does not automatically discover this new lab. Use the explicit command above for Module 3. No `task check` or documentation validator is needed in this authoring thread.
 
 ## Run the same matrix through the real image
 
@@ -215,7 +215,7 @@ A file-checking action passes its pure tests but fails on a Linux runner because
 
 Record the learner's own boundary selection, a failing assertion and its repair. Host checks and consumer lint passed during authoring; image/caller execution and hosted integration remain deferred. Continue to [0017](0017-container-errors-signals-and-cleanup.md) for interruptions and cleanup, where an ordinary return is no longer guaranteed.
 
-Primary references were checked on **2026-10-30** and are recorded in `labs/module-4-handoff.md` alongside the [source library](../references/resources.md). The coordinator owns the combined documentation validation pass.
+Primary references were checked on **2026-10-30** and are recorded in `labs/module-3-handoff.md` alongside the [source library](../references/resources.md). The coordinator owns the combined documentation validation pass.
 
 ## Start this lesson in a new thread
 
@@ -231,4 +231,4 @@ pause before solutions, and record evidence before lesson 0017.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0015 · Mounts and ownership](0015-container-mounts-ownership-and-output-paths.md) | [Curriculum](index.md) | [0017 · Errors, signals and cleanup](0017-container-errors-signals-and-cleanup.md) |
+| [0015 · Workspace mounts, user IDs, ownership, and output paths](0015-container-mounts-ownership-and-output-paths.md) | [Curriculum](index.md) | [0017 · Container exit codes, stderr, signals, timeouts, and cleanup](0017-container-errors-signals-and-cleanup.md) |

@@ -1,4 +1,4 @@
-name: Module 5 disposable resource
+name: Module 4 disposable resource
 description: Create an owned temporary resource in main and clean it in post
 outputs:
   resource:

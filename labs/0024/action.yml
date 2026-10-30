@@ -1,4 +1,4 @@
-name: Module 5 portable line count
+name: Module 4 portable line count
 description: Count UTF-8 logical lines using Node APIs with a workspace-relative file
 inputs:
   file:

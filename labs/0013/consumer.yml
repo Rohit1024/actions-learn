@@ -1,4 +1,4 @@
-name: Module 4 Docker lifecycle
+name: Module 3 Docker lifecycle
 on:
   workflow_dispatch:
 permissions:

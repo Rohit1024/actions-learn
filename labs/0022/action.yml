@@ -1,4 +1,4 @@
-name: Module 5 fixture-only API report
+name: Module 4 fixture-only API report
 description: Teach output and API contracts with local fixtures; never contacts GitHub
 inputs:
   scenario:

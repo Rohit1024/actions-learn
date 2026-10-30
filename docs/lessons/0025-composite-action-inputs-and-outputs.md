@@ -88,6 +88,6 @@ try each exercise before revealing its answer. Keep feedback local where possibl
 Finish with retrieval questions and a truthful handoff for the next thread.
 ```
 
-| Previous | All lessons | Next |
+| Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
 | [0024 · Cross-platform action behavior, dependency updates, and release versions](0024-cross-platform-actions-and-versioned-releases.md) | [Curriculum](index.md) | [0026 · Explicit shells, action paths, paths with spaces, and portability](0026-composite-shells-paths-and-portability.md) |

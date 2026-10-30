@@ -189,7 +189,7 @@ Retrieve without looking:
 
 ## Verification limits and next session
 
-This suite establishes report rules, request sequencing, simulated waits, and real child-process output/failure behavior. It does not establish HTTP-client integration, DNS/TLS behavior, rate-limit enforcement, live data consistency, real API-version compatibility, or hosted permissions. All source checking was read-only; the lab itself has no real API client. Sources checked on **2026-10-30** are recorded in the Module 5 handoff and connected to the [curated source library](../references/resources.md).
+This suite establishes report rules, request sequencing, simulated waits, and real child-process output/failure behavior. It does not establish HTTP-client integration, DNS/TLS behavior, rate-limit enforcement, live data consistency, real API-version compatibility, or hosted permissions. All source checking was read-only; the lab itself has no real API client. Sources checked on **2026-10-30** are recorded in the Module 4 handoff and connected to the [curated source library](../references/resources.md).
 
 During teaching, record the learner's failure diagnosis and chosen write-retry policy. Continue to [0023](0023-javascript-action-lifecycle-and-state.md), where one action uses separate primary and cleanup processes.
 
@@ -209,4 +209,4 @@ docs/lessons/0023-javascript-action-lifecycle-and-state.md.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0021 · TypeScript packaging and dist drift](0021-typescript-bundling-and-dist-drift.md) | [Curriculum](index.md) | [0023 · Lifecycle and cleanup](0023-javascript-action-lifecycle-and-state.md) |
+| [0021 · TypeScript compilation, bundling, and committed distribution files](0021-typescript-bundling-and-dist-drift.md) | [Curriculum](index.md) | [0023 · Action lifecycle hooks, state files, and cleanup](0023-javascript-action-lifecycle-and-state.md) |

@@ -87,6 +87,6 @@ try each exercise before revealing its answer. Keep feedback local where possibl
 Finish with retrieval questions and a truthful handoff for the next thread.
 ```
 
-| Previous | All lessons | Next |
+| Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
 | [0026 · Explicit shells, action paths, paths with spaces, and portability](0026-composite-shells-paths-and-portability.md) | [Curriculum](index.md) | [0028 · Test composite scripts and then their workflow wiring](0028-composite-script-tests-and-workflow-wiring.md) |

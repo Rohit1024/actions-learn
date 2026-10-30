@@ -38,7 +38,7 @@ runs:
 The actual `labs/0023/action.yml` is:
 
 ```yaml title="Runnable local action metadata"
-name: Module 5 disposable resource
+name: Module 4 disposable resource
 description: Create an owned temporary resource in main and clean it in post
 outputs:
   resource:
@@ -209,7 +209,7 @@ Answer without reopening the example:
 
 ## Verification limits and next session
 
-The lab proves actual process isolation, its explicit state-record handoff, filesystem ownership checks, and failure/cleanup examples on this host. It does not execute runner hooks, conditions, cancellation, job-end ordering, or a remote service. The inactive `labs/0019/module5-contracts.yml` references the local main/post action, but has not been run on GitHub or `act`. Source checks dated **2026-10-30** and all executed commands are recorded in the module handoff through the [curated references](../references/resources.md).
+The lab proves actual process isolation, its explicit state-record handoff, filesystem ownership checks, and failure/cleanup examples on this host. It does not execute runner hooks, conditions, cancellation, job-end ordering, or a remote service. The inactive `labs/0019/module4-contracts.yml` references the local main/post action, but has not been run on GitHub or `act`. Source checks dated **2026-10-30** and all executed commands are recorded in the module handoff through the [curated references](../references/resources.md).
 
 During teaching, capture the learner's lifecycle drawing and explanation of the lost-state leak. Continue to [0024](0024-cross-platform-actions-and-versioned-releases.md) for portability and release compatibility.
 
@@ -229,4 +229,4 @@ docs/lessons/0024-cross-platform-actions-and-versioned-releases.md.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0022 · Outputs and mocked API responses](0022-output-contracts-and-mocked-github-api.md) | [Curriculum](index.md) | [0024 · Cross-platform behavior and releases](0024-cross-platform-actions-and-versioned-releases.md) |
+| [0022 · Output files, failure status, and mocked GitHub API responses](0022-output-contracts-and-mocked-github-api.md) | [Curriculum](index.md) | [0024 · Cross-platform action behavior, dependency updates, and release versions](0024-cross-platform-actions-and-versioned-releases.md) |

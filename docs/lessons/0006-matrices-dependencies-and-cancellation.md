@@ -198,4 +198,4 @@ Record actual evidence and hand off to lesson 0007 in Module 2.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0005 · Output contracts](0005-environment-files-and-output-contracts.md) | [Curriculum](index.md) | [0007 · Taskfile command contract](0007-taskfile-shared-command-contract.md) |
+| [0005 · Environment files and step, job, and workflow output contracts](0005-environment-files-and-output-contracts.md) | [Curriculum](index.md) | [0007 · Taskfile as the command contract shared by humans and CI](0007-taskfile-shared-command-contract.md) |

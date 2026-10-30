@@ -1,174 +1,261 @@
-# Module 3 authoring handoff — 2026-10-30
+# Module 3 authoring handoff
 
-Module 3 is complete as authored reference material. All six existing pages and their labs are fully developed. `lesson_status: authored` describes available written material, not learner mastery. No live learner predictions, exercises, explanations, or retrieval answers were supplied; no technical learning record is justified.
+> Numbering update: module labels, lesson IDs, paths, and command references in this handoff now use the sequential course layout. Original authoring checks preceded the renumbering; the coordinator records verification at the current paths in NOTES.md.
 
-## Owned pages and scope
+Completed **2026-10-30** in the shared checkout
+`/Users/rohitkharche/.t3/projects/actions-learn`.
 
-Developed in place:
+## Completion and ownership
 
-- `docs/lessons/0055-reuse-compose-or-create-an-action.md`
-- `docs/lessons/0056-own-action-metadata-and-contracts.md`
-- `docs/lessons/0057-own-composite-action-from-prebuilt-actions.md`
-- `docs/lessons/0058-own-node-action-and-distribution.md`
-- `docs/lessons/0059-own-docker-action-and-image-contract.md`
-- `docs/lessons/0060-own-action-release-and-marketplace.md`
+All six assigned reference lessons and isolated labs are fully developed. All six
+pages now have `lesson_status: authored`. Each page has prerequisites, concrete
+outcomes, explanations tied to action/workflow boundaries, runnable local
+commands with expected results, a vertical `flowchart TD` Mermaid diagram,
+admonitions and code annotations, predictions and collapsed worked solutions,
+deliberate failures with diagnosis/repair, transfer and retrieval exercises,
+local/hosted evidence limits, an exact-file future teaching prompt, and catalog
+pagination. Written availability does not establish learner mastery. No learner
+answers, modified learner examples or demonstrated understanding were collected.
 
-Also extended the explicitly owned optional `docs/lessons/create-your-own-action.md` with the developed lab map and verification boundaries, preserving its pre-existing uncommitted curriculum-order edits. The six pages include explanations, prerequisites, precise expected results, predictions, collapsed worked solutions, deliberate failures, diagnosis/repair, transfer/retrieval exercises, vertical `flowchart TD` diagrams with quoted labels, admonitions, annotations, exact-file future teaching prompts, and Previous Lesson / All Lessons / Next Lesson navigation. Pagination remains `0012 → 0055 → 0056 → 0057 → 0058 → 0059 → 0060 → 0013`.
+Only these six pages, `labs/0013/`–`labs/0018/`, and this handoff were edited by
+this authoring thread. Existing shared edits and other modules were preserved.
+No shared catalog, notes, Taskfile, example implementation, manifest, lockfile,
+validator, workflow registration or guide was changed. No subagents, commits,
+pushes, releases, publication, hosted workflows or model execution were used.
 
-No shared files, examples, dependency manifests/locks, validators, scripts, active `.github/` files, or another module's files were edited by this thread. Existing shared uncommitted changes were preserved. No commit, push, publication, hosted workflow/model execution, dependency installation, infrastructure provisioning, new thread, or subagent was performed.
+Boundary order follows the corrected sequence: **0012 → 0013 → 0014 → 0015 → 0016 → 0017 → 0018 →
+0019**. No neighboring page was edited.
 
-## Complete developed lab inventory
+## Developed pages
 
-All paths below are relative to `labs/`:
+| ID | Page | Main developed behavior |
+| --- | --- | --- |
+| 0013 | `docs/lessons/0013-docker-action-metadata-and-lifecycle.md` | Named inputs → ordered arguments → exec entrypoint → channels/status → runner output; build/start/run separation and optional pre/post lifecycles |
+| 0014 | `docs/lessons/0014-dockerfiles-layers-and-build-context.md` | Context versus runtime workspace, COPY/RUN/image configuration, real optional cache experiment, outside-context failure, base identity/update strategy |
+| 0015 | `docs/lessons/0015-container-mounts-ownership-and-output-paths.md` | Independent workspace/command-file mounts, host/container path map, ownership, rootless/VM limits, private and read-only output failures, partial report policy |
+| 0016 | `docs/lessons/0016-docker-action-direct-and-image-tests.md` | Two pure-function assertions and one 11-case contract matrix for host/image, missing interpreter fixture, caller outcome/output assertions |
+| 0017 | `docs/lessons/0017-container-errors-signals-and-cleanup.md` | Truthful status, staged output, SIGINT/TERM/KILL, exec wrapper, swallowed-status failure, graceful versus forced cleanup, Docker stop versus GitHub cancellation |
+| 0018 | `docs/lessons/0018-container-security-and-release-tradeoffs.md` | Inventory versus SBOM/scan, source/base/image identities, pin freshness, bounded measurement harness, packaging comparison, evidence-based unexecuted release plan |
 
-```text
-0055/decision-record.md
-0056/action/action.yml
-0056/action/greet.cjs
-0056/action/index.cjs
-0056/consumer.yml
-0056/probe.cjs
-0057/action/action.yml
-0057/consumer.yml
-0057/preflight.py
-0058/action/action.yml
-0058/action/src/domain.ts
-0058/action/src/index.ts
-0058/action/dist/index.cjs
-0058/build.cjs
-0058/test.cjs
-0058/stale-demo.cjs
-0058/consumer.yml
-0059/action/action.yml
-0059/action/Dockerfile
-0059/action/entrypoint.py
-0059/fixtures/release notes.txt
-0059/contract.py
-0059/consumer.yml
-0060/prepare.py
-0060/check-package.cjs
-0060/failure-demo.cjs
-0060/consumer.yml
-0060/candidate-readme.md
-0060/candidate-license.txt
-0060/release-notes.md
-0060/package/action.yml
-0060/package/src/domain.ts
-0060/package/src/index.ts
-0060/package/dist/index.cjs
-0060/package/README.md
-0060/package/LICENSE
-0060/package/CHANGELOG.md
-module-3-handoff.md
-```
+There are **six new lesson diagrams** in these pages. They have **not** been
+validated or rendered in this thread; no zero-error diagram/build claim is made.
 
-0055 reuses the existing four-adapter comparison without modifying its implementations. 0056 copies the JavaScript greeting into an isolated metadata/validation lab. 0057 copies the shell-free setup-node composite and adds a complete inactive consumer plus a deliberately limited caller-file preflight. 0058 implements a validated `component`/`channel` naming policy, a thin adapter, reproducible bundle comparison, pure/process tests, and a stale-source demonstration. 0059 extends the Docker adapter structure into bounded read-only UTF-8 inspection with explicit args and output mounts. 0060 contains an assembled single-action snapshot, documentation/license/release-note templates, an unrelated-working-directory process consumer, incomplete-package demonstrations, and an inactive runner consumer.
+## Lab file inventory
 
-## Exact focused commands executed and observed results
+There are 41 developed lab files, plus this handoff. Lab actions are copied or
+extended fixtures; shared `examples/` remain unchanged. Recipes are inactive
+outside `.github/workflows/`.
 
-Commands ran from `/Users/rohitkharche/.t3/projects/actions-learn` using the installed dependencies. Initial development smoke checks also passed; the following is the final focused pass after all six pages and lab implementations were developed, plus the isolated compiler-command correction noted below.
+- `labs/0013/action/action.yml`
+- `labs/0013/action/Dockerfile`
+- `labs/0013/action/entrypoint.py`
+- `labs/0013/probe.py`
+- `labs/0013/consumer.yml`
+- `labs/0014/action/action.yml`
+- `labs/0014/action/Dockerfile`
+- `labs/0014/action/Dockerfile.bad-context`
+- `labs/0014/action/.dockerignore`
+- `labs/0014/action/entrypoint.py`
+- `labs/0014/action/runtime-policy.txt`
+- `labs/0014/outside-only.py`
+- `labs/0014/host_probe.py`
+- `labs/0014/cache_experiment.py`
+- `labs/0015/action/action.yml`
+- `labs/0015/action/Dockerfile`
+- `labs/0015/action/entrypoint.py`
+- `labs/0015/mount_probe.py`
+- `labs/0015/consumer.yml`
+- `labs/0016/action/action.yml`
+- `labs/0016/action/Dockerfile`
+- `labs/0016/action/Dockerfile.missing-runtime`
+- `labs/0016/action/entrypoint.py`
+- `labs/0016/contract.py`
+- `labs/0016/consumer.yml`
+- `labs/0017/action/action.yml`
+- `labs/0017/action/Dockerfile`
+- `labs/0017/action/entrypoint.sh`
+- `labs/0017/action/worker.py`
+- `labs/0017/swallow.py`
+- `labs/0017/test_host.py`
+- `labs/0017/test_container.py`
+- `labs/0017/consumer.yml`
+- `labs/0018/action/action.yml`
+- `labs/0018/action/Dockerfile`
+- `labs/0018/action/entrypoint.py`
+- `labs/0018/inventory.py`
+- `labs/0018/review.py`
+- `labs/0018/test_review.py`
+- `labs/0018/measure.py`
+- `labs/0018/release-review.md`
 
-| Command | Actual result |
+## Exact executable checks actually run
+
+Commands below were executed from the repository root using existing installed
+dependencies. Intentional nonzero probes are expected negative observations,
+not unresolved regressions. The 0013 probes were repeated after improving their
+failure diagnostic. Python syntax was rechecked after the final script edit.
+
+| Exact command | Result |
 | --- | --- |
-| `uv run python scripts/test_actions.py` | Exit 0; 4 existing test methods passed, including subcases across all four real adapters. No action metadata, image, or runner execution. |
-| `node labs/0056/probe.cjs` | Exit 0; 5 process cases passed: supplied default, explicit recipient, empty, whitespace, and output-record injection. Invalid child cases exited 1 as intended and preserved prior records. |
-| `node labs/0056/probe.cjs --broken` | Expected exit 1; first two cases passed, then `FAIL: explicit empty process input; exit=0; output="existing=value\ngreeting=Hello, !\n"`. Temporary invalid adapter only. |
-| `uv run python labs/0057/preflight.py` | Exit 0; found local action metadata and root `package-lock.json`; explicitly did not execute setup-node/cache. |
-| `uv run python labs/0057/preflight.py --lockfile missing-package-lock.json` | Expected exit 1; `FAIL: caller workspace is missing missing-package-lock.json`. |
-| `uv run python labs/0057/preflight.py --workspace labs/0057` | Expected exit 1; `FAIL: caller workspace is missing labs/0057/action/action.yml`. |
-| `node labs/0058/build.cjs --write` | Exit 0; wrote the owned `action/dist/index.cjs`. Run during construction and rerun after strengthening trailing CR/LF rejection. |
-| `node labs/0058/build.cjs --check` | Exit 0; `PASS: distribution matches source`. Read-only comparison, no silent repair. |
-| `node --test labs/0058/test.cjs` | Exit 0; 7 tests passed, 0 failed. Pure policy plus real distribution default/explicit input transport, invalid input and trailing CR/LF rejection, append behavior, missing output, and unwritable destination. |
-| `node labs/0058/stale-demo.cjs` | Exit 0; copied source mutation caused comparison child exit 1; old artifact produced `docs-preview`, explicit rebuild produced `v2-docs-preview`; repaired comparison passed. Owned original preserved. |
-| `uv run python labs/0059/contract.py` | Exit 0; 11 host process cases passed, including spaced path, exact limit, oversize, empty input, escaping path, bad limit, missing file, missing output, directory output, invalid UTF-8, and escaping symlink. |
-| `uv run python labs/0059/contract.py --wrong-output` | Expected exit 1; `FAIL: valid spaced path; exit=0; runner output='existing=value\n'`. Temporary guessed-path mutation failed the expected-file assertion. |
-| `uv run python labs/0060/prepare.py` | Exit 0; assembled local package with root metadata, source, distribution, README, MIT license, and proposed release notes. Run during construction and refreshed after the final Node source/bundle correction. No remote operation. |
-| `node labs/0060/check-package.cjs` | Exit 0; root metadata selected runnable distribution from an unrelated working directory; exact `release-key=docs-stable` received. |
-| `node labs/0060/failure-demo.cjs` | Exit 0; source-only and nested-metadata copies each rejected by checker child exit 1 for the intended missing file. Original candidate preserved. |
-| `.tools/bin/actionlint labs/0056/consumer.yml labs/0057/consumer.yml labs/0058/consumer.yml labs/0059/consumer.yml labs/0060/consumer.yml` | Exit 0; all 5 inactive consumers passed with no diagnostics. This is executable workflow/interface analysis, not Markdown validation or remote execution. |
-| `docker info` | Exit 125; existing Podman engine connection refused before any build or container started. Exact evidence below. |
+| `uv run --no-sync python labs/0013/probe.py` | Exit 0. Program gets `['Ada', 'Hello']`; stdout `Hello, Ada!\n`; stderr empty; output `prior=kept\ngreeting=Hello, Ada!\n`. |
+| `uv run --no-sync python labs/0013/probe.py --reverse` | Expected exit 1 from probe. Adapter exits 0 but writes `Ada, Hello!`; probe detects argument-order contract mismatch. |
+| `uv run --no-sync python labs/0013/probe.py --name ''` | Expected exit 1 from probe and adapter. Nonempty/single-line diagnostic; prior output record unchanged. |
+| `uv run --no-sync python labs/0014/host_probe.py` | Exit 0. Copied program writes exact greeting; explicitly no image/cache claim. |
+| `uv run --no-sync python labs/0015/mount_probe.py` | Exit 0. Adapter exit 0; exact greeting/report outputs and report contents. Observed host process/report-owner UID 501. |
+| `uv run --no-sync python labs/0015/mount_probe.py --mode missing` | Probe exit 0 verifying intended adapter exit 1. Missing-parent diagnostic, empty output file, report remains as documented. |
+| `uv run --no-sync python labs/0016/contract.py host` | Exit 0. Two pure-function assertions and all **11** process cases pass: default, ordinary, trim, Unicode, literal shell-like text, empty, spaces, newline, CR, unset output, missing parent. |
+| `uv run --no-sync python labs/0017/test_host.py` | Exit 0. **6 tests pass**: success, ordinary failure, SIGINT→130, SIGTERM→143, SIGKILL→host subprocess -9 with leftover staging, swallowed-status demonstration. |
+| `sh -n labs/0017/action/entrypoint.sh` | Exit 0, no diagnostics. Syntax only; image permissions/startup remain untested. |
+| `uv run --no-sync python labs/0018/inventory.py` | Exit 0. Base `python:3.14-alpine`; imports `os, pathlib, sys`; no explicit extra package installs; base packages/digest/scan/image timings explicitly uncollected. |
+| `uv run --no-sync python labs/0018/test_review.py` | Exit 0. **4 tests pass**: current, age 30 accepted, age 31 rejected, future date rejected. |
+| `uv run --no-sync python labs/0018/review.py --reviewed-on 2026-01-01 --as-of 2026-10-30` | Expected exit 1: review age 302 days outside 0..30. No digest or vulnerability assertion. |
+| `uv run --no-sync python labs/0018/review.py --reviewed-on 2026-10-30 --as-of 2026-10-30` | Exit 0: age 0 days. Output explicitly limits this to freshness, not scan/release approval. |
+| `uv run --no-sync python labs/0018/measure.py host --samples 1` | Exit 0. One raw host subprocess sample emitted and exact output verified. Cache state uncontrolled; no performance comparison or container result claimed. |
+| `.tools/bin/actionlint -color labs/0013/consumer.yml labs/0015/consumer.yml labs/0016/consumer.yml labs/0017/consumer.yml` | Exit 0, no diagnostics for **all four** inactive recipes and their known local action interfaces. |
 
-The first explicit-file type-check command exposed an installed-tool requirement:
-
-```bash
-node_modules/.bin/tsc --noEmit --strict --target ES2022 --module NodeNext --moduleResolution NodeNext --types node labs/0058/action/src/domain.ts labs/0058/action/src/index.ts
-```
-
-It exited **1** with:
-
-```text
-error TS5112: tsconfig.json is present but will not be loaded if files are specified on commandline. Use '--ignoreConfig' to skip this error.
-```
-
-Corrected lesson 0058 to use the actual passing isolated command, then executed it:
+In-memory Python syntax check, executed twice with the final result **19 files,
+exit 0**:
 
 ```bash
-node_modules/.bin/tsc --ignoreConfig --noEmit --strict --target ES2022 --module NodeNext --moduleResolution NodeNext --types node labs/0058/action/src/domain.ts labs/0058/action/src/index.ts
+uv run --no-sync python - <<'PY'
+from pathlib import Path
+paths = [p for n in range(13, 19) for p in Path(f'labs/{n:04}').rglob('*.py')]
+for path in paths:
+    compile(path.read_text(encoding='utf-8'), str(path), 'exec')
+print(f'Compiled {len(paths)} lab Python files in memory; no image-execution claim')
+PY
 ```
 
-Result: **exit 0, no diagnostics**. No shared `tsconfig.json` change was needed. This initial failure and correction are retained rather than describing the first attempt as passed.
+Generated `__pycache__` directories from these tests were removed only beneath
+owned `labs/0013/`–`labs/0018/` directories. No installed package state was changed.
 
-Tool observations actually executed: `node --version` → `v24.21.0`; `uv --version` → `0.11.24`; `.tools/bin/actionlint -version` → `v1.7.12`; `node_modules/.bin/tsc --version` → `7.0.2`; `uv run python --version` → `Python 3.14.6`; `node_modules/.bin/esbuild --version` → `0.28.2`.
+Environment inspections actually run:
 
-## Deferred boundaries and exact engine evidence
-
-The actual `docker info` output identified `darwin/arm64`, Podman compatibility version `6.0.2`, and ended with:
+- `command -v docker podman python3 uv act`: existing Docker wrapper, Podman,
+  Python, uv and act found; no installation performed.
+- `uv run --no-sync python --version`: Python **3.14.6**.
+- `.tools/bin/actionlint -version`: **v1.7.12**, installed local binary.
+- `act --version`: **0.2.89**.
+- `docker stop --help`: installed compatibility command documents `--time`;
+  the opt-in container stop fixture uses `--time 2`.
+- `podman machine list`: existing `podman-machine-default`, applehv, not started
+  by this thread. Listing is not evidence of engine readiness.
+- `docker info`: final standalone command exits **125**. Output identifies the
+  Podman compatibility boundary on darwin/arm64, version **6.0.2**, and reports:
 
 ```text
+Cannot connect to Podman. Please verify your connection to the Linux system using `podman system connection list`, or try `podman machine init` and `podman machine start` to manage a new Linux VM
 Error: unable to connect to Podman socket: failed to connect: dial tcp 127.0.0.1:62183: connect: connection refused
 ```
 
-Therefore neither of these intended commands was executed:
+The suggested setup commands in that diagnostic were **not** executed. No VM,
+socket configuration or daemon was provisioned/started.
 
-```bash
-docker build --tag actions-learn-module3-inspect:local labs/0059/action
-uv run python labs/0059/contract.py --container actions-learn-module3-inspect:local
-```
+## Deferred checks and precise limits
 
-Image build/runtime/dependency/architecture, real container mounts and permissions, and selected `act` execution remain deferred. No VM or API endpoint was created, started, or guessed. Host Python results are not image results.
+**Documentation validation is deferred to the coordinator's ONE combined
+24-lesson pass, after all four authoring modules and shared edits are ready.**
+This thread ran no Markdown/link checks, Mermaid validation, Zensical build,
+`task docs:verify`, `task check`, or alternative custom documentation validator.
+Do not treat the unvalidated diagrams or site as passed. Coordinator should run
+`task docs:verify` once at the requested combined boundary.
 
-Remote setup-node execution, npm registry/cache services, runner expression/output mapping, remote consumer download at a real action commit, actual GitHub token/platform behavior, and the intended hosted OS matrix were not executed. The 0057 preflight only checks file existence. The 0060 process consumer inspects this lab's metadata shape; it is not a general YAML parser or GitHub runner. These limitations are explained in the lessons.
+All Docker builds, pulls and container runs remain deferred because `docker info`
+failed before the relevant boundary. In particular, these developed fixtures
+have not produced image evidence:
 
-No release repository/tag, immutable release, movable major alias, Marketplace listing, publisher verification, or model evaluation was created or claimed. Candidate Marketplace name eligibility and a future standalone locked maintenance toolchain remain explicit future work, not authoring blockers.
+- `labs/0014/cache_experiment.py`: two real builds, cache-log interpretation,
+  program edit and run; bad-context Dockerfile failure is also unexecuted.
+- `labs/0015/mount_probe.py --container` and its `private`, `read-only`, `missing`
+  modes: actual mounts, VM sharing, image ownership and read-only access.
+- `labs/0016/contract.py image`: all 11 image cases; the deliberately
+  missing-runtime image build/start failure is also unexecuted.
+- `labs/0017/test_container.py`: engine stop/kill, PID-boundary behavior,
+  container exit 143/137 and forced-cleanup limits.
+- `labs/0018/measure.py build` / `image`: build/run timing samples, image size
+  observations, base/image resolution and scan/SBOM collection.
+- All `act` caller executions. No hosted dispatch, cancellation or policy test
+  ran. Lint success is not runner ingestion/output-mapping evidence.
 
-**Documentation validation is deferred to the coordinator's one combined whole-site `task docs:verify` pass after all four modules, all 24 lessons, and shared edits are integrated.** This thread did not run Markdown checking, link checking, Mermaid validation/rendering, Zensical build, or `task check`, at any point. Diagram error counts and site build status are consequently unmeasured here, not reported as passed.
+No base registry digest or final image digest was collected. The labs keep the
+starter's readable mutable `python:3.14-alpine` tag and label it as a teaching
+reference. No image pin, finding count, architecture compatibility or release
+readiness was invented. The release worksheet intentionally preserves missing
+evidence. The single host timing smoke sample is not a cold-start measurement.
 
-## Primary sources checked on 2026-10-30
+## Primary sources checked
 
-Started from `docs/references/resources.md` and followed relevant primary links. Online retrieval verified the current contracts; it did not execute the upstream actions. Existing reviewed pins were reused, not upgraded. Exact checked URLs and their use:
+All sources below were opened/checked on **2026-10-30** through current primary
+GitHub, Docker, Python or act maintainer material. GitHub sources come from the
+curated library; Docker/Python detail pages follow those official references.
+New direct URLs are proposed for the shared source index below. No community
+post was used to override primary contracts.
 
-- https://docs.github.com/en/actions/reference/workflows-and-actions/metadata-syntax — declarations, `required` not enforcing an input error, defaults, composite input transport/public output mapping, Node 24 selector, Docker image/args.
-- https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands — current output-file publication and multiline protocol.
-- https://docs.github.com/en/actions/tutorials/create-actions/create-a-composite-action — step reuse and local-action caller boundary.
-- https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows — job-level reuse, interface and output scope.
-- https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/find-and-customize-actions — action discovery, local/remote references, release use.
-- https://docs.github.com/en/actions/tutorials/create-actions/create-a-javascript-action — Node 24 metadata and shipping consumer-executable JavaScript.
-- https://github.com/actions/typescript-action — maintained TypeScript packaging/testing reference; no dependency installation or scaffold copy.
-- https://github.com/actions/setup-node/blob/949feb2413d6458794dcd2491c4babbbce0c15c1/action.yml — pinned input/output names, Node runtime, and cache lifecycle.
-- https://github.com/actions/setup-node/blob/949feb2413d6458794dcd2491c4babbbce0c15c1/README.md — lockfile-keyed npm download caching, `node_modules` excluded, caller `npm ci`, self-hosted runtime requirements.
-- https://esbuild.github.io/api/ — in-memory bundle output, Node platform/target, CommonJS, explicit working directory, and build comparison.
-- https://nodejs.org/docs/latest-v24.x/api/test.html — Node 24 built-in test runner. The generic https://nodejs.org/api/test.html was also opened, then the version-specific page was selected because the generic page documents a newer major.
-- https://docs.github.com/en/actions/tutorials/use-containerized-services/create-a-docker-container-action — Linux/Docker runner requirement, args, caller workspace at `/github/workspace`.
-- https://docs.github.com/en/actions/reference/workflows-and-actions/dockerfile-support — exec entrypoint and caller workspace mount behavior.
-- https://docs.python.org/3.14/library/pathlib.html#pathlib.PurePath.is_relative_to — resolved path relationship used for the bounded file interface; string relationship is applied after filesystem resolution.
-- https://docs.python.org/3.14/library/stdtypes.html#str.splitlines — exact line-count semantics including terminal newline. The page currently redirects to https://docs.python.org/3.14/builtins/stdtypes.html.
-- https://docs.github.com/en/actions/how-tos/create-and-publish-actions/publish-in-github-marketplace — root metadata/public repo/name/agreement/release requirements; creator badge is not an action audit.
-- https://docs.github.com/en/actions/reference/security/secure-use — reviewed source, commit references, tags, permissions and dependency controls. Avoided claiming a pin alone proves action safety.
+| Checked URL | Claims grounded |
+| --- | --- |
+| https://docs.github.com/en/actions/reference/workflows-and-actions/metadata-syntax | Docker runtime, image/args/env/entrypoint, required-input limitation, separate pre/post containers and conditions |
+| https://docs.github.com/en/actions/tutorials/use-containerized-services/create-a-docker-container-action | Linux/Docker runner requirements, build/run lifecycle, explicit arguments and outputs |
+| https://docs.github.com/en/actions/reference/workflows-and-actions/dockerfile-support | Root-user requirement, workspace mount/cwd, absolute entrypoints, metadata overrides and CMD/args |
+| https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands | UTF-8 command files, GITHUB_OUTPUT and action-scoped GITHUB_STATE |
+| https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#steps-context | outcome versus conclusion with continue-on-error |
+| https://docs.github.com/en/actions/how-tos/create-and-publish-actions/set-exit-codes | Status 0 versus nonzero and action outcomes |
+| https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-cancellation | Runner entry-process signaling and timed escalation; distinct from docker stop |
+| https://docs.github.com/en/actions/reference/security/secure-use | Least privilege, untrusted input, full commit pins and moved tags |
+| https://docs.docker.com/build/concepts/context/ | Final build argument, available files and dockerignore |
+| https://docs.docker.com/reference/dockerfile/ | COPY context restrictions, exec/shell forms, ENTRYPOINT/CMD interaction and signal boundary |
+| https://docs.docker.com/build/cache/invalidation/ | COPY/cache keys and mtime exclusion |
+| https://docs.docker.com/engine/storage/bind-mounts/ | Host/container views, engine-host paths, obscured image content and readonly |
+| https://docs.docker.com/build/building/best-practices/ | Base choice, dependency ordering, digest pins and update tradeoffs |
+| https://docs.docker.com/build/building/secrets/ | Build args/ENV are unsuitable secret transport; secret mounts |
+| https://docs.docker.com/reference/cli/docker/container/stop/ | Main-process stop signal, grace period and kill escalation |
+| https://docs.docker.com/reference/cli/docker/image/inspect/ | Image metadata and format inspection |
+| https://docs.docker.com/reference/cli/docker/buildx/imagetools/inspect/ | Registry index/manifest/platform details when Buildx is already available |
+| https://docs.docker.com/scout/explore/analysis/ | SBOM/advisory relationship and changing assessment of unchanged image bytes |
+| https://docs.docker.com/reference/cli/docker/scout/cves/ | local:// target, severity filters and explicit exit-code option |
+| https://raw.githubusercontent.com/docker-library/official-images/master/library/python | Listed Python 3.14-alpine tag, architecture entries and upstream source pointer; no resolved image-digest claim |
+| https://github.com/docker-library/python/blob/01dcc3d31fcd879f9af36e097bd96328a457f4bd/3.14/alpine3.24/Dockerfile | Source for the variant pointed to by the checked Official Images entry; source SHA is not an image digest |
+| https://docs.python.org/3.14/library/signal.html | Catchable handlers, execution limitations and uncatchable SIGKILL |
+| https://nektosact.com/not_supported.html | Local emulation does not establish real GitHub policy/services |
 
-## Coordinator integration proposals
+## Proposed shared integration, for coordinator only
 
-Required shared integration, owned by the coordinator: check off IDs **0055–0060**, add six authored pages to combined counts, and record the completed material and actual/deferred evidence in NOTES. Do not invent learner mastery. Keep neighbor pagination in catalog order and retain all pre-existing unrelated edits.
+No shared integration is necessary to run these labs directly. Optional named
+Taskfile targets can make them easier to discover without expanding default
+container/hosted cost:
 
-No global Taskfile changes are required to run these labs. Optional useful integration:
+- `test:module3`: run the successful 0013 probe, 0014 host probe, 0015 correct and
+  missing host probes, 0016 host contract, 0017 host suite, 0018 review suite.
+  Keep expected-nonzero CLI demonstrations outside a generic success-only task
+  unless their nonzero status and exact output are explicitly asserted.
+- `lint:module3`: use the exact four-recipe actionlint command above. These
+  recipes have unique local action paths and do not need reusable-workflow
+  staging or registration under `.github/`.
+- If adding `test:module3:container`, keep it opt-in with an explicit `docker
+  info` precondition. Build the matching `actions-learn-0014:local` through
+  `actions-learn-0018:local` tags before their scripts. Never silently create or
+  start an engine and do not fold scanners/registry writes into host tests.
 
-- A `lint:module3` task can invoke the exact five-file actionlint command above using the existing `{{.ACTIONLINT}}` variable. These are local action callers, so no reusable-workflow staging or active workflow installation is needed.
-- A `test:module3` task can run the corrected `--ignoreConfig` type check, read-only build comparison, Node tests, metadata probe, composite preflight, Docker host contract, and candidate checker. Keep deliberate negative commands in a helper that asserts their expected nonzero statuses if automating them. Do not silently rebuild from a check task.
-- Keep the optional image build/test separate and gated by engine availability. Do not fold an unavailable daemon into a host-only success claim.
+Source-index additions proposed for `docs/references/resources.md`: GitHub's
+Dockerfile support and exit-code references; Docker build context, Dockerfile,
+cache invalidation, bind mounts, best practices, build secrets, stop, inspect,
+Buildx imagetools and Scout pages; Official Images Python/source entry; Python
+signal documentation. All exact checked URLs are listed above. Recheck runtime
+or digest details when updating examples rather than freezing this date as a
+permanent currentness claim.
 
-The curated library already covers the core topics. Optional source-index refinements: add GitHub's Dockerfile-support reference, a version-specific Node 24 test-runner link, and the pinned setup-node README/metadata links when annotating the module's source check. The Python references are supporting primary links, not a new standalone language track.
+Coordinator owns six curriculum checkboxes, authored counts, NOTES, and any
+shared Taskfile/source-index integration. Do not change mastery records: no
+technical learner evidence was collected. Next catalog lesson is **0019**.
 
-## Open issues and continuation
+## Unresolved issues
 
-No unresolved authoring blocker remains. The explicit deferred integration boundaries above are the remaining verification work. Candidate files are local teaching artifacts, not a published release or a complete standalone maintenance scaffold. Preserve the candidate's unreleased status and local-only consumer wording until those future steps are performed.
+No known host-code regression remains. Deferred engine-dependent behavior and
+unvalidated documentation are the outstanding evidence gaps, not reasons to
+leave this module waiting for approval or live learner answers. The action's
+fixed staging name is intentionally scoped to one isolated workspace; parallel
+writers need unique paths. The artifact/output commit gap and unavailable
+cleanup after forced kill are taught explicitly rather than claimed solved.
 
-During a guided session, begin at 0055 or the exact requested lesson, let the learner predict before revealing the collapsed explanation, and record only actual evidence. After 0060, continue to **0013** for Module 4's Docker deep dive. The coordinator may now integrate Module 3 and wait for the other modules before its one documentation-validation pass.
+After this handoff and all file edits are saved, send the requested
+`MODULE 4 AUTHORING COMPLETE` notification to the existing coordinator thread;
+then end the authoring turn without further edits.

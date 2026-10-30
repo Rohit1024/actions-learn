@@ -39,7 +39,7 @@ Initial source check: **2026-10-30**. Prefer the installed tool's help when an o
 
 ### Docker packaging and runtime details
 
-These primary sources were checked for Modules 3–4 on **2026-10-30**. Host tests do not establish that the image, engine, mount, scan, or hosted contracts were executed.
+These primary sources were checked for the Docker and custom-action lessons, now Modules 3 and 9, on **2026-10-30**. Host tests do not establish that the image, engine, mount, scan, or hosted contracts were executed.
 
 - [Build context](https://docs.docker.com/build/concepts/context/) and [Dockerfile reference](https://docs.docker.com/reference/dockerfile/) — Available build files, COPY, startup configuration, and exec/shell forms. Use when diagnosing build/startup boundaries.
 - [Cache invalidation](https://docs.docker.com/build/cache/invalidation/) — Build-input changes and cache keys. Use before interpreting a layer-cache experiment.

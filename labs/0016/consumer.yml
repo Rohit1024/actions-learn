@@ -1,4 +1,4 @@
-name: Module 4 Docker output contract
+name: Module 3 Docker output contract
 on:
   workflow_dispatch:
 permissions:

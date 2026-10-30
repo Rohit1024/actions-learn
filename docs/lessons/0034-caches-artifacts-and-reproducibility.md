@@ -88,6 +88,6 @@ try each exercise before revealing its answer. Keep feedback local where possibl
 Finish with retrieval questions and a truthful handoff for the next thread.
 ```
 
-| Previous | All lessons | Next |
+| Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
 | [0033 · OIDC, deployment environments, approval, and real platform verification](0033-oidc-environments-and-hosted-policy.md) | [Curriculum](index.md) | [0035 · Commit pins, semantic releases, major tags, and distribution integrity](0035-sha-pins-semantic-releases-and-provenance.md) |

@@ -206,7 +206,7 @@ Answer without reopening the coverage matrix:
 
 For a live teaching handoff, preserve the learner's coverage matrix, rejected false claim, budget reasoning, actual commands, and remaining uncertainty. No technical learner mastery is established by authoring these pages.
 
-The course now moves from testing tools to [0055 · Reuse, compose, or create an action](0055-reuse-compose-or-create-an-action.md), the start of Module 3. Keep stable published IDs and follow catalog order rather than jumping numerically to 0013.
+The course now moves from local testing to [0013 · Docker metadata and lifecycle](0013-docker-action-metadata-and-lifecycle.md), the start of Module 3. Continue in consecutive lesson order, using host checks before adding the image boundary.
 
 !!! note "One coordinator-owned documentation pass"
     Finish the full four-module batch first. The coordinator then integrates shared catalog/source/notes changes and runs **one whole-site `task docs:verify` for all 24 lessons**. This thread runs no Markdown, link, Mermaid, or Zensical validation and no root `task check`. Focused executable evidence and documentation validation remain separately recorded.
@@ -222,10 +222,10 @@ Use docs/lessons/0012-local-hosted-coverage-and-usage-budget.md and labs/0012/.
 Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lessons 0006 and 0011.
 Ask me to map claims to evidence and predict false OIDC, stale revision, and budget failures.
 Pause before solutions. Keep unexecuted checks explicit and hosted/model execution out of this lab.
-Record actual learner reasoning and continue in catalog order to lesson 0055 in Module 3.
+Record actual learner reasoning and continue to lesson 0013 in Module 3.
 Preserve the active batch's one coordinator-owned documentation-validation pass.
 ```
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0011 · One event and one act job](0011-act-targeted-workflow-smoke-tests.md) | [Curriculum](index.md) | [0055 · Reuse, compose, or create an action](0055-reuse-compose-or-create-an-action.md) |
+| [0011 · Run one event and one job with act](0011-act-targeted-workflow-smoke-tests.md) | [Curriculum](index.md) | [0013 · Docker action metadata, arguments, and container lifecycle](0013-docker-action-metadata-and-lifecycle.md) |

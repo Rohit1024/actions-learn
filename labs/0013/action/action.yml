@@ -1,4 +1,4 @@
-name: Module 4 argument contract
+name: Module 3 argument contract
 description: Map two named inputs to two positional container arguments
 inputs:
   name:

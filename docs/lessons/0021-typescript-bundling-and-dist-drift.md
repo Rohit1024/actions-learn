@@ -185,7 +185,7 @@ Explain from memory:
 
 ## Verification limits and next session
 
-Local checks prove the listed source, bytes, and process behaviors on this host. They do not prove a remote tag contains these files, a release points to the reviewed revision, older runners support the runtime, or a native dependency works on every supported OS. No release, push, container, or hosted execution occurs here. The inactive `labs/0019/module5-contracts.yml` can later test all six local action interfaces in one runner job; static linting is not execution evidence.
+Local checks prove the listed source, bytes, and process behaviors on this host. They do not prove a remote tag contains these files, a release points to the reviewed revision, older runners support the runtime, or a native dependency works on every supported OS. No release, push, container, or hosted execution occurs here. The inactive `labs/0019/module4-contracts.yml` can later test all six local action interfaces in one runner job; static linting is not execution evidence.
 
 Primary sources were checked on **2026-10-30** and are indexed in the module handoff alongside the [curated library](../references/resources.md). Capture the learner's stale-bundle prediction and review rationale during teaching. Continue to [0022](0022-output-contracts-and-mocked-github-api.md) for asynchronous service adapters.
 
@@ -205,4 +205,4 @@ docs/lessons/0022-output-contracts-and-mocked-github-api.md.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0020 · Pure functions and Node tests](0020-pure-functions-and-node-tests.md) | [Curriculum](index.md) | [0022 · Outputs and mocked API responses](0022-output-contracts-and-mocked-github-api.md) |
+| [0020 · Pure functions, process adapters, and Node unit tests](0020-pure-functions-and-node-tests.md) | [Curriculum](index.md) | [0022 · Output files, failure status, and mocked GitHub API responses](0022-output-contracts-and-mocked-github-api.md) |

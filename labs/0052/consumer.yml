@@ -1,0 +1,23 @@
+name: Module 9 release key consumer
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  key:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: policy
+        uses: ./labs/0052/action
+        with:
+          component: docs
+          channel: preview
+      - name: Assert the public output
+        env:
+          RELEASE_KEY: ${{ steps.policy.outputs.release-key }}
+        shell: bash
+        run: test "$RELEASE_KEY" = docs-preview

@@ -88,6 +88,6 @@ try each exercise before revealing its answer. Keep feedback local where possibl
 Finish with retrieval questions and a truthful handoff for the next thread.
 ```
 
-| Previous | All lessons | Next |
+| Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
 | [0032 · Script injection, untrusted artifacts, and privileged-event pitfalls](0032-script-injection-artifacts-and-privileged-events.md) | [Curriculum](index.md) | [0034 · Caches, artifacts, retention, poisoning risks, and reproducible inputs](0034-caches-artifacts-and-reproducibility.md) |

@@ -24,10 +24,11 @@
 ## Active state
 
 - **Current starting point:** lesson 0001, the GitHub Actions execution model. The earlier basic-lesson exercises are superseded by the user's course-scope change.
-- **Authored content:** 30 reference lessons across Modules 1–5: 0001–0024 and 0055–0060, with local labs, explained examples, exercises, diagrams, and guided-session prompts. There are no starter pages.
-- **Placeholders:** 30 detailed Actions lesson briefs in Modules 6–10, 0025–0054; follow module order rather than sorting IDs.
-- **Roadmap:** 60 GitHub Actions lessons across 10 modules. Follow catalog order: workflow execution (1), local testing (2), create your own action (3), Docker (4), JavaScript/TypeScript (5), composite actions/reusable workflows (6), pre-built actions (7), security (8), agentic workflows (9), capstone (10). Lesson order is 0001–0012 → 0055–0060 → 0013–0030 → 0049–0054 → 0031–0048. Checked items track written content, not mastery.
-- **Next suggested teaching session:** `/teach 0001`, using the authored `docs/lessons/0001-execution-model.md`. Begin with a prediction; no learner exercise evidence has been collected. The next module to author is Module 6, composite actions and reusable workflows, beginning at 0025.
+- **Authored content:** 30 reference lessons in Modules 1–4 and 9: 0001–0024 and 0049–0054, with local labs, explained examples, exercises, diagrams, and guided-session prompts. There are no starter pages.
+- **Placeholders:** 30 detailed Actions lesson briefs in Modules 5–8 and 10: 0025–0048 and 0055–0060.
+- **Roadmap:** 60 consecutive GitHub Actions lessons, 0001–0060, across 10 modules with six lessons each. Follow workflow execution (1), local testing (2), Docker (3), JavaScript/TypeScript (4), composite actions/reusable workflows (5), security (6), pre-built actions (7), agentic workflows (8), create your own action (9), capstone (10). Module order, lesson numbers, filenames, lab paths, and pagination now agree. Checked items track written content, not mastery.
+- **Next suggested teaching session:** `/teach 0001`, using the authored `docs/lessons/0001-execution-model.md`. Begin with a prediction; no learner exercise evidence has been collected. The next module to author is Module 5, composite actions and reusable workflows, beginning at 0025.
+- **History:** the dated handoffs below retain the module/lesson numbers used at the time. The sequential-numbering update at the end supersedes those earlier layouts and identifies the current handoff paths and commands.
 - **Learning records:** `learning-records/0001-start-with-github-actions.md` records the user's explicit scope preference. No technical mastery has been demonstrated yet.
 - **Environment observation during setup:** Node 24, uv, Task, and act are installed. The Docker command points to Podman, whose socket was unavailable. Host tests do not depend on that daemon.
 
@@ -98,6 +99,29 @@
 - **Remaining verification boundaries:** container/image/build/cache/mount/stop/act execution remains deferred because the existing Podman engine refused connection; no VM was started. ShellCheck/zizmor and Toolkit packages were absent and were not installed. Real GitHub authorization, output/lifecycle processing, hosted OS matrices, remote API behavior, scans/digests, release/Marketplace writes, and model runs remain explicitly unexecuted. Documentation success does not establish those contracts.
 - **Next authoring target:** Module 6, starting at `docs/lessons/0025-composite-action-inputs-and-outputs.md`; live teaching still starts with learner predictions and records only demonstrated understanding.
 - **Learner evidence:** the request establishes an authoring/workflow preference; no technical mastery is demonstrated.
+
+## Canonical module order and sequential numbering — 2026-10-30
+
+- **User request:** correct the numbering jumps and use this exact module order. This explicitly supersedes the earlier decision to keep lesson IDs/URLs stable while moving modules.
+
+| Module | Topic | Consecutive lessons |
+| --- | --- | --- |
+| 1 | Workflow execution and configuration | 0001–0006 |
+| 2 | Testing locally with Task and act | 0007–0012 |
+| 3 | Docker container actions | 0013–0018 |
+| 4 | JavaScript and TypeScript actions | 0019–0024 |
+| 5 | Composite actions and reusable workflows | 0025–0030 |
+| 6 | Security, reliability, and releases | 0031–0036 |
+| 7 | Popular pre-built actions: replace shell glue | 0037–0042 |
+| 8 | GitHub Agentic Workflows | 0043–0048 |
+| 9 | Create your own GitHub action | 0049–0054 |
+| 10 | Production capstone | 0055–0060 |
+
+- **Actual changes:** renumbered pre-built lessons 0049–0054 → 0037–0042, agentic lessons 0037–0042 → 0043–0048, custom-action lessons/labs 0055–0060 → 0049–0054, and capstone lessons 0043–0048 → 0055–0060. Updated filenames, frontmatter, titles, teaching prompts, lesson links, pagination, prerequisites, course diagrams, module guides, README, and lab commands. Authored/placeholder states are preserved.
+- **Current lab commands:** `test:module2` / `lint:module2` cover local testing; `test:module3` / `lint:module3` cover Docker; `test:module4` / `lint:module4` cover Node; `test:module9` / `lint:module9` cover custom-action creation. Aggregate `task test:labs` and `task lint:labs` follow that order. Current handoffs are `labs/module-2-handoff.md`, `labs/module-3-handoff.md`, `labs/module-4-handoff.md`, and `labs/module-9-handoff.md`; their identifiers/path references were normalized with an explicit migration note. Original thread receipts and execution history above remain historical.
+- **Checks completed:** `task test:labs` passed at the new paths and in module order 2 → 3 → 4 → 9; `task lint:labs` passed all 23 syntax-valid recipes, including the renamed Node workflows and custom-action consumers. Shared action tests, active workflow lint, and existing recipe lint also passed. Verified the exact requested 10-module order, 60 consecutive lesson filenames/titles/frontmatter/catalog IDs, all previous/next links, no forward prerequisites, no obsolete lesson filename references in docs/labs, moved lab directories, and preserved 30 authored/30 placeholder states. `git diff --check` passed.
+- **Final documentation batch:** after all renumbering edits, one `task docs:verify` passed: 76 Markdown pages, 658 local links, and 76 Mermaid diagrams (3 newly rendered, 73 reused from cache), 0 errors. One incremental Zensical build succeeded with no issues. All 60 canonical lesson pages are generated; all 24 obsolete lesson routes and their sitemap entries are absent. Current-path checks are logged under `.tools/sequential-numbering-*-checks.log`; the old/new lesson manifest is `.tools/lesson-renumbering-20261030.json`.
+- **Learner evidence:** the user specified course sequencing and numbering. No technical mastery is inferred. The next authoring target remains lesson 0025 in Module 5.
 
 ## Project map
 

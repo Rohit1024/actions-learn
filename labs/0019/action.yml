@@ -1,4 +1,4 @@
-name: Module 5 required greeting
+name: Module 4 required greeting
 description: A dependency-free Node adapter with a required single-line input
 inputs:
   name:

@@ -193,7 +193,7 @@ A formatter reads a caller checkout and should return a report while leaving sou
 
 The author executed both host modes and linted the consumer. Mount behavior, image ownership and GitHub runner ingestion remain deferred. In a live session, capture the learner's two-view path map, failure diagnosis and narrow repair. Continue to [0016](0016-docker-action-direct-and-image-tests.md).
 
-Primary sources were checked on **2026-10-30**; see the [reference library](../references/resources.md) and `labs/module-4-handoff.md`. Documentation checks are deferred to the coordinator's combined pass.
+Primary sources were checked on **2026-10-30**; see the [reference library](../references/resources.md) and `labs/module-3-handoff.md`. Documentation checks are deferred to the coordinator's combined pass.
 
 ## Start this lesson in a new thread
 
@@ -209,4 +209,4 @@ from success, record observed ownership, and hand off to lesson 0016.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0014 · Dockerfiles and context](0014-dockerfiles-layers-and-build-context.md) | [Curriculum](index.md) | [0016 · Direct and image tests](0016-docker-action-direct-and-image-tests.md) |
+| [0014 · Dockerfile layers, build context, reproducible bases, and entrypoints](0014-dockerfiles-layers-and-build-context.md) | [Curriculum](index.md) | [0016 · Test container logic directly and the built image separately](0016-docker-action-direct-and-image-tests.md) |

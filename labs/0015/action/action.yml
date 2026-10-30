@@ -1,4 +1,4 @@
-name: Module 4 mounted report
+name: Module 3 mounted report
 description: Read a workspace fixture and expose a report and named output
 outputs:
   greeting:

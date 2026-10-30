@@ -86,6 +86,6 @@ try each exercise before revealing its answer. Keep feedback local where possibl
 Finish with retrieval questions and a truthful handoff for the next thread.
 ```
 
-| Previous | All lessons | Next |
+| Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
 | [0025 · Composite action structure, step IDs, and output mapping](0025-composite-action-inputs-and-outputs.md) | [Curriculum](index.md) | [0027 · Transport inputs safely through environment variables and quoted arguments](0027-untrusted-input-and-shell-quoting.md) |

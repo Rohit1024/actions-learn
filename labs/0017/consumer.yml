@@ -1,4 +1,4 @@
-name: Module 4 truthful failure status
+name: Module 3 truthful failure status
 on:
   workflow_dispatch:
 permissions:

@@ -1,0 +1,15 @@
+name: Module 9 release key
+description: Validate repository labels and compute a release key without publishing.
+inputs:
+  component:
+    description: Lowercase component label, starting with a letter, at most 32 characters.
+    default: docs
+  channel:
+    description: Exactly preview or stable.
+    default: preview
+outputs:
+  release-key:
+    description: Validated component followed by a hyphen and channel.
+runs:
+  using: node24
+  main: dist/index.cjs

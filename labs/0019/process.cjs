@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
 
-// Reused by later Module 5 labs. This supplies files; it does not parse runner commands.
+// Reused by later Module 4 labs. This supplies files; it does not parse runner commands.
 function run(entry, values = {}, options = {}) {
   const dir = fs.mkdtempSync(path.join(__dirname, '.process-'));
   const output = path.join(dir, 'output.txt');

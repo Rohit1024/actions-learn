@@ -142,7 +142,7 @@ Manual dispatch requires the workflow file to exist on the repository's default 
 
 Path filtering also has documented limits. GitHub compares two-dot diffs for existing branch pushes and three-dot diffs for pull requests. Changed-file evaluation is limited to the first 300 files; a relevant later file may be missed. More than 1,000 pushed commits or a diff-generation timeout can cause the workflow to run without the usual path decision. When an entire workflow is skipped by branch/path filtering, an expected required check can remain pending and block merging. See the [Git diff comparison rules](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#git-diff-comparisons).
 
-For a required CI gate, consider admitting the workflow broadly and making job selection explicit inside it. [Paths-filter and selective jobs](0050-paths-filter-and-selective-jobs.md) develops that design using a maintained action.
+For a required CI gate, consider admitting the workflow broadly and making job selection explicit inside it. [Paths-filter and selective jobs](0038-paths-filter-and-selective-jobs.md) develops that design using a maintained action.
 
 ## Transfer exercise and retrieval
 
@@ -174,4 +174,4 @@ Record actual evidence and hand off to lesson 0004.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0002 · Local feedback](0002-local-feedback-loop.md) | [Curriculum](index.md) | [0004 · Contexts and conditions](0004-contexts-expressions-and-conditions.md) |
+| [0002 · Build a local feedback loop](0002-local-feedback-loop.md) | [Curriculum](index.md) | [0004 · Contexts, expressions, conditions, status, and input types](0004-contexts-expressions-and-conditions.md) |

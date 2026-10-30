@@ -209,4 +209,4 @@ Continue to lesson 0009; preserve coordinator-only documentation validation for 
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0007 · Taskfile command contract](0007-taskfile-shared-command-contract.md) | [Curriculum](index.md) | [0009 · Tests, fixtures, and output files](0009-unit-tests-fixtures-and-output-files.md) |
+| [0007 · Taskfile as the command contract shared by humans and CI](0007-taskfile-shared-command-contract.md) | [Curriculum](index.md) | [0009 · Unit tests, event fixtures, and temporary output files](0009-unit-tests-fixtures-and-output-files.md) |

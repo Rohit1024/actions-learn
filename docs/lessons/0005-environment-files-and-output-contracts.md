@@ -233,4 +233,4 @@ Record actual evidence and hand off to lesson 0006.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0004 · Contexts and conditions](0004-contexts-expressions-and-conditions.md) | [Curriculum](index.md) | [0006 · Matrices and dependencies](0006-matrices-dependencies-and-cancellation.md) |
+| [0004 · Contexts, expressions, conditions, status, and input types](0004-contexts-expressions-and-conditions.md) | [Curriculum](index.md) | [0006 · Matrices, job dependencies, cancellation, and failure propagation](0006-matrices-dependencies-and-cancellation.md) |

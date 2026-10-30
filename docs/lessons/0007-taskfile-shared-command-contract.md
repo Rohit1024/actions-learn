@@ -187,4 +187,4 @@ Respect the active authoring batch's coordinator-only documentation-validation t
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0006 · Matrices and dependencies](0006-matrices-dependencies-and-cancellation.md) | [Curriculum](index.md) | [0008 · Workflow, shell, and security linting](0008-workflow-shell-and-security-linting.md) |
+| [0006 · Matrices, job dependencies, cancellation, and failure propagation](0006-matrices-dependencies-and-cancellation.md) | [Curriculum](index.md) | [0008 · Workflow linting, shell diagnostics, metadata checks, and security analysis](0008-workflow-shell-and-security-linting.md) |

@@ -6,18 +6,18 @@ icon: lucide/wrench
 
 Build your own action when a reusable interface or domain behavior is missing from the maintained catalog. Begin by composing existing actions, then add custom JavaScript/TypeScript or Docker behavior where the requirement justifies it.
 
-**Module 3 · Lessons 0055–0060.** Start after the [local/hosted testing boundary](0012-local-hosted-coverage-and-usage-budget.md). This module provides the complete creation path; the later Docker, Node, and composite modules develop each implementation in depth. Use the action catalog as a reference when selecting components; the dedicated pre-built action lessons follow in [Module 7](prebuilt-actions.md).
+**Module 9 · Lessons 0049–0054.** Continue after [agentic workflow trials and diagnostics](0048-agentic-hosted-trials-budgets-and-diagnostics.md). This module brings together the earlier Docker, Node, composition, security, and [pre-built action selection](prebuilt-actions.md) lessons to create a focused interface and a local release candidate.
 
 ## The six lessons
 
 | Lesson | Developed coverage |
 | --- | --- |
-| [0055 · Decide when to reuse, compose, or create your own action](0055-reuse-compose-or-create-an-action.md) | Choose a pre-built action, composite action, Node action, Docker action, or reusable workflow for a concrete need. |
-| [0056 · Design action.yml inputs, outputs, runtimes, and failure contracts](0056-own-action-metadata-and-contracts.md) | Write metadata that documents defaults, required inputs, outputs, and runtime behavior. |
-| [0057 · Create a composite action by composing pre-built actions](0057-own-composite-action-from-prebuilt-actions.md) | Build a repository-specific action around a maintained setup action without adding a shell script. |
-| [0058 · Create a JavaScript or TypeScript action with a tested distribution](0058-own-node-action-and-distribution.md) | Implement domain logic behind a thin Node action adapter and test invalid as well as valid input. |
-| [0059 · Create a Docker action with tested arguments, mounts, and outputs](0059-own-docker-action-and-image-contract.md) | Package custom runtime behavior in a Docker action with a clear metadata and filesystem contract. |
-| [0060 · Document, version, and publish your action for real consumers](0060-own-action-release-and-marketplace.md) | Prepare a standalone action repository with documented compatibility and a reviewed consumer example. |
+| [0049 · Decide when to reuse, compose, or create your own action](0049-reuse-compose-or-create-an-action.md) | Choose a pre-built action, composite action, Node action, Docker action, or reusable workflow for a concrete need. |
+| [0050 · Design action.yml inputs, outputs, runtimes, and failure contracts](0050-own-action-metadata-and-contracts.md) | Write metadata that documents defaults, required inputs, outputs, and runtime behavior. |
+| [0051 · Create a composite action by composing pre-built actions](0051-own-composite-action-from-prebuilt-actions.md) | Build a repository-specific action around a maintained setup action without adding a shell script. |
+| [0052 · Create a JavaScript or TypeScript action with a tested distribution](0052-own-node-action-and-distribution.md) | Implement domain logic behind a thin Node action adapter and test invalid as well as valid input. |
+| [0053 · Create a Docker action with tested arguments, mounts, and outputs](0053-own-docker-action-and-image-contract.md) | Package custom runtime behavior in a Docker action with a clear metadata and filesystem contract. |
+| [0054 · Document, version, and publish your action for real consumers](0054-own-action-release-and-marketplace.md) | Prepare a standalone action repository with documented compatibility and a reviewed consumer example. |
 
 ## Run the isolated creation path
 
@@ -25,16 +25,16 @@ All six reference lessons are developed in place, with new implementations kept 
 
 | Lesson | Developed lab | Smallest useful local observation |
 | --- | --- | --- |
-| 0055 | `labs/0055/decision-record.md` | Choose reuse boundaries; compare the existing adapters with `uv run python scripts/test_actions.py` |
-| 0056 | `labs/0056/action/`, `probe.cjs`, `consumer.yml` | `node labs/0056/probe.cjs` checks actual validation, status, and output records |
-| 0057 | `labs/0057/action/`, `preflight.py`, `consumer.yml` | `uv run python labs/0057/preflight.py` checks caller files; it does not execute setup-node |
-| 0058 | `labs/0058/action/`, `build.cjs`, `test.cjs`, `stale-demo.cjs`, `consumer.yml` | `node labs/0058/build.cjs --check` and `node --test labs/0058/test.cjs` inspect the shipped release-key action |
-| 0059 | `labs/0059/action/`, `fixtures/`, `contract.py`, `consumer.yml` | `uv run python labs/0059/contract.py` tests the entrypoint; a built image is a separate boundary |
-| 0060 | `labs/0060/package/`, package tools, and `consumer.yml` | `node labs/0060/check-package.cjs` consumes the assembled local snapshot |
+| 0049 | `labs/0049/decision-record.md` | Choose reuse boundaries; compare the existing adapters with `uv run python scripts/test_actions.py` |
+| 0050 | `labs/0050/action/`, `probe.cjs`, `consumer.yml` | `node labs/0050/probe.cjs` checks actual validation, status, and output records |
+| 0051 | `labs/0051/action/`, `preflight.py`, `consumer.yml` | `uv run python labs/0051/preflight.py` checks caller files; it does not execute setup-node |
+| 0052 | `labs/0052/action/`, `build.cjs`, `test.cjs`, `stale-demo.cjs`, `consumer.yml` | `node labs/0052/build.cjs --check` and `node --test labs/0052/test.cjs` inspect the shipped release-key action |
+| 0053 | `labs/0053/action/`, `fixtures/`, `contract.py`, `consumer.yml` | `uv run python labs/0053/contract.py` tests the entrypoint; a built image is a separate boundary |
+| 0054 | `labs/0054/package/`, package tools, and `consumer.yml` | `node labs/0054/check-package.cjs` consumes the assembled local snapshot |
 
-The labs include inactive recipes, explicit expected results, and temporary failure demonstrations. No recipe under `labs/` registers a hosted workflow. The Node action computes a label without releasing anything; the Docker example demonstrates bounded workspace inspection. Introductory packaging here prepares for the later Docker and Node deep dives.
+The labs include inactive recipes, explicit expected results, and temporary failure demonstrations. No recipe under `labs/` registers a hosted workflow. The Node action computes a label without releasing anything; the Docker example demonstrates bounded workspace inspection. These packaging exercises apply the Docker and Node contracts developed earlier in the course.
 
-`labs/module-3-handoff.md` records exact authoring commands, observed results, primary URLs checked on 2026-10-30, and deferred boundaries. Documentation validation is reserved for the coordinator's single combined 24-lesson pass. Hosted consumer execution, remote release creation, and Marketplace publication remain deliberate future exercises.
+`labs/module-9-handoff.md` records exact authoring commands, observed results, primary URLs checked on 2026-10-30, and deferred boundaries. Documentation validation is reserved for the coordinator's single combined 24-lesson pass. Hosted consumer execution, remote release creation, and Marketplace publication remain deliberate future exercises.
 
 ## Choose the implementation boundary
 
@@ -147,4 +147,4 @@ This learning repository contains multiple examples and has no root `action.yml`
 
 | Previous | All lessons | Next |
 | --- | --- | --- |
-| [Local/hosted boundary](0012-local-hosted-coverage-and-usage-budget.md) | [Curriculum](index.md) | [0055 · Reuse, compose, or create](0055-reuse-compose-or-create-an-action.md) |
+| [0048 · Hosted trials and diagnostics](0048-agentic-hosted-trials-budgets-and-diagnostics.md) | [Curriculum](index.md) | [0049 · Reuse, compose, or create](0049-reuse-compose-or-create-an-action.md) |

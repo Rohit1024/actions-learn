@@ -22,7 +22,7 @@ A **JavaScript action** is an action whose metadata tells the runner to execute 
 The complete `labs/0019/action.yml` declares this interface:
 
 ```yaml title="labs/0019/action.yml"
-name: Module 5 required greeting
+name: Module 4 required greeting
 description: A dependency-free Node adapter with a required single-line input
 inputs:
   name:
@@ -196,7 +196,7 @@ Explain without rereading:
 
 The host suite exercises Node 24 on the current machine, real environment reads, file bytes, and child exit codes. It does not execute a GitHub runner or the uninstalled Toolkit excerpt. Actual runner selection, action input injection, output parsing, and hosted OS behavior remain integration checks. No container, `act`, API, or hosted run is needed to establish this greeting's function contract. Use the [local-testing guide](../cheatsheet/local-testing.md) to choose the next layer deliberately.
 
-Capture actual learner predictions, their traced interface, and their diagnosis during teaching. Continue to [0020](0020-pure-functions-and-node-tests.md), separating application logic from the process adapter. The Module 5 handoff records source checks dated **2026-10-30**; the [curated source library](../references/resources.md) remains the entry point for references.
+Capture actual learner predictions, their traced interface, and their diagnosis during teaching. Continue to [0020](0020-pure-functions-and-node-tests.md), separating application logic from the process adapter. The Module 4 handoff records source checks dated **2026-10-30**; the [curated source library](../references/resources.md) remains the entry point for references.
 
 ## Start this lesson in a new thread
 
@@ -214,4 +214,4 @@ docs/lessons/0020-pure-functions-and-node-tests.md.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0018 · Container release tradeoffs](0018-container-security-and-release-tradeoffs.md) | [Curriculum](index.md) | [0020 · Pure functions and Node tests](0020-pure-functions-and-node-tests.md) |
+| [0018 · Container scanning, dependency pinning, cold starts, and release tradeoffs](0018-container-security-and-release-tradeoffs.md) | [Curriculum](index.md) | [0020 · Pure functions, process adapters, and Node unit tests](0020-pure-functions-and-node-tests.md) |

@@ -109,7 +109,7 @@ The authoring host was **macOS ARM64, Node 24.21.0**. No dependency installation
 
 ## Prepare the intended hosted matrix
 
-`labs/0024/module5-platforms.yml` is a complete inactive workflow recipe. It uses the existing reviewed checkout commit and calls the local action after checkout:
+`labs/0024/module4-platforms.yml` is a complete inactive workflow recipe. It uses the existing reviewed checkout commit and calls the local action after checkout:
 
 ```yaml title="OS-matrix excerpt"
 strategy:
@@ -136,10 +136,10 @@ steps:
 Static-check the recipe without dispatching it:
 
 ```bash
-.tools/bin/actionlint -color labs/0024/module5-platforms.yml
+.tools/bin/actionlint -color labs/0024/module4-platforms.yml
 ```
 
-Expected: no diagnostics and exit 0. A second inactive recipe, `labs/0019/module5-contracts.yml`, statically connects all six Module 5 action interfaces. It can be checked with the same command.
+Expected: no diagnostics and exit 0. A second inactive recipe, `labs/0019/module4-contracts.yml`, statically connects all six Module 4 action interfaces. It can be checked with the same command.
 
 Future hosted use requires a deliberate decision to copy a recipe into `.github/workflows/`, review the selected revision, and manually dispatch it. That is not part of this authoring task. The matrix has not been run, and `-latest` labels also move over time. Passing a single current runner image would not establish every self-hosted installation, architecture, or future image.
 
@@ -198,9 +198,9 @@ Retrieve without looking:
 
 ## Verification limits and handoff
 
-Local tests and actionlint pass for the cases recorded in the Module 5 handoff. Hosted OS/architecture runs, older-runner compatibility, release-reference resolution, dependency upgrades, and publication remain unexecuted. Sources were checked on **2026-10-30** using the [curated library](../references/resources.md) and its linked maintainer documentation. Documentation validation is deferred to the coordinator's combined authoring pass.
+Local tests and actionlint pass for the cases recorded in the Module 4 handoff. Hosted OS/architecture runs, older-runner compatibility, release-reference resolution, dependency upgrades, and publication remain unexecuted. Sources were checked on **2026-10-30** using the [curated library](../references/resources.md) and its linked maintainer documentation. Documentation validation is deferred to the coordinator's combined authoring pass.
 
-During teaching, record the learner's portability diagnosis and versioning rationale. Next is [0025 · Composite structure and output mapping](0025-composite-action-inputs-and-outputs.md). The published lesson IDs remain stable and this pagination follows curriculum order.
+During teaching, record the learner's portability diagnosis and versioning rationale. Continue sequentially to [0025 · Composite structure and output mapping](0025-composite-action-inputs-and-outputs.md), the start of Module 5.
 
 ## Start this lesson in a new thread
 
@@ -218,4 +218,4 @@ docs/lessons/0025-composite-action-inputs-and-outputs.md.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0023 · Lifecycle and cleanup](0023-javascript-action-lifecycle-and-state.md) | [Curriculum](index.md) | [0025 · Composite structure and output mapping](0025-composite-action-inputs-and-outputs.md) |
+| [0023 · Action lifecycle hooks, state files, and cleanup](0023-javascript-action-lifecycle-and-state.md) | [Curriculum](index.md) | [0025 · Composite action structure, step IDs, and output mapping](0025-composite-action-inputs-and-outputs.md) |

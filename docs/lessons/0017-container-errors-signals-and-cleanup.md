@@ -199,7 +199,7 @@ An action creates a temporary cloud resource before generating a report. Propose
 
 Capture the learner's status trace, their repair to the swallowed return value, and the distinction between graceful and forced cleanup. Author evidence consists of six passing host tests, shell syntax and consumer lint. Container and GitHub cancellation checks remain deferred. Continue to [0018](0018-container-security-and-release-tradeoffs.md).
 
-Sources above were checked on **2026-10-30**; see the [library](../references/resources.md) and `labs/module-4-handoff.md`. Documentation validation is deferred to the coordinator's combined pass.
+Sources above were checked on **2026-10-30**; see the [library](../references/resources.md) and `labs/module-3-handoff.md`. Documentation validation is deferred to the coordinator's combined pass.
 
 ## Start this lesson in a new thread
 
@@ -215,4 +215,4 @@ container stop, and GitHub cancellation evidence separate. Hand off to 0018.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0016 · Direct and image tests](0016-docker-action-direct-and-image-tests.md) | [Curriculum](index.md) | [0018 · Security and release tradeoffs](0018-container-security-and-release-tradeoffs.md) |
+| [0016 · Test container logic directly and the built image separately](0016-docker-action-direct-and-image-tests.md) | [Curriculum](index.md) | [0018 · Container scanning, dependency pinning, cold starts, and release tradeoffs](0018-container-security-and-release-tradeoffs.md) |

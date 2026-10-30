@@ -1,4 +1,4 @@
-name: Module 5 bundled greeting
+name: Module 4 bundled greeting
 description: Execute the reviewed JavaScript distribution rather than TypeScript source
 inputs:
   name:

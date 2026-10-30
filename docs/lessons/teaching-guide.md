@@ -23,25 +23,29 @@ Start with events, workflows, jobs, steps, and runners, one concept at a time.
 Ask me to predict and try examples before showing their solutions.
 ```
 
-Use lesson IDs **0001–0060**, resolved through the curriculum. Follow module and pagination order rather than sorting IDs: the added modules use new IDs to preserve existing published URLs. Expand the existing page in place so links and neighboring lessons remain stable.
+Use sequential lesson IDs **0001–0060**, resolved through the curriculum. Each of the ten modules contains six consecutive lessons; module order, lesson numbers, filenames, lab paths, and pagination agree. Expand the existing canonical page in place rather than creating a duplicate. Renumbering this course was explicitly requested; future authoring should preserve the corrected sequence.
 
 ## The progression
 
 ```mermaid
 flowchart TD
-    Workflow["Understand workflow events, jobs, steps, and runners"] --> Local["Test action behavior and workflow wiring locally"]
-    Local --> Author["Build custom actions with explicit contracts"]
-    Author --> Composer["Compose workers through reusable workflow interfaces"]
-    Composer --> Reuse["Select maintained pre-built actions with publisher evidence"]
-    Reuse --> Operator["Control identity, releases, failure, and usage"]
-    Operator --> Orchestrator["Independently design and operate a verified pipeline"]
+    Workflow["Understand workflow events, jobs, steps, and runners"] --> Local["Test locally with Task and act"]
+    Local --> Docker["Trace Docker image and process contracts"]
+    Docker --> Node["Test JavaScript and TypeScript action adapters"]
+    Node --> Composer["Compose steps and reusable workflows"]
+    Composer --> Security["Control identity, releases, failure, and usage"]
+    Security --> Reuse["Select maintained actions with publisher evidence"]
+    Reuse --> Agentic["Evaluate bounded agentic workflows"]
+    Agentic --> Author["Create and package your own focused action"]
+    Author --> Capstone["Operate a verified production pipeline"]
 ```
 
 - **Modules 1–2:** configure workflow execution, then test action behavior and workflow wiring locally with Task and act.
-- **Module 3:** create a focused action interface and choose composition, Node, or Docker deliberately.
-- **Modules 4–6:** develop Docker, JavaScript/TypeScript, composite, and reusable-workflow implementations in depth.
+- **Modules 3–5:** develop Docker, JavaScript/TypeScript, composite, and reusable-workflow implementations in depth.
+- **Module 6:** secure credentials, releases, failure handling, and usage.
 - **Module 7:** select maintained pre-built actions using a dated star snapshot, matched publisher evidence, and reviewed releases.
-- **Modules 8–9:** secure credentials and releases, then evaluate constrained agentic automation.
+- **Module 8:** compile and evaluate constrained agentic automation.
+- **Module 9:** apply the earlier runtime, reuse, and security lessons to create and package a focused action interface.
 - **Module 10:** deliver a capstone with worker evidence, release gates, and an operating playbook.
 
 Use the [action catalog](../references/prebuilt-actions.md) for discovery. Verified creator status identifies a publisher; stars measure popularity. Recheck current upstream metadata and review release behavior before updating an example pin. Keep project build/test commands explicit and replace repeated platform glue where a suitable maintained action exists.

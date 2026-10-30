@@ -164,7 +164,7 @@ A real action adds a requirements lockfile and a dependency install. Place those
 
 Record the learner's cache prediction and the first failing build boundary they identify. Host program evidence is available; engine/cache/image experiments remain deferred. A future GitHub check must still exercise actual action building, runtime workspace behavior and runner output processing. Continue to [0015](0015-container-mounts-ownership-and-output-paths.md).
 
-Primary sources above were checked on **2026-10-30**; the [curated library](../references/resources.md) and `labs/module-4-handoff.md` preserve source context and unexecuted boundaries. Documentation validation is reserved for the coordinator's combined authoring pass.
+Primary sources above were checked on **2026-10-30**; the [curated library](../references/resources.md) and `labs/module-3-handoff.md` preserve source context and unexecuted boundaries. Documentation validation is reserved for the coordinator's combined authoring pass.
 
 ## Start this lesson in a new thread
 
@@ -180,4 +180,4 @@ Pause before solutions and record actual evidence before lesson 0015.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0013 · Metadata and lifecycle](0013-docker-action-metadata-and-lifecycle.md) | [Curriculum](index.md) | [0015 · Mounts, ownership and output paths](0015-container-mounts-ownership-and-output-paths.md) |
+| [0013 · Docker action metadata, arguments, and container lifecycle](0013-docker-action-metadata-and-lifecycle.md) | [Curriculum](index.md) | [0015 · Workspace mounts, user IDs, ownership, and output paths](0015-container-mounts-ownership-and-output-paths.md) |

@@ -229,4 +229,4 @@ Continue to lesson 0012; preserve coordinator-only documentation validation for 
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0010 · Engines, sockets, and architecture](0010-container-engines-images-and-architecture.md) | [Curriculum](index.md) | [0012 · Coverage boundary and usage budget](0012-local-hosted-coverage-and-usage-budget.md) |
+| [0010 · Container engines, Linux images, sockets, and CPU architecture](0010-container-engines-images-and-architecture.md) | [Curriculum](index.md) | [0012 · Define the local/hosted coverage boundary and usage budget](0012-local-hosted-coverage-and-usage-budget.md) |

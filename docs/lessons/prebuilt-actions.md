@@ -4,20 +4,20 @@ icon: lucide/blocks
 
 # Popular pre-built actions: less shell glue
 
-Use maintained actions for common repository, setup, cache, build, artifact, identity, and release operations. Keep project-specific build and test commands explicit. This module develops action selection and composition after the custom-action modules and before security, reliability, and releases.
+Use maintained actions for common repository, setup, cache, build, artifact, identity, and release operations. Keep project-specific build and test commands explicit. This module applies earlier composition and security lessons to action selection, before agentic workflows and the dedicated action-creation module.
 
-**Module 7 · Lessons 0049–0054.** Start after [composite and reusable-workflow orchestration](0030-compose-step-and-job-orchestration.md). The [ranked catalog](../references/prebuilt-actions.md) contains **29 actions**, dated star counts, and observed Marketplace creator evidence. GitHub's [pre-written building blocks guide](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/find-and-customize-actions) explains how to reference an existing action.
+**Module 7 · Lessons 0037–0042.** Continue after [security, observability, and usage budgets](0036-observability-concurrency-and-usage-budgets.md). The [ranked catalog](../references/prebuilt-actions.md) contains **29 actions**, dated star counts, and observed Marketplace creator evidence. GitHub's [pre-written building blocks guide](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/find-and-customize-actions) explains how to reference an existing action.
 
 ## The six lessons
 
 | Lesson | Planned coverage |
 | --- | --- |
-| [0049 · Choose popular pre-built actions and verify their publishers](0049-selecting-popular-prebuilt-actions.md) | Select an action using task fit, publisher evidence, release activity, and a dated star count. |
-| [0050 · Replace git-diff shell logic with dorny/paths-filter](0050-paths-filter-and-selective-jobs.md) | Select jobs from named changed-path outputs without a custom git-diff pipeline. |
-| [0051 · Use setup, cache, and artifact actions instead of bootstrap scripts](0051-setup-cache-and-artifact-actions.md) | Configure tools and download caches through maintained setup actions. |
-| [0052 · Compose Docker build and cloud authentication actions](0052-docker-build-and-cloud-auth-actions.md) | Build and label an image using Docker-maintained actions instead of CLI glue scripts. |
-| [0053 · Automate releases, pull requests, and reports with pre-built actions](0053-release-pr-and-reporting-actions.md) | Replace release and generated-change API scripts with explicit maintained action interfaces. |
-| [0054 · Compose an action-based pipeline and maintain its dependencies](0054-compose-maintained-actions-and-manage-updates.md) | Replace reusable platform glue with pre-built actions while preserving explicit application commands. |
+| [0037 · Choose popular pre-built actions and verify their publishers](0037-selecting-popular-prebuilt-actions.md) | Select an action using task fit, publisher evidence, release activity, and a dated star count. |
+| [0038 · Replace git-diff shell logic with dorny/paths-filter](0038-paths-filter-and-selective-jobs.md) | Select jobs from named changed-path outputs without a custom git-diff pipeline. |
+| [0039 · Use setup, cache, and artifact actions instead of bootstrap scripts](0039-setup-cache-and-artifact-actions.md) | Configure tools and download caches through maintained setup actions. |
+| [0040 · Compose Docker build and cloud authentication actions](0040-docker-build-and-cloud-auth-actions.md) | Build and label an image using Docker-maintained actions instead of CLI glue scripts. |
+| [0041 · Automate releases, pull requests, and reports with pre-built actions](0041-release-pr-and-reporting-actions.md) | Replace release and generated-change API scripts with explicit maintained action interfaces. |
+| [0042 · Compose an action-based pipeline and maintain its dependencies](0042-compose-maintained-actions-and-manage-updates.md) | Replace reusable platform glue with pre-built actions while preserving explicit application commands. |
 
 ## Replace repeated platform work
 
@@ -106,4 +106,4 @@ Static checks validate workflow structure, expressions, and the local custom-act
 
 | Previous | All lessons | Next |
 | --- | --- | --- |
-| [0030 · Workflow orchestration](0030-compose-step-and-job-orchestration.md) | [Curriculum](index.md) | [0049 · Choose pre-built actions](0049-selecting-popular-prebuilt-actions.md) |
+| [0036 · Observability and usage budgets](0036-observability-concurrency-and-usage-budgets.md) | [Curriculum](index.md) | [0037 · Choose pre-built actions](0037-selecting-popular-prebuilt-actions.md) |

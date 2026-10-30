@@ -213,4 +213,4 @@ Continue to lesson 0011; preserve coordinator-only documentation validation for 
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0009 · Tests, fixtures, and output files](0009-unit-tests-fixtures-and-output-files.md) | [Curriculum](index.md) | [0011 · One event and one act job](0011-act-targeted-workflow-smoke-tests.md) |
+| [0009 · Unit tests, event fixtures, and temporary output files](0009-unit-tests-fixtures-and-output-files.md) | [Curriculum](index.md) | [0011 · Run one event and one job with act](0011-act-targeted-workflow-smoke-tests.md) |

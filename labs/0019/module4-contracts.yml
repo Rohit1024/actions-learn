@@ -1,0 +1,54 @@
+name: Module 4 local action interfaces
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1; existing project pin
+        with:
+          persist-credentials: false
+      - id: greeting
+        uses: ./labs/0019
+        with:
+          name: Ada
+      - id: timing
+        uses: ./labs/0020
+        with:
+          durations: '[2,3]'
+          budget: '5'
+      - id: bundled
+        uses: ./labs/0021
+        with:
+          name: Ada
+      - id: api_fixture
+        uses: ./labs/0022
+        with:
+          scenario: pages
+      - id: lifecycle
+        uses: ./labs/0023
+      - id: portable
+        uses: ./labs/0024
+        with:
+          file: labs/0024/fixtures/report with spaces-रोहित.txt
+      - name: Assert runner-consumed interfaces
+        env:
+          GREETING: ${{ steps.greeting.outputs.greeting }}
+          TIMING: ${{ steps.timing.outputs.report }}
+          BUNDLED: ${{ steps.bundled.outputs.greeting }}
+          REPORT: ${{ steps.api_fixture.outputs.report }}
+          RESOURCE: ${{ steps.lifecycle.outputs.resource }}
+          COUNT: ${{ steps.portable.outputs.count }}
+        run: |
+          node - <<'NODE'
+          const assert = require('node:assert/strict');
+          assert.equal(process.env.GREETING, 'Hello, Ada!');
+          assert.equal(JSON.parse(process.env.TIMING).withinBudget, true);
+          assert.equal(process.env.BUNDLED, 'Hello, Ada!');
+          assert.equal(JSON.parse(process.env.REPORT).count, 2);
+          assert.equal(process.env.RESOURCE, 'ready');
+          assert.equal(process.env.COUNT, '2');
+          NODE

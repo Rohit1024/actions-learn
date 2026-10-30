@@ -2,7 +2,7 @@
 
 # Learn GitHub Actions
 
-Learn to design, build, test, secure, and operate GitHub Actions through **60 lessons across 10 modules**. Start with workflow execution and local testing, build custom actions, then study maintained pre-built actions, security, and production orchestration. Test locally before spending hosted runner minutes.
+Learn to design, build, test, secure, and operate GitHub Actions through **60 lessons across 10 modules**. Follow workflow execution and local testing through action runtimes, composition, security, pre-built actions, agentic workflows, custom-action creation, and production orchestration. Test locally before spending hosted runner minutes.
 
 **[Learning site](https://rohit1024.github.io/actions-learn/)** · **[Curriculum](docs/lessons/index.md)** · **[First lesson](docs/lessons/0001-execution-model.md)** · **[Local testing guide](docs/cheatsheet/local-testing.md)**
 
@@ -10,18 +10,18 @@ Learn to design, build, test, secure, and operate GitHub Actions through **60 le
 
 | Module | Lessons | Focus |
 | --- | --- | --- |
-| Workflow execution and configuration | 0001–0006 | Events, runners, jobs, steps, expressions, outputs, and dependencies |
-| Local testing | 0007–0012 | Task, actionlint, fixtures, container checks, and selected `act` runs |
-| Create your own GitHub action | 0055–0060 | Choose a runtime, define action metadata, test a consumer, and prepare a release |
-| Docker container actions | 0013–0018 | Metadata, images, entrypoints, mounts, failure handling, and releases |
-| JavaScript and TypeScript actions | 0019–0024 | Node, the Actions Toolkit, tests, bundling, and versioning |
-| Composite actions and reusable workflows | 0025–0030 | Reuse boundaries, input/output contracts, and workflow composition |
-| Popular pre-built actions | 0049–0054 | Select maintained actions, verify publishers, and replace repeated shell glue |
-| Security, reliability, and releases | 0031–0036 | Token permissions, OIDC, provenance, artifacts, and diagnostics |
-| GitHub Agentic Workflows | 0037–0042 | Compilation, engines, tool boundaries, constrained outputs, and evaluation |
-| Production capstone | 0043–0048 | Verified workers, orchestration, release gates, and an operating playbook |
+| 1. Workflow execution and configuration | 0001–0006 | Events, runners, jobs, steps, expressions, outputs, and dependencies |
+| 2. Testing locally with Task and act | 0007–0012 | Task, actionlint, fixtures, container checks, and selected `act` runs |
+| 3. Docker container actions | 0013–0018 | Metadata, images, entrypoints, mounts, failure handling, and releases |
+| 4. JavaScript and TypeScript actions | 0019–0024 | Node, the Actions Toolkit, tests, bundling, and versioning |
+| 5. Composite actions and reusable workflows | 0025–0030 | Reuse boundaries, input/output contracts, and workflow composition |
+| 6. Security, reliability, and releases | 0031–0036 | Token permissions, OIDC, provenance, artifacts, and diagnostics |
+| 7. Popular pre-built actions: replace shell glue | 0037–0042 | Select maintained actions, verify publishers, and replace repeated shell glue |
+| 8. GitHub Agentic Workflows | 0043–0048 | Compilation, engines, tool boundaries, constrained outputs, and evaluation |
+| 9. Create your own GitHub action | 0049–0054 | Choose a runtime, define action metadata, test a consumer, and prepare a release |
+| 10. Production capstone | 0055–0060 | Verified workers, orchestration, release gates, and an operating playbook |
 
-Follow the module order above; lesson IDs preserve existing URLs. Modules 1–5 contain 30 authored reference lessons with [local labs](labs/README.md); the remaining 30 pages in Modules 6–10 are detailed teaching briefs for future sessions. There are no starter pages. Written lesson status and demonstrated learner understanding are tracked separately. Supporting syntax is explained within the relevant Actions example.
+Follow the module order above; lesson IDs, filenames, and lab paths run consecutively from 0001 to 0060. Modules 1–4 and 9 contain 30 authored reference lessons with [local labs](labs/README.md); the remaining 30 pages in Modules 5–8 and 10 are detailed teaching briefs for future sessions. There are no starter pages. Written lesson status and demonstrated learner understanding are tracked separately. Supporting syntax is explained within the relevant Actions example.
 
 Explore the [pre-built action module](docs/lessons/prebuilt-actions.md), [29-action catalog with dated stars and publisher evidence](docs/references/prebuilt-actions.md), and [create-your-own-action module](docs/lessons/create-your-own-action.md).
 
@@ -47,8 +47,8 @@ task docs:serve
 | `task lint:workflows` | Check active workflow syntax and expressions with actionlint |
 | `task lint:recipes` | Check inactive workflow recipes and their local composite action interface |
 | `task lint:module1` | Check all seven inactive Module 1 workflows and local reusable-call interfaces |
-| `task lint:labs` | Check all 23 syntax-valid workflow recipes across Modules 1–5 |
-| `task test:labs` | Run the Module 2–5 host lab suites, without documentation or container execution |
+| `task lint:labs` | Check all 23 syntax-valid workflow recipes across Modules 1–4 and 9 |
+| `task test:labs` | Run host lab suites for Modules 2–4 and 9, without documentation or container execution |
 | `task docs:verify` | Check documentation links and diagrams, then build the site |
 | `task actions:build` | Rebuild the TypeScript action's committed distribution file |
 | `task test:container` | Build and test the Docker action's image and output mount |

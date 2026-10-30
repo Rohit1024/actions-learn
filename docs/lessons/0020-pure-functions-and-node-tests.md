@@ -196,4 +196,4 @@ Continue at docs/lessons/0021-typescript-bundling-and-dist-drift.md.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0019 · Runtime and Toolkit](0019-javascript-action-runtime-and-toolkit.md) | [Curriculum](index.md) | [0021 · TypeScript packaging and dist drift](0021-typescript-bundling-and-dist-drift.md) |
+| [0019 · JavaScript action metadata, the Node runtime, and the Actions Toolkit](0019-javascript-action-runtime-and-toolkit.md) | [Curriculum](index.md) | [0021 · TypeScript compilation, bundling, and committed distribution files](0021-typescript-bundling-and-dist-drift.md) |

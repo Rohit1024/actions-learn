@@ -1,4 +1,4 @@
-name: Module 4 interruption contract
+name: Module 3 interruption contract
 description: Stage local work, clean up interruptions, and publish only completed work
 inputs:
   mode:

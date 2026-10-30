@@ -52,7 +52,7 @@ flowchart TD
 # Fast path while editing behavior.
 task test
 
-# Authored Modules 2–5 have additional host contracts; lab workflow lint covers Modules 1–5.
+# Authored Modules 2–4 and 9 have additional host contracts; lab workflow lint covers Modules 1–4 and 9.
 task test:labs
 task lint:labs
 
@@ -78,7 +78,7 @@ Mermaid validation scans the selected Markdown files, deduplicates diagrams, and
 
 `task test` first type-checks TypeScript, compares its generated bundle with the committed distribution file, then tests the pure JavaScript function and all four real entrypoints. Cases include default input, empty input, whitespace, Unicode, multiline rejection, and shell-like text treated as data. Docker's program is tested with host Python at this layer; the image is tested separately.
 
-`task test:labs` additionally exercises the authored Module 2–5 labs, including Task cache invalidation, real process contracts, packaging drift, fixture-only APIs, lifecycle cleanup, and host interruption handling. `task lint:labs` selects 23 syntax-valid recipes across Modules 1–5. Deliberate negative workflow fixtures remain separate; a clean static check also does not repair or execute an intentionally broken output mapping. These lab commands perform no documentation checks and need no container daemon. Use `task test:module2` through `task test:module5`, or the matching `lint:moduleN` task, for a focused module edit.
+`task test:labs` additionally exercises the authored labs in Modules 2–4 and 9, including Task cache invalidation, real process contracts, packaging drift, fixture-only APIs, lifecycle cleanup, and host interruption handling. `task lint:labs` selects 23 syntax-valid recipes across Modules 1–4 and 9. Deliberate negative workflow fixtures remain separate; a clean static check also does not repair or execute an intentionally broken output mapping. These lab commands perform no documentation checks and need no container daemon. Use `task test:module2`, `task test:module3`, `task test:module4`, or `task test:module9`, with the matching `lint:moduleN` task, for a focused module edit.
 
 The TypeScript bundle check builds into a temporary file and compares bytes. It fails on stale output without silently repairing it. Commit both source and `examples/typescript-action/dist/index.cjs` when changing that action.
 

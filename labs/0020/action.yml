@@ -1,4 +1,4 @@
-name: Module 5 timing report
+name: Module 4 timing report
 description: Summarize supplied workflow durations without calling a service
 inputs:
   durations:

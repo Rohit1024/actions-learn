@@ -11,7 +11,7 @@ lesson_status: authored
 
 ## Prerequisites and goal
 
-Continue from [0060 · Release an action](0060-own-action-release-and-marketplace.md). Revisit [0012 · Coverage boundaries](0012-local-hosted-coverage-and-usage-budget.md), [0010 · Engines and architecture](0010-container-engines-images-and-architecture.md), and [0005 · Output contracts](0005-environment-files-and-output-contracts.md) if needed. You should be able to distinguish an action's source package from a workflow step that calls it.
+Continue from [0012 · Coverage boundaries](0012-local-hosted-coverage-and-usage-budget.md). Revisit [0010 · Engines and architecture](0010-container-engines-images-and-architecture.md), [0001 · Execution boundaries](0001-execution-model.md), and [0005 · Output contracts](0005-environment-files-and-output-contracts.md) if needed. You should be able to distinguish an action implementation from a workflow step that calls it.
 
 Build an observable chain from two named inputs to two container arguments, a Python process, a named output, and a caller assertion. Success means you can locate a defect at the correct boundary, including a process that exits zero with the wrong answer.
 
@@ -46,7 +46,7 @@ The first failure might happen before Python starts: unavailable engine, failed 
 This is the complete interface in `labs/0013/action/action.yml`:
 
 ```yaml title="labs/0013/action/action.yml"
-name: Module 4 argument contract
+name: Module 3 argument contract
 description: Map two named inputs to two positional container arguments
 inputs:
   name:
@@ -198,7 +198,7 @@ A report action needs `format` and `source-directory`. Sketch the metadata and e
 
 The author ran the successful probe, reversed and empty-input failures, and actionlint. The existing Podman engine connection was refused, so container/`act` execution is deferred. Host evidence covers arguments, channels, append behavior and status; it leaves image packaging, actual mounts, metadata execution and runner ingestion unproven. `act` also leaves GitHub identity, permissions and hosted policy outside its evidence.
 
-Primary documentation was checked on **2026-10-30**; see the [source library](../references/resources.md) and `labs/module-4-handoff.md`. A guided session should record the learner's own trace and repair. Continue to [0014](0014-dockerfiles-layers-and-build-context.md).
+Primary documentation was checked on **2026-10-30**; see the [source library](../references/resources.md) and `labs/module-3-handoff.md`. A guided session should record the learner's own trace and repair. Continue to [0014](0014-dockerfiles-layers-and-build-context.md).
 
 ## Start this lesson in a new thread
 
@@ -206,7 +206,7 @@ Primary documentation was checked on **2026-10-30**; see the [source library](..
 /teach 0013
 
 Use docs/lessons/0013-docker-action-metadata-and-lifecycle.md and labs/0013/.
-Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, lessons 0060,
+Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, lessons 0054,
 0012, 0010, and 0005. Ask me to trace with -> args -> argv -> output file.
 Pause before the reversed-argument solution. Test the host boundary first,
 record actual learner evidence, and hand off to lesson 0014.
@@ -214,4 +214,4 @@ record actual learner evidence, and hand off to lesson 0014.
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0060 · Release your action](0060-own-action-release-and-marketplace.md) | [Curriculum](index.md) | [0014 · Dockerfiles and build context](0014-dockerfiles-layers-and-build-context.md) |
+| [0012 · Define the local/hosted coverage boundary and usage budget](0012-local-hosted-coverage-and-usage-budget.md) | [Curriculum](index.md) | [0014 · Dockerfile layers, build context, reproducible bases, and entrypoints](0014-dockerfiles-layers-and-build-context.md) |

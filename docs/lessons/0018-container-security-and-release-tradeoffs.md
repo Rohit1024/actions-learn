@@ -11,7 +11,7 @@ lesson_status: authored
 
 ## Prerequisites and goal
 
-Use [0017 · Errors and cleanup](0017-container-errors-signals-and-cleanup.md), [0014 · Build inputs](0014-dockerfiles-layers-and-build-context.md), and [0060 · Release an action](0060-own-action-release-and-marketplace.md). Recall that an action commit, a base image and the final built image are different identities.
+Use [0017 · Errors and cleanup](0017-container-errors-signals-and-cleanup.md), [0014 · Build inputs](0014-dockerfiles-layers-and-build-context.md), and [0013 · Metadata and lifecycle](0013-docker-action-metadata-and-lifecycle.md). Recall that an action commit, a base image and the final built image are different identities. Module 9 later applies this release evidence to a complete custom-action package.
 
 Prepare an evidence-based release review for a Docker action. Success means you can explain what a pin freezes, what a scanner observes, which updates still need review, and when runtime packaging justifies container startup and maintenance costs.
 
@@ -213,7 +213,7 @@ Authoring ran the inventory, four policy tests, the stale-review failure and the
 
 Record the learner's dependency map, stale-pin diagnosis and packaging justification in a live session. Continue in catalog order to [0019 · JavaScript runtime and Toolkit](0019-javascript-action-runtime-and-toolkit.md), even though its lower startup boundary must still be tested on its own terms.
 
-Primary sources were checked on **2026-10-30**; details are preserved in `labs/module-4-handoff.md` with proposed additions to the [curated source library](../references/resources.md). Documentation validation is deferred to the coordinator's combined 24-lesson pass.
+Primary sources were checked on **2026-10-30**; details are preserved in `labs/module-3-handoff.md` with proposed additions to the [curated source library](../references/resources.md). Documentation validation is deferred to the coordinator's combined 24-lesson pass.
 
 ## Start this lesson in a new thread
 
@@ -222,11 +222,11 @@ Primary sources were checked on **2026-10-30**; details are preserved in `labs/m
 
 Use docs/lessons/0018-container-security-and-release-tradeoffs.md and labs/0018/.
 Read docs/mission.md, NOTES.md, docs/lessons/teaching-guide.md, and lessons
-0017, 0014, and 0060. Ask me what each pin freezes and what a scan misses.
+0017, 0014, and 0054. Ask me what each pin freezes and what a scan misses.
 Pause at the stale-review and performance predictions. Populate only actual
 evidence in the worksheet; no release or hosted run is implied. Hand off to 0019.
 ```
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0017 · Errors, signals and cleanup](0017-container-errors-signals-and-cleanup.md) | [Curriculum](index.md) | [0019 · JavaScript runtime and Toolkit](0019-javascript-action-runtime-and-toolkit.md) |
+| [0017 · Container exit codes, stderr, signals, timeouts, and cleanup](0017-container-errors-signals-and-cleanup.md) | [Curriculum](index.md) | [0019 · JavaScript action metadata, the Node runtime, and the Actions Toolkit](0019-javascript-action-runtime-and-toolkit.md) |

@@ -87,6 +87,6 @@ try each exercise before revealing its answer. Keep feedback local where possibl
 Finish with retrieval questions and a truthful handoff for the next thread.
 ```
 
-| Previous | All lessons | Next |
+| Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
 | [0028 · Test composite scripts and then their workflow wiring](0028-composite-script-tests-and-workflow-wiring.md) | [Curriculum](index.md) | [0030 · Compose setup/build/test steps and reusable job workflows](0030-compose-step-and-job-orchestration.md) |

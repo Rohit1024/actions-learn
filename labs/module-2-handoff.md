@@ -1,5 +1,7 @@
 # Module 2 authoring handoff — 2026-10-30
 
+> Numbering update: module labels, lesson IDs, paths, and command references in this handoff now use the sequential course layout. Original authoring checks preceded the renumbering; the coordinator records verification at the current paths in NOTES.md.
+
 **Status: all six assigned reference lessons and their isolated labs are fully developed.** Each page is `lesson_status: authored`; this records available content, not learner mastery. No learner predictions, exercises, or technical explanations were collected, and no learning record was invented.
 
 **Documentation validation is deferred to the coordinator's combined 24-lesson pass.** No Markdown/link/Mermaid validator or Zensical build was executed in this thread. The coordinator should integrate all four modules and shared changes before running the ONE whole-site `task docs:verify`. Six vertical Mermaid diagrams were authored here; their rendering, cache statistics, and error status remain unverified. The site build is NOT RUN.
@@ -17,7 +19,7 @@ Only these six assigned lesson pages, files under `labs/0007/`–`labs/0012/`, a
 | 0011 | `docs/lessons/0011-act-targeted-workflow-smoke-tests.md` | Selected events/job, identical scripts with different composite output mappings, caller assertion |
 | 0012 | `docs/lessons/0012-local-hosted-coverage-and-usage-budget.md` | Claim-to-layer evidence plan, false platform proof, stale revision, release gaps, declared usage cap |
 
-All pages include prerequisite links, complete explanations, runnable commands and expected observations, a vertical `flowchart TD` diagram with quoted labels, admonitions, code annotations, predictions, collapsed worked solutions, deliberate failure/diagnosis/repair, transfer and retrieval exercises, local/hosted limits, and an exact-file future teaching prompt. Pagination follows **0006 → 0007–0012 → 0055**, preserving IDs and filenames. Neighboring pages and the catalog remain coordinator-owned.
+All pages include prerequisite links, complete explanations, runnable commands and expected observations, a vertical `flowchart TD` diagram with quoted labels, admonitions, code annotations, predictions, collapsed worked solutions, deliberate failure/diagnosis/repair, transfer and retrieval exercises, local/hosted limits, and an exact-file future teaching prompt. Pagination follows **0006 → 0007–0012 → 0013** in the corrected sequence. Neighboring pages and the catalog remain coordinator-owned.
 
 ## Lab inventory
 
@@ -187,7 +189,7 @@ A supplementary attempt to open `https://nektosact.com/not_supported/docker_cont
 
 ## Coordinator integration proposals — not applied here
 
-1. Mark Module 2 IDs 0007–0012 as authored in the shared catalog and recompute combined counts with the other module handoffs. Preserve 0006 → 0007–0012 → 0055 navigation. Update shared NOTES without implying learner mastery.
+1. Mark Module 2 IDs 0007–0012 as authored in the shared catalog and recompute combined counts with the other module handoffs. Preserve 0006 → 0007–0012 → 0013 navigation. Update shared NOTES without implying learner mastery.
 2. No shared Taskfile change is required to use the explicit lab commands. If named integration is wanted, add `test:module2` for the cache harness, good shell probe, combined 16 Node tests, event bridge, direct composite scripts, and evidence exercise. Add `lint:module2` using the exact positive-only five-workflow command above. Do **not** glob every lab YAML: expected-negative diagnostic fixtures intentionally fail. Keep image/act checks optional and engine-gated.
 3. If future CI should exercise labs, include `labs/**` in the relevant shared workflow path filters and invoke the selected lab contracts. Do not copy the unsafe or deliberately broken recipes into active workflows. No `.github/` edits were made here.
 4. The curated source index already has the main tool/GitHub sources. Optional additions are Task's current split subpages, SC2086, zizmor audit/usage pages, the Node 24-specific test reference, Python's official-image manifest, and GitHub billing/usage. The URLs and check date above are ready for the coordinator's source-index update.
@@ -197,4 +199,4 @@ A supplementary attempt to open `https://nektosact.com/not_supported/docker_cont
 
 No authoring blocker remains. Outstanding verification boundaries are the stopped engine, absent optional analyzers, unexecuted platform/model paths, and coordinator-owned documentation validation. The teaching audit intentionally does not authenticate evidence references, prevent dispatches, enforce monetary limits, or implement a generic deployment gate; its limits are explained in lesson 0012. Its sample release flag covers local-candidate/platform-release scopes, leaving deployment scopes explicit.
 
-Continue in catalog order to **0055**, `docs/lessons/0055-reuse-compose-or-create-an-action.md`, for Module 3. A live session can begin earlier if the learner's predictions reveal prerequisite gaps. Persist only actual learner evidence when that session occurs.
+Continue sequentially to **0013**, `docs/lessons/0013-docker-action-metadata-and-lifecycle.md`, for Module 3. A live session can begin earlier if the learner's predictions reveal prerequisite gaps. Persist only actual learner evidence when that session occurs.

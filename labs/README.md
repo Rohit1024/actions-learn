@@ -1,27 +1,27 @@
 # Local learning labs
 
-Modules 1–5 have authored reference lessons and developed local exercises. Lesson IDs follow the curriculum order below, preserving their existing paths. All commands run from the repository root with the installed project dependencies.
+Modules 1–4 and 9 have authored reference lessons and developed local exercises. Lesson IDs and lab paths follow the consecutive curriculum order below. All commands run from the repository root with the installed project dependencies.
 
 | Module | Lessons and lab directories | Local checks |
 | --- | --- | --- |
 | 1 · Workflow execution and configuration | `0001`–`0006` | `task lint:module1` and the direct exercises below |
 | 2 · Testing locally with Task and act | `0007`–`0012` | `task test:module2` and `task lint:module2` |
-| 3 · Create your own GitHub action | `0055`–`0060` | `task test:module3` and `task lint:module3` |
-| 4 · Docker container actions | `0013`–`0018` | `task test:module4` and `task lint:module4` |
-| 5 · JavaScript and TypeScript actions | `0019`–`0024` | `task test:module5` and `task lint:module5` |
+| 3 · Docker container actions | `0013`–`0018` | `task test:module3` and `task lint:module3` |
+| 4 · JavaScript and TypeScript actions | `0019`–`0024` | `task test:module4` and `task lint:module4` |
+| 9 · Create your own GitHub action | `0049`–`0054` | `task test:module9` and `task lint:module9` |
 
-Run `task test:labs` for all Module 2–5 host suites and `task lint:labs` for the 23 syntax-valid recipes across Modules 1–5. These tasks do not run documentation validation, start a container engine, execute hosted workflows, or publish a release. The existing `task test` continues to check the four shared example adapters.
+Run `task test:labs` for all Modules 2–4 and 9 host suites and `task lint:labs` for the 23 syntax-valid recipes across Modules 1–4 and 9. These tasks do not run documentation validation, start a container engine, execute hosted workflows, or publish a release. The existing `task test` continues to check the four shared example adapters.
 
 Some diagnostic workflows deliberately fail static analysis. Lint tasks use explicit positive file lists; do not replace them with an all-YAML glob. A syntax-valid workflow can still contain an intentional output-mapping defect, which the execution exercise must detect.
 
-Host checks remain separate from image, mount, act, and GitHub evidence. Podman was stopped/refused connection during authoring, so container execution is deferred in the lessons and handoffs. Toolkit, ShellCheck, and zizmor packages/tools were not installed as part of authoring. Module 5 uses runnable standard-library adapters alongside explicitly unexecuted Toolkit references. Release candidates are local exercises.
+Host checks remain separate from image, mount, act, and GitHub evidence. Podman was stopped/refused connection during authoring, so container execution is deferred in the lessons and handoffs. Toolkit, ShellCheck, and zizmor packages/tools were not installed as part of authoring. Module 4 uses runnable standard-library adapters alongside explicitly unexecuted Toolkit references. Release candidates are local exercises.
 
 The module handoffs record the exact author-run checks, primary source URLs, and outstanding boundaries:
 
 - [Module 2 handoff](module-2-handoff.md)
 - [Module 3 handoff](module-3-handoff.md)
 - [Module 4 handoff](module-4-handoff.md)
-- [Module 5 handoff](module-5-handoff.md)
+- [Module 9 handoff](module-9-handoff.md)
 
 ## Module 1 exercises
 

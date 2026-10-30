@@ -186,4 +186,4 @@ Continue to lesson 0010; preserve this batch's coordinator-only documentation va
 
 | Previous Lesson | All Lessons | Next Lesson |
 | --- | --- | --- |
-| [0008 · Workflow, shell, and security linting](0008-workflow-shell-and-security-linting.md) | [Curriculum](index.md) | [0010 · Engines, sockets, and architecture](0010-container-engines-images-and-architecture.md) |
+| [0008 · Workflow linting, shell diagnostics, metadata checks, and security analysis](0008-workflow-shell-and-security-linting.md) | [Curriculum](index.md) | [0010 · Container engines, Linux images, sockets, and CPU architecture](0010-container-engines-images-and-architecture.md) |
