@@ -62,3 +62,6 @@ jobs:
           version: '3.53.1'
       - run: task setup
       - run: task check
+        env:
+          # Ubuntu's AppArmor profile permits the runner's installed Chrome.
+          PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
