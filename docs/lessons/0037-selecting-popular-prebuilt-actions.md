@@ -8,14 +8,7 @@ lesson_status: authored
 
 A maintained action can replace an installer, an API pagination loop, or an upload script with a documented interface. Selecting it also adds executable code to your job. Make that dependency decision explicit before copying `uses:`.
 
-!!! note "Reference lesson"
-    Predict outcomes before opening the solutions. Written availability and assistant-run checks do not establish learner mastery. All commands below run from the repository root using the existing environment; no dependency installation is needed.
-
-## Prerequisites and observable goal
-
-Read [0036 · Observability and budgets](0036-observability-concurrency-and-usage-budgets.md), [0030 · Step and job orchestration](0030-compose-step-and-job-orchestration.md), and [0006 · Dependency graphs](0006-matrices-dependencies-and-cancellation.md). Recall from [0035 · Commit pins](0035-sha-pins-semantic-releases-and-provenance.md) why a tag and a commit have different update behavior.
-
-You will produce a selection decision that names the exact repository, intended operation, release commit, observed publisher evidence, permissions, and remaining checks. Success means you can reject a popular lookalike and explain why a verified publisher still needs release review.
+Run commands from the repository root with the installed tools. Predict each outcome before opening its solution.
 
 ## Start with the operation
 
@@ -49,7 +42,7 @@ The [curated catalog](../references/prebuilt-actions.md) and `docs/references/ac
 
 For a manageable discovery exercise, inspect `actions/checkout`, `docker/build-push-action`, and `dorny/paths-filter`. The first materializes repository files, the second builds/exports images, and the third produces changed-path decisions. They are not interchangeable competitors simply because their stars can be counted.
 
-The fresh evidence matched the checkout and Docker Marketplace listings and observed their creator badges. The matched paths-filter listing reported an unverified owner field and showed no badge. This is a community selection requiring its own review and rationale. The receipt also preserves initially unsuccessful matching attempts; an unresolved match is **unconfirmed**, not evidence against the publisher.
+The saved evidence matches the checkout and Docker Marketplace listings and records their creator badges. The matched paths-filter listing reported an unverified owner field and showed no badge. This is a community selection requiring its own review and rationale. The saved record also includes failed attempts to match listings. An unresolved match remains unconfirmed. It says nothing about the publisher's quality.
 
 GitHub explains that the [Marketplace creator badge](https://docs.github.com/en/actions/how-tos/create-and-publish-actions/publish-in-github-marketplace#about-badges-in-github-marketplace) identifies a creator verified as a partner organization. It does not certify every action release. An organization-profile badge is a different signal. A full commit selects a stable revision, but does not prove that revision is safe or that an action cannot download other mutable tools at runtime.
 
@@ -72,7 +65,7 @@ The project pin was re-resolved through GitHub's read-only tag API and the metad
 1. The executable reference is the full commit. The comment is a human-readable release label; it cannot change which code executes. The [tag API](https://api.github.com/repos/actions/checkout/git/ref/tags/v7.0.1) provides mapping evidence, not a source-code audit.
 2. This input is declared by [metadata at the pin](https://github.com/actions/checkout/blob/3d3c42e5aac5ba805825da76410c181273ba90b1/action.yml). Avoid retaining checkout credentials when subsequent Git writes are unnecessary. Other steps can still access their job token, so this input does not replace a `permissions` policy.
 
-Read the implementation and release notes as well as metadata: inputs alone do not describe every network request, post step, downloaded binary, or permission requirement. Recheck self-hosted runner compatibility for the action's own runtime separately from the version it installs for your application.
+Read the implementation and release notes as well as metadata. Input declarations do not describe every network request, post step, downloaded binary, or permission requirement. Recheck self-hosted runner compatibility for the action's own runtime separately from the version it installs for your application.
 
 ## Local lab: enforce a selection record
 
@@ -127,8 +120,8 @@ A team needs to upload a build result, propose generated documentation changes, 
 
 ## Verification boundary
 
-This lab checks saved evidence and policy behavior. It does not download or execute actions, verify effective token scopes, test Marketplace enforcement, or prove maintenance quality. Read-only repository metadata and a successful tag lookup are narrower evidence than an executable release review. Continue to [0038](0038-paths-filter-and-selective-jobs.md) to apply the selection process to named change outputs.
+This lab checks saved evidence and policy behavior. It does not download or execute actions, verify effective token scopes, test Marketplace enforcement, or prove maintenance quality. Repository metadata and tag lookups establish identity and revision. You still need to review the executable release. Continue to [0038](0038-paths-filter-and-selective-jobs.md) to apply the selection process to named change outputs.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0036 · Logs, annotations, summaries, concurrency, and usage budgets](0036-observability-concurrency-and-usage-budgets.md) | [Curriculum](index.md) | [0038 · Replace git-diff shell logic with dorny/paths-filter](0038-paths-filter-and-selective-jobs.md) |

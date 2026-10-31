@@ -6,7 +6,7 @@ icon: lucide/graduation-cap
 
 **60 GitHub Actions lessons in 10 modules.** Follow workflow execution, local testing, Docker, JavaScript/TypeScript, composition, security, pre-built actions, agentic workflows, custom-action creation, and the production capstone in that order.
 
-There are **54 authored lessons** in Modules 1–9, plus **six detailed capstone briefs** in Module 10, with no starter pages. Checked items track written content, not mastery. Authored lessons include prerequisites, local labs, explained examples, failure exercises, and retrieval questions. The module guides also include a dated action catalog and composition recipes.
+There are **54 authored lessons** in Modules 1–9, plus **six detailed capstone briefs** in Module 10, with no starter pages. Checked items track written content, not mastery. Authored lessons include local labs, explained examples, failure exercises, and retrieval questions. The module guides also include a dated action catalog and composition recipes.
 
 Use `task test:labs` for host exercises in Modules 2–9, and `task lint:labs` for 44 explicitly selected workflow/schematic recipes across Modules 1–9. Deliberate diagnostic fixtures remain separate; container and hosted evidence limits are documented in each lesson.
 

@@ -6,22 +6,13 @@ lesson_status: authored
 
 # 0002 · Build a local feedback loop
 
-!!! note "Authored reference lesson"
-    Work through predictions and experiments before opening solutions. Available lesson content and passing author checks do not establish learner mastery.
-
-## Prerequisites
-
-Start with [0001 · The execution model](0001-execution-model.md). Explain why a program, action metadata, and a workflow are separate test boundaries. Reuse the installed tools from the [local testing guide](../cheatsheet/local-testing.md); run all commands from the repository root.
-
-## Goal
-
-Catch a real action defect before pushing and choose a check that observes the boundary you changed. Success means you can produce a failing local assertion, explain it, repair it, and name what still needs GitHub evidence.
+Start with a local process test. Add workflow or container checks when the failure crosses those boundaries.
 
 ## Make CI call an existing command
 
-The workflow chooses events, permissions, runners, and job order. Scripts and application modules own the behavior. `Taskfile.yml` gives humans and CI the same named commands. A task is a command contract; it does not reproduce GitHub's control plane.
+The workflow chooses events, permissions, runners, and job order. Scripts and application modules own the behavior. `Taskfile.yml` gives humans and CI the same named commands. A task runs the same command in either place. GitHub still decides when and where jobs run.
 
-Start with the real JavaScript action at `examples/javascript-action/index.cjs`. It reads `INPUT_NAME`, calls a greeting function, appends a named value to the path in `GITHUB_OUTPUT`, and exits unsuccessfully for invalid input. Calling that process directly tests more than calling the function alone, while avoiding a container or remote runner.
+Start with the real JavaScript action at `examples/javascript-action/index.cjs`. It reads `INPUT_NAME`, calls a greeting function, appends a named value to the path in `GITHUB_OUTPUT`, and exits unsuccessfully for invalid input. A direct process test checks input handling, file writes, and exit status as well as the greeting function. It needs no container or remote runner.
 
 ```mermaid
 flowchart TD
@@ -39,6 +30,8 @@ flowchart TD
 The branches are choices, not a requirement to run every layer on every edit. A prose correction needs documentation checks; it does not justify building a container.
 
 ## Run the smallest useful check
+
+Run commands from the repository root with the tools in the [local testing guide](../cheatsheet/local-testing.md).
 
 First predict the action's exit status, stdout, and output-file contents. Then execute:
 
@@ -92,7 +85,7 @@ task lint:module1
 
 `task test` includes three JavaScript function tests and the process contracts in `scripts/test_actions.py`. The adapter cases cover defaults, whitespace, Unicode, invalid multiline input, output append behavior, and a missing output path. They run the Docker action's Python program on the host; they do not build its container image.
 
-[Actionlint](https://github.com/rhysd/actionlint/blob/main/docs/checks.md) finds structural and expression mistakes without running jobs. It can inspect known local action and reusable-workflow interfaces. It cannot prove arbitrary string output names from every program or hosted behavior. A clean lint result is useful evidence with a specific scope.
+[Actionlint](https://github.com/rhysd/actionlint/blob/main/docs/checks.md) finds structural and expression mistakes without running jobs. It can inspect known local action and reusable-workflow interfaces. It cannot prove arbitrary string output names from every program or hosted behavior. Use lint to check the workflow structure, then execute the output path you need to verify.
 
 !!! note "Rebuild only after changing TypeScript source"
     `task test` compares the generated TypeScript bundle against the committed distribution file without repairing it. After an intentional source change, run `task actions:build`, review the bundle, and repeat `task test`. Consumers execute the distribution file, so rebuilding silently inside the comparison would hide drift.
@@ -144,6 +137,6 @@ A greeting function test passes, but an action consumer receives an empty output
 
 Next is [0003](0003-events-payloads-and-filters.md), where events become structured inputs and admission rules. Primary references were checked on **2026-10-30** and are indexed in the [source library](../references/resources.md).
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0001 · The GitHub Actions execution model](0001-execution-model.md) | [Curriculum](index.md) | [0003 · Event payloads, branch filters, path filters, and manual dispatch](0003-events-payloads-and-filters.md) |

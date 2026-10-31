@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0008 · Workflow linting, shell diagnostics, metadata checks, and security analysis
 
-!!! note "Authored reference lesson"
-    The intentionally defective examples under `labs/0008/` are diagnostic fixtures. Inspect the unsafe workflow; do not execute it. Predictions and collapsed solutions support a guided session without claiming learner mastery.
-
-## Prerequisites and goal
-
-Read [0007 · Shared command contracts](0007-taskfile-shared-command-contract.md), and retrieve [0004 · Expressions versus shell evaluation](0004-contexts-expressions-and-conditions.md). A workflow expression is evaluated before a shell interprets its script. That boundary explains several defects in this lesson.
-
-Match an incorrect context, a wrong action input, a shell argument bug, and untrusted source interpolation to useful checkers. Success means you can interpret a diagnostic, repair the source, and name the claim a clean report leaves untested. Use installed tools; do not install ShellCheck or zizmor as part of validation.
+The defective examples in `labs/0008/` are for diagnosis. Inspect the unsafe workflow without executing it, then test the repaired scripts.
 
 ## Static evidence answers source questions
 
@@ -42,6 +35,8 @@ flowchart TD
 There is overlap. The installed actionlint **also detects potentially untrusted expression interpolation**. Do not teach that a security problem can only be found by one dedicated tool. The maintained [actionlint checks](https://github.com/rhysd/actionlint/blob/main/docs/checks.md) describe its scope; [its usage guide](https://github.com/rhysd/actionlint/blob/main/docs/usage.md) explains optional external shell analysis.
 
 ## Read two precise workflow diagnostics
+
+Use the installed tools. ShellCheck and zizmor are optional checks; their absence does not prevent the local probes from running.
 
 Run from the repository root. First check the repaired workflow:
 
@@ -78,7 +73,7 @@ For active workflows the existing shared command is `task lint:workflows`. It do
 
 A workflow can pass event text through `env`, then lose its argument boundary in an invoked shell script:
 
-```bash title="labs/0008/bad.sh — intentionally defective excerpt"
+```bash title="labs/0008/bad.sh, intentionally defective excerpt"
 # shellcheck disable=SC2086
 printf '<%s>\n' $TITLE # (1)!
 ```
@@ -87,11 +82,11 @@ printf '<%s>\n' $TITLE # (1)!
 
 The repaired program is one line:
 
-```bash title="labs/0008/good.sh — repair"
+```bash title="labs/0008/good.sh, repair"
 printf '<%s>\n' "$TITLE"
 ```
 
-[ShellCheck SC2086](https://www.shellcheck.net/wiki/SC2086) documents the argument-splitting and globbing problem. This is the amount of shell knowledge needed here: one Actions data value should remain one argument.
+[ShellCheck SC2086](https://www.shellcheck.net/wiki/SC2086) documents the argument-splitting and globbing problem. For this example, keep one Actions data value in one shell argument.
 
 !!! tip "Predict before running"
     `TITLE` contains `two words * $(printf injected)`, and the working directory contains `visible.txt`. Does the bad script print one record? Will the shell-like text be evaluated as a new command merely because it arrived through an environment variable?
@@ -125,24 +120,24 @@ PASS: spaces, glob, and shell-like text stayed in one data argument
 The helper uses a temporary directory, a known fixture value, and actual Bash processes. It performs no external write or network call.
 
 ??? tip "Worked diagnosis"
-    The bad program's zero status only says `printf` ran. Word splitting changed the interface, and `*` expanded to the fixture filename. Ordinary variable expansion does not recursively parse its value as shell source, so the command-substitution-looking text remained data. Quote the variable and keep the argument assertion. Removing the suppression would expose a useful warning when ShellCheck is available, but would not itself repair the runtime behavior.
+    The bad program's zero status only says `printf` ran. Word splitting changed the interface, and `*` expanded to the fixture filename. The shell does not parse expanded variable text again as commands. The text that looks like command substitution therefore remains data. Quote the variable and keep the argument assertion. Removing the suppression would expose a useful warning when ShellCheck is available, but would not itself repair the runtime behavior.
 
-ShellCheck and zizmor were **not installed** in the authoring environment. No claim that they ran is justified. If an environment already provides ShellCheck, use `shellcheck labs/0008/good.sh`. To see SC2086 on the bad case, remove its explicit suppression in a disposable copy before checking it. Actionlint invokes ShellCheck for applicable inline shell scripts when that executable is available; its own zero status does not establish that optional integration ran.
+ShellCheck and zizmor were not installed during the recorded checks, so neither ran. If an environment already provides ShellCheck, use `shellcheck labs/0008/good.sh`. To see SC2086 on the bad case, remove its explicit suppression in a disposable copy before checking it. Actionlint can invoke an installed ShellCheck for inline shell scripts. A zero actionlint exit status alone does not tell you whether ShellCheck ran.
 
 ## Source interpolation crosses a different trust boundary
 
 Inspect `labs/0008/unsafe-template.yml`:
 
-```yaml title="Inspect only — intentionally unsafe step"
+```yaml title="Inspect only, intentionally unsafe step"
 - shell: bash
   run: printf '%s\n' "${{ github.event.pull_request.title }}" # (1)!
 ```
 
-1. Actions substitutes contributor-controlled text into script source before Bash parses it. Shell quotes written around the expression do not make that substitution safe: the inserted text can itself contain syntax.
+1. Actions substitutes contributor-controlled text into script source before Bash parses it. Shell quotes around the expression cannot protect this substitution. The inserted text can contain syntax of its own.
 
 The repair in `safe-template.yml` preserves the data boundary:
 
-```yaml title="labs/0008/safe-template.yml — step excerpt"
+```yaml title="labs/0008/safe-template.yml, step excerpt"
 - shell: bash
   env:
     TITLE: ${{ github.event.pull_request.title }}
@@ -191,6 +186,6 @@ For these labs, use explicit workflow linting and the direct argument probe. A c
 
 Primary tool and GitHub references linked above were checked on **2026-10-30**, starting from the [curated library](../references/resources.md). Record unavailable optional analyzers separately from passing installed-tool checks. No learner-produced diagnosis has yet been observed.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0007 · Taskfile as the command contract shared by humans and CI](0007-taskfile-shared-command-contract.md) | [Curriculum](index.md) | [0009 · Unit tests, event fixtures, and temporary output files](0009-unit-tests-fixtures-and-output-files.md) |

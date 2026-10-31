@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0025 · Composite action structure, step IDs, and output mapping
 
-!!! note "Reference lesson"
-    The isolated action and exercises live under `labs/0025/`. Predict each result before opening the worked solution. Written availability and passing example checks do not establish learner mastery.
-
-## Prerequisites and observable goal
-
-Read [0024 · Cross-platform action behavior](0024-cross-platform-actions-and-versioned-releases.md), recall [0005 · Output contracts](0005-environment-files-and-output-contracts.md), and review [0011 · Selected act checks](0011-act-targeted-workflow-smoke-tests.md). Explain why writing `GITHUB_OUTPUT` is different from printing a log.
-
-Build a composite that accepts a recipient and returns `report=Ready, Ada!` to its caller. Success means you can trace every mapping, rename an internal step without changing the public interface, and choose a check that actually observes the boundary you changed.
+Trace an input through the action in `labs/0025/` and back out through its public output. Predict each result before opening the worked solution.
 
 ## Put a step interface around existing work
 
@@ -129,7 +122,7 @@ wc -c < "$report_output"
 rm "$report_output"
 ```
 
-Expected: the Bash command exits **1**, stderr says `name must be a nonblank single line of at most 160 characters`, and `wc` reports **0** bytes. Run the lines individually to observe the script's status; the later cleanup command has its own status. In the test harness this failed child is an expected case, so the harness succeeds when the failure contract is correct.
+Expected: the Bash command exits **1**, stderr says `name must be a nonblank single line of at most 160 characters`, and `wc` reports **0** bytes. Run the lines individually to observe the script's status; the later cleanup command has its own status. The test script expects the child to fail. The test passes when the child returns the required status, diagnostic, and empty output.
 
 ??? tip "Diagnosis and repair"
     The name contains an LF followed by text shaped like an extra output record. Rejecting it preserves the single-line interface. Repair the input to `Ada` and repeat the first command. If multiline data is a legitimate requirement, design an encoding or multiline protocol instead of removing this check without changing the contract; lesson 0027 uses JSON encoding.
@@ -151,7 +144,7 @@ Expected: the Bash command exits **1**, stderr says `name must be a nonblank sin
 
 Checkout makes the repository-local action directory available. `uses: ./labs/0025/action` resolves from the workspace root, not beside the caller YAML. The `ACTUAL` environment value consumes the public result after the action step completes.
 
-For a refactoring exercise, copy the lab to a disposable directory, rename private `id: render` to `id: format`, and leave the output mapping unchanged. Predict the missing public value. A runner may report an invalid internal reference or produce an unavailable value; either way the old mapping no longer names the producer. Update it to `steps.format.outputs.summary`. Keep public `report` unchanged so consumers need no edits.
+For a refactoring exercise, copy the lab to a disposable directory, rename private `id: render` to `id: format`, and leave the output mapping unchanged. Predict the missing public value. The old mapping no longer names the producer. A runner may report the invalid reference or leave the value unavailable. Update it to `steps.format.outputs.summary`. Keep public `report` unchanged so consumers need no edits.
 
 The directly runnable invalid-input case above establishes process failure. This metadata-refactoring prediction requires actual metadata execution for runtime evidence; a script test cannot establish its exact runner diagnostic.
 
@@ -182,10 +175,10 @@ Retrieve without looking:
 
 ## Local and hosted boundaries
 
-These host exercises validate Bash processes and output-file bytes. A selected act run can additionally exercise composite expansion and public-output consumption when an existing compatible engine is reachable. Real GitHub output processing, action acquisition policy, and runner compatibility remain separate evidence. See the [local testing guide](../cheatsheet/local-testing.md).
+These host exercises validate Bash processes and output-file bytes. With a compatible engine, a selected act run can expand the composite and check how its caller reads the public output. Real GitHub output processing, action acquisition policy, and runner compatibility remain separate evidence. See the [local testing guide](../cheatsheet/local-testing.md).
 
 Primary syntax references linked above were checked on **2026-10-30**, starting from the [curated library](../references/resources.md). Continue to [0026](0026-composite-shells-paths-and-portability.md) to separate action-owned code paths from caller-owned data.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0024 · Cross-platform action behavior, dependency updates, and release versions](0024-cross-platform-actions-and-versioned-releases.md) | [Curriculum](index.md) | [0026 · Explicit shells, action paths, paths with spaces, and portability](0026-composite-shells-paths-and-portability.md) |

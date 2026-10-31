@@ -6,20 +6,11 @@ lesson_status: authored
 
 # 0016 · Test container logic directly and the built image separately
 
-!!! note "Authored reference lesson"
-    This lesson develops the complete isolated fixture in `labs/0016/`. Predict each boundary's evidence before running it. Author-run tests are not evidence that the learner has completed the exercises.
-
-## Prerequisites and goal
-
-Use [0015 · Mounts and output paths](0015-container-mounts-ownership-and-output-paths.md) and [0009 · Unit and process tests](0009-unit-tests-fixtures-and-output-files.md). Recall the difference between an output-file record, a log line and a process exit code. [0012 · Coverage boundaries](0012-local-hosted-coverage-and-usage-budget.md) explains why passing one layer does not establish platform behavior.
-
-Run one observable contract against a host process and, when available, the built image. Success means you can distinguish an application defect from a packaging defect and prove that invalid execution leaves no new success result. Keep shared implementations unchanged; this lab copies the existing Docker starter into `labs/0016/action/`.
-
-All commands run from the repository root. Reuse installed Python, uv and actionlint. Containers need the existing engine, not a new dependency installation.
+Test the program on the host, then test the built image with the same cases. The fixture in `labs/0016/` makes the extra image and mount checks explicit.
 
 ## Define the observations before selecting a test
 
-The action accepts a single-line name and returns `greeting`. Its metadata maps `${{ inputs.name }}` into the first argument and defaults omitted input to `World`. Its Python program also has a `World` fallback for direct calls with no argument. Those are separate defaults: a direct host call does not read the metadata.
+The action accepts a single-line name and returns `greeting`. Its metadata maps `${{ inputs.name }}` into the first argument and defaults omitted input to `World`. Its Python program also has a `World` fallback for direct calls with no argument. These defaults apply to different callers. A direct host call does not read metadata.
 
 For a valid argument, require all of the following:
 
@@ -28,7 +19,7 @@ For a valid argument, require all of the following:
 - Exact log line on stdout.
 - Exact UTF-8 output record appended to the supplied file, preserving prior contents.
 
-For invalid input or an unavailable output path, require status 1, a useful stderr message, no success log, and no newly appended greeting. A nonzero exit alone is too weak: an absent Python interpreter would also fail, without demonstrating input validation.
+For invalid input or an unavailable output path, require status 1, a useful stderr message, no success log, and no newly appended greeting. A nonzero exit alone does not prove input validation ran. A missing Python interpreter would also fail.
 
 ```mermaid
 flowchart TD
@@ -41,7 +32,7 @@ flowchart TD
     Gap --> Handoff["Keep host evidence; defer image and caller claims"]
 ```
 
-This order makes failures cheaper to diagnose. It does not require every layer for every change: formatting edits need direct checks; a Dockerfile change needs image evidence; token-policy changes need GitHub evidence.
+This order makes failures cheaper to diagnose. Choose checks for the change. A greeting-format change needs direct tests. A Dockerfile change needs an image test. Token-policy changes need GitHub checks.
 
 ## Read the shared matrix
 
@@ -65,7 +56,7 @@ The newline/carriage-return notation in this table describes actual control char
 
 The test calls the real entrypoint with a subprocess argument list:
 
-```python title="labs/0016/contract.py — host invocation"
+```python title="labs/0016/contract.py, host invocation"
 command = [sys.executable, str(entrypoint), *values] # (1)!
 environment = dict(os.environ)
 environment.pop("GITHUB_OUTPUT", None) # (2)!
@@ -78,9 +69,11 @@ if path_mode != "unset":
 1. Separate arguments preserve spaces and literal `$()` text. The test does not introduce a command shell.
 2. Removing an inherited runner variable makes the missing-path case deterministic even when this suite is eventually run in CI.
 
-The assertions test the **public contract**, rather than duplicating the implementation's string manipulation. Each test gets its own directory and seeded file so a preceding success cannot supply a stale result to a later failure. Timeouts bound a stuck process; they are harness limits, not the action's GitHub job timeout.
+The assertions check the input, output, and failure behavior promised to callers. They do not repeat the implementation's string manipulation. Each test gets its own directory and seeded file so a preceding success cannot supply a stale result to a later failure. Test timeouts stop stuck child processes. They do not set the action's GitHub job timeout.
 
 ## Predict and execute host checks
+
+Run commands from the repository root using the installed Python, uv, and actionlint. The lab tests its own copy of the Docker starter in `labs/0016/action/`.
 
 !!! tip "Prediction"
     If the pure greeting function is correct but the adapter writes only to stdout, which assertions fail? If the adapter publishes a greeting and then exits 1, is that an acceptable validation failure?
@@ -95,7 +88,7 @@ Expected: exit 0, one `PASS host: <case>` line for each row, then:
 PASS: 11 process cases at the host boundary
 ```
 
-The two function assertions verify trimmed formatting and empty-input rejection. The process cases additionally exercise argument transport, output-path handling, channel behavior, append semantics and exit status. They import the lab's copy of the program; neither shared starter code nor another module's lab is modified.
+The two function assertions verify trimmed formatting and empty-input rejection. The process cases also check arguments, output paths, stdout and stderr, appending, and exit status. They import the lab's copy of the program; neither shared starter code nor another module's lab is modified.
 
 ??? tip "Worked prediction"
     A stdout-only adapter can pass the pure function and log assertions but fails the file assertion. A validation failure that leaves a new success-shaped greeting violates this contract even with a nonzero exit. The suite requires the seeded file to remain byte-for-byte unchanged on the tested failures.
@@ -112,7 +105,7 @@ docker build --tag actions-learn-0016:local labs/0016/action
 uv run --no-sync python labs/0016/contract.py image
 ```
 
-The image-mode harness replaces the host command with `docker run --rm --network none`, mounts the case's temporary directory at `/contract`, and supplies `GITHUB_OUTPUT=/contract/output` except in the missing-path cases. The names and expected bytes are identical to host mode. Expected final line:
+The image test script replaces the host command with `docker run --rm --network none`, mounts the case's temporary directory at `/contract`, and supplies `GITHUB_OUTPUT=/contract/output` except in the missing-path cases. The names and expected bytes are identical to host mode. Expected final line:
 
 ```text
 PASS: 11 process cases at the image boundary
@@ -122,7 +115,7 @@ This adds evidence about the actual Linux runtime, executable configuration, arg
 
 The `.tools/bin/actionlint` result is complementary, not a substitute. It statically checks workflow structure and known metadata interfaces; it cannot run these Python cases or guarantee that Docker can start the image. GitHub documents action startup in the [container tutorial](https://docs.github.com/en/actions/tutorials/use-containerized-services/create-a-docker-container-action), while Docker's [entrypoint reference](https://docs.docker.com/reference/dockerfile/#entrypoint) defines direct image execution.
 
-!!! note "Actual authoring evidence"
+!!! note "Recorded checks"
     All 11 host process cases and the two function assertions passed. The existing Podman engine connection was refused. The image matrix is fully implemented but unexecuted; a blocked build is not an image-test pass.
 
 ## Deliberate failure: correct source, absent interpreter
@@ -157,9 +150,9 @@ A second independent exercise is changing only the host test's expected greeting
 
 ## Test the caller's wiring separately
 
-`labs/0016/consumer.yml` adds the boundary the image harness does not evaluate:
+`labs/0016/consumer.yml` checks how the runner calls the action, which the image test script does not evaluate:
 
-```yaml title="labs/0016/consumer.yml — central steps"
+```yaml title="labs/0016/consumer.yml, central steps"
 - id: good
   uses: ./labs/0016/action
   with:
@@ -209,14 +202,14 @@ A file-checking action passes its pure tests but fails on a Linux runner because
 4. Can the image suite establish `${{ steps.good.outputs.greeting }}` by itself?
 
 ??? tip "Worked transfer and recall"
-    Run the packaged entrypoint from the built image against a mounted fixture and assert its actual output/status; a host import cannot detect an omitted image file. Define empty-file semantics before implementing the case. Function tests miss argv/environment/protocol handling. Image tests add runtime and filesystem packaging. Seeded prior records detect truncation and stale-result reuse. The image harness does not evaluate workflow expressions or consume output files as a runner, so the caller remains a separate check.
+    Run the packaged entrypoint from the built image against a mounted fixture and assert its actual output/status; a host import cannot detect an omitted image file. Define empty-file semantics before implementing the case. Function tests miss argv/environment/protocol handling. Image tests add runtime and filesystem packaging. Seeded prior records detect truncation and stale-result reuse. The image test script does not evaluate workflow expressions or read output files as a runner would. Test the workflow caller separately.
 
 ## Evidence and next session
 
-Host checks and consumer lint passed during authoring; image/caller execution and hosted integration remain deferred. Continue to [0017](0017-container-errors-signals-and-cleanup.md) for interruptions and cleanup, where an ordinary return is no longer guaranteed.
+The recorded host tests and consumer lint passed. Image tests, workflow execution, and hosted integration remain deferred. Continue to [0017](0017-container-errors-signals-and-cleanup.md) for interruptions and cleanup, where an ordinary return is no longer guaranteed.
 
 Primary references were checked on **2026-10-30** and are recorded in `labs/module-3-handoff.md` alongside the [source library](../references/resources.md).
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0015 · Workspace mounts, user IDs, ownership, and output paths](0015-container-mounts-ownership-and-output-paths.md) | [Curriculum](index.md) | [0017 · Container exit codes, stderr, signals, timeouts, and cleanup](0017-container-errors-signals-and-cleanup.md) |

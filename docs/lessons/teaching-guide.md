@@ -10,7 +10,7 @@ The course has [60 Actions lessons in 10 modules](index.md), starting at [0001 Â
 
 ## Start a lesson in a new thread
 
-Select the lesson in the [curriculum](index.md) and use `/teach` with its four-digit ID. A new thread should read the mission, learner notes, this guide, and prerequisite pages before deciding where to begin. Keep thread-start instructions here; completed lesson pages contain learner-facing content.
+Select the lesson in the [curriculum](index.md) and use `/teach` with its four-digit ID. A new thread should read the mission, learner notes, this guide, and the selected lesson. Consult related pages when the current example needs them. Keep thread-start instructions here; completed lesson pages contain learner-facing content.
 
 For example:
 
@@ -50,18 +50,18 @@ flowchart TD
 
 Use the [action catalog](../references/prebuilt-actions.md) for discovery. Verified creator status identifies a publisher; stars measure popularity. Recheck current upstream metadata and review release behavior before updating an example pin. Keep project build/test commands explicit and replace repeated platform glue where a suitable maintained action exists.
 
-## Check prerequisites without guessing proficiency
+## Start with the current example
 
-Begin with a short prediction or tiny exercise based on the lesson's Actions behavior and linked prerequisites. For lesson 0001, trace an event into a workflow and identify what a runner executes. Ask the learner to explain behavior rather than asking only whether they know a term.
+Begin with the workflow or action the lesson explains. Ask for a prediction about that example, then introduce the concepts needed to understand its behavior. For lesson 0001, trace an event into a workflow and identify what a runner executes.
 
-If an Actions prerequisite is missing, explain the minimum needed and link the relevant earlier Actions lesson. Keep supporting syntax explanations brief and tied to the example. If the learner demonstrates a concept confidently, summarize and move on. The requested lesson does not establish actual proficiency.
+Explain earlier concepts where the current example uses them, with a link to another lesson when useful. Omit standalone prerequisite recaps and goal sections. Keep supporting syntax explanations brief and tied to the example. Use the learner's answers to decide how much explanation they need.
 
 For a Docker entrypoint, explain how arguments, environment values, output files, and exit status cross the action boundary. For a workflow expression, distinguish YAML structure, Actions expressions, and shell or JavaScript evaluation before combining them.
 
 ## Use this teaching sequence
 
-1. **State a concrete goal.** Describe what the learner will build or explain and how success will be observed.
-2. **Introduce one idea.** Define its vocabulary with a small example and explain the connection to known concepts. Include a diagram when a process, data exchange, or dependency is involved.
+1. **Show the current example.** Start with the workflow, action, or failure the lesson explains.
+2. **Introduce one idea.** Define its vocabulary within the example and explain how it works. Include a diagram when a process, data exchange, or dependency is involved.
 3. **Ask for a prediction.** Have the learner say what should happen before running code. Give them room to answer.
 4. **Run the smallest example.** Explain the workflow or action interface, the selected local check, and its expected evidence. Clarify working directories, arguments, output channels, or exit status when they affect the contract.
 5. **Change one thing.** Let the learner edit a value or condition and explain the changed behavior. Avoid presenting a large finished workflow before its pieces are understood.
@@ -73,10 +73,10 @@ Pause the live conversation at exercises and questions. A self-contained referen
 
 ## What a fully developed lesson should contain
 
-Replace the placeholder note with its actual authored status, preserving its ID and file path. Remove the placeholder's lesson-creation prompt, thread-start section, and authoring coordination notes. Keep prerequisites and lab instructions directed at the learner; store production handoffs and batch-validation scheduling in NOTES or module handoffs. Develop its existing brief into:
+Replace the placeholder note with its actual authored status, preserving its ID and file path. Remove the placeholder's lesson-creation prompt, thread-start section, and authoring coordination notes. Keep lab setup beside the relevant commands and store production handoffs and batch-validation scheduling in NOTES or module handoffs. Develop its existing brief into:
 
-- Clear prerequisites, a concrete goal, and observable outcomes.
-- Explanations of Actions behavior with definitions at first use and links to relevant prerequisite lessons.
+- A direct explanation of the current workflow or action, without standalone prerequisite, recall, or goal sections.
+- Definitions at first use and links to earlier lessons where they help explain the current example.
 - Small runnable workflows or action examples with relevant YAML, code, commands, and expected results explained in context.
 - A vertical Mermaid diagram showing the actual execution, dependency, or trust boundaries. Refine the placeholder planning diagram; show parallel branches and evidence joins when teaching orchestration.
 - A local exercise under its planned `labs/<lesson-id>/` directory, or a focused extension of an existing example. Create files only when the exercise is developed; do not link to nonexistent artifacts.

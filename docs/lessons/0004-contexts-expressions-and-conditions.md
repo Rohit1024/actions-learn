@@ -6,22 +6,15 @@ lesson_status: authored
 
 # 0004 · Contexts, expressions, conditions, status, and input types
 
-!!! note "Authored reference lesson"
-    The recipe deliberately includes one misleading text condition for diagnosis. Predict which steps execute before opening the explanation. Written content does not establish learner mastery.
-
-## Prerequisites
-
-Start with [0003 · Events and filters](0003-events-payloads-and-filters.md). Explain why a dispatch fixture contains no PR object and why trigger admission differs from step eligibility.
-
-## What you will learn to do
-
-Identify who evaluates a value, choose a condition appropriate to its type, and predict step execution after a failure. Success means you can explain why the string `'false'` enables a truthiness check while the boolean `false` does not.
+The recipe includes a text condition that looks false but still runs. Predict which steps execute before opening the explanation.
 
 ## Explain the Actions behavior
 
 A **context** is a named collection of workflow values. An **expression** such as `${{ github.event_name }}` reads or computes a value using Actions' expression language. The shell later evaluates `$EVENT_NAME`. YAML supplies the surrounding structure; it does not make these two evaluators interchangeable.
 
-Some expressions are evaluated before a job is assigned to a runner; step expressions can use values produced during that job. Context availability depends on the key: for example, a job-level `if` cannot inspect that job's future `steps` values, and job `if` is evaluated before matrix expansion. Consult the [context availability table](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#context-availability) when choosing where a rule belongs.
+Actions evaluates some expressions before assigning a runner. Step expressions can use values produced during the job.
+
+Which contexts you can read depends on the configuration key. A job-level `if` cannot inspect that job's future `steps` values. Actions also evaluates job `if` before expanding its matrix. Consult the [context availability table](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#context-availability) when choosing where a rule belongs.
 
 | Context | Example | Intended use |
 | --- | --- | --- |
@@ -66,7 +59,7 @@ The complete inactive recipe is `labs/0004/module1-conditions.yml`. It declares 
 !!! tip "Predict all four conditions"
     Assume prior steps succeeded and the default dispatch inputs are unchanged. Which conditions below admit their steps? Then repeat with `run_extra=true`.
 
-```yaml title="labs/0004/module1-conditions.yml — condition excerpts"
+```yaml title="labs/0004/module1-conditions.yml, condition excerpts"
 - name: Deliberately wrong text condition
   if: env.TEXT_FLAG
   run: printf '%s\n' 'nonempty text ran this step'
@@ -115,7 +108,7 @@ The lab's identified `exercise` step exits 1 when `simulate_failure` is true. La
   run: printf '%s\n' 'bounded report after success or failure'
 ```
 
-With `simulate_failure=false`, the default success step and bounded report run. With `true`, the default step skips, the failure diagnostic runs, and the bounded report runs. Successful reporting does not erase the earlier failure: the job still fails.
+With `simulate_failure=false`, the default success step and bounded report run. With `true`, the default step skips, the failure diagnostic runs, and the bounded report runs. The report can succeed while the job still fails because of the earlier error.
 
 `failure()` explicitly allows failure-path evaluation. `!cancelled()` allows a short report after success or failure while excluding cancellation. `always()` evaluates true even during cancellation, so choose it only for work that should continue in that state and keep it bounded. See the [status-function reference](https://docs.github.com/en/actions/reference/workflows-and-actions/expressions#status-check-functions).
 
@@ -137,7 +130,9 @@ act workflow_dispatch \
   --container-architecture linux/amd64
 ```
 
-Expected local path: the deliberately wrong text step runs; the explicit comparison, JSON conversion, and typed optional step skip; the exercise passes; the success step and report run. Repeat with `--input simulate_failure=true`: an unsuccessful job is the expected failure experiment. Local execution provides evidence for the installed `act` implementation, not proof of GitHub cancellation or input handling parity. The [act usage guide](https://nektosact.com/usage/index.html) documents input selection.
+The deliberately wrong text step should run. The explicit comparison, JSON conversion, and typed optional step should skip. The exercise should pass, followed by the success step and report.
+
+Repeat with `--input simulate_failure=true`. This time, expect the job to fail. Local execution provides evidence for the installed `act` implementation, not proof of GitHub cancellation or input handling parity. The [act usage guide](https://nektosact.com/usage/index.html) documents input selection.
 
 ## Break it and diagnose it
 
@@ -164,6 +159,6 @@ A prior action returns the string output `changed=false`. Design a downstream st
 
 Record static checks separately from any executed `act` cases; leave hosted cancellation behavior unproven until observed. Continue to [0005](0005-environment-files-and-output-contracts.md). Primary sources were checked on **2026-10-30** and are indexed in the [source library](../references/resources.md).
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0003 · Event payloads, branch filters, path filters, and manual dispatch](0003-events-payloads-and-filters.md) | [Curriculum](index.md) | [0005 · Environment files and step, job, and workflow output contracts](0005-environment-files-and-output-contracts.md) |

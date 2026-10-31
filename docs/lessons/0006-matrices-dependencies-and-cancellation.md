@@ -6,16 +6,7 @@ lesson_status: authored
 
 # 0006 · Matrices, job dependencies, cancellation, and failure propagation
 
-!!! note "Authored reference lesson"
-    Predict the job graph and its failure paths before opening solutions. The local gate checks a deliberate evidence policy; it does not emulate GitHub scheduling. Written content does not establish learner mastery.
-
-## Prerequisites
-
-Read [0005 · Output contracts](0005-environment-files-and-output-contracts.md) and [0004 · Conditions and status](0004-contexts-expressions-and-conditions.md). Be ready to explain a `needs` output and the implicit `success()` condition.
-
-## What you will learn to do
-
-Draw a workflow dependency graph, identify eligible parallel jobs, control matrix failure behavior, and join required results without accepting missing evidence. Success means you can explain what happens after success, failure, skipping, and cancellation.
+Predict which jobs can overlap and what happens when a required job fails or skips. The local gate tests the result policy without simulating GitHub scheduling.
 
 ## Explain the Actions behavior
 
@@ -45,7 +36,7 @@ The vertical stack inside the matrix is for readability; no dependency connects 
 
 A **matrix** expands one job definition for selected values. The recipe uses two lightweight cases on one OS:
 
-```yaml title="labs/0006/module1-graph.yml — worker structure"
+```yaml title="labs/0006/module1-graph.yml, worker structure"
 workers:
   needs: plan
   runs-on: ubuntu-latest
@@ -114,7 +105,7 @@ gate:
       run: python3 labs/0006/gate.py --worker "$WORKER_RESULT" --review "$REVIEW_RESULT"
 ```
 
-The explicit `cancelled()` status function removes the default success-only eligibility check. The gate can therefore diagnose failed or skipped dependencies, while declining work after workflow cancellation. Its program still requires both results to equal `success`. Running the gate is permission to inspect evidence, rather than permission to declare readiness. GitHub's [dependency syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idneeds) and [needs context](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#needs-context) define the scheduling and result values.
+The explicit `cancelled()` status function removes the default success-only eligibility check. The gate can therefore diagnose failed or skipped dependencies, while declining work after workflow cancellation. Its program still requires both results to equal `success`. Starting the gate lets it inspect results. Its program must still reject missing or unsuccessful required work. GitHub's [dependency syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idneeds) and [needs context](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#needs-context) define the scheduling and result values.
 
 `needs` contains direct dependencies, not every transitive ancestor. To read `plan` outputs directly in the gate, also list `plan` in the gate's `needs`; the worker's dependency alone does not expose it there.
 
@@ -165,7 +156,7 @@ A newer run in that group can cancel an in-progress predecessor. Including the w
 
 Under the default single-pending concurrency behavior, a new pending run replaces an older pending run in the group. Turning off `cancel-in-progress` preserves the running work, but does not by itself guarantee every pending run will execute. Do not use this configuration as a durable deployment queue. See the [concurrency guide](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency).
 
-Cancelling superseded read-only checks is usually reasonable. Cancelling a job that has already published or deployed something does not undo that side effect. Such work needs an explicit completion/recovery policy. Neither `always()` nor a cancellation condition guarantees cleanup if a process or runner is terminated; GitHub's [cancellation reference](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-cancellation) describes condition re-evaluation and runner termination. Keep diagnostics bounded and design important cleanup to be repeatable.
+Cancelling superseded read-only checks is usually reasonable. Cancelling a job that has already published or deployed something does not undo that side effect. Decide how to finish or recover that operation before enabling cancellation. Neither `always()` nor a cancellation condition guarantees cleanup if a process or runner is terminated; GitHub's [cancellation reference](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-cancellation) describes condition re-evaluation and runner termination. Limit diagnostic runtime and make cleanup safe to retry.
 
 ## Transfer exercise and retrieval
 
@@ -184,6 +175,6 @@ Design a graph with a plan, two required checks, one optional experimental check
 
 Separate policy-function tests, static linting, emulator execution, and hosted observations. Continue in curriculum order to [0007 · Taskfile as the shared command contract](0007-taskfile-shared-command-contract.md) in Module 2. Primary references were checked on **2026-10-30** and are indexed in the [source library](../references/resources.md).
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0005 · Environment files and step, job, and workflow output contracts](0005-environment-files-and-output-contracts.md) | [Curriculum](index.md) | [0007 · Taskfile as the command contract shared by humans and CI](0007-taskfile-shared-command-contract.md) |

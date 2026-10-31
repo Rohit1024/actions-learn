@@ -6,18 +6,11 @@ lesson_status: authored
 
 # 0018 · Container scanning, dependency pinning, cold starts, and release tradeoffs
 
-!!! note "Authored reference lesson"
-    This page and `labs/0018/` are developed. Predict the release and measurement outcomes before opening worked solutions. No image scan, release, publication or learner mastery is implied by the written material.
-
-## Prerequisites and goal
-
-Use [0017 · Errors and cleanup](0017-container-errors-signals-and-cleanup.md), [0014 · Build inputs](0014-dockerfiles-layers-and-build-context.md), and [0013 · Metadata and lifecycle](0013-docker-action-metadata-and-lifecycle.md). Recall that an action commit, a base image and the final built image are different identities. Module 9 later applies this release evidence to a complete custom-action package.
-
-Prepare an evidence-based release review for a Docker action. Success means you can explain what a pin freezes, what a scanner observes, which updates still need review, and when runtime packaging justifies container startup and maintenance costs.
-
-The lab copies the existing greeting action into `labs/0018/action/`. It supplies a source inventory, a review-freshness exercise, a bounded measurement harness and a release worksheet. All commands run from the repository root. No installation, image push, credential setup or hosted execution is needed for its host exercises.
+Inspect the release policy and timing experiments in `labs/0018/`. Host checks do not replace an image scan, container measurements, or a release test.
 
 ## Inventory every dependency boundary
+
+Run commands from the repository root. `labs/0018/action/` is a copy of the greeting action. The lab includes a source inventory, a review-freshness exercise, a timing script with a timeout, and a release worksheet.
 
 Start from the files you would release:
 
@@ -103,9 +96,9 @@ If Docker Scout is already installed and approved for the environment, an option
 docker scout cves local://actions-learn-0018:local
 ```
 
-This requires the image to have been built first. `local://` prevents fallback to a registry lookup for the target image; it does not promise the scanner itself is offline or needs no service access. Consult [the current CLI reference](https://docs.docker.com/reference/cli/docker/scout/cves/) and the installed help before running it. No scanner was installed or executed during authoring.
+This requires the image to have been built first. `local://` prevents fallback to a registry lookup for the target image; it does not promise the scanner itself is offline or needs no service access. Consult [the current CLI reference](https://docs.docker.com/reference/cli/docker/scout/cves/) and the installed help before running it. No scanner was installed or run during the recorded checks.
 
-For a deliberately limited high/critical gate, the documented options are `--only-severity critical,high --exit-code`. Findings matching that filter return status 2; tool or authentication failure must not be labeled a clean scan. Keep the unfiltered report too: a filter can hide findings and is not itself a risk assessment.
+For a deliberately limited high/critical gate, the documented options are `--only-severity critical,high --exit-code`. Findings matching that filter return status 2; tool or authentication failure must not be labeled a clean scan. Keep the unfiltered report too. A filter can hide findings, so review the full report when assessing risk.
 
 Prefer upgrading a fixable affected component, then rerunning behavior and image checks against the rebuilt identity. An accepted exception needs an owner, reason, mitigation and expiry. A report from the previous digest is not evidence about the new candidate. Do not fabricate severity counts in the worksheet to make an exercise look complete.
 
@@ -149,7 +142,7 @@ Expected: four passing tests cover current review, the accepted 30-day boundary,
 
 The **cold-start cost** can include pulling base/action images, building the action, creating a container and starting its runtime. Workflow queueing, runner provisioning and checkout are additional costs outside a direct `docker run` measurement. A warm local engine can reuse images/layers; do not assume the next hosted job receives that same cache.
 
-The harness verifies behavior while measuring complete subprocess wall time. Optional commands are:
+The timing script checks behavior and measures the full duration of each subprocess. Optional commands are:
 
 ```bash
 # Host program samples; no engine needed.
@@ -160,7 +153,7 @@ uv run --no-sync python labs/0018/measure.py build --samples 3
 uv run --no-sync python labs/0018/measure.py image --samples 3
 ```
 
-`build` tags `actions-learn-0018:local`; `image` tests that already-built image with a mounted temporary output. Each command emits JSON containing its boundary, raw numbered samples in seconds, and `cache_state: "not reset or controlled"`. Any process failure stops the measurement command; successful program/image samples must write the exact expected output. Timeouts cap each sample at 120 seconds. The harness removes temporary output files and leaves the local image available for review.
+`build` tags `actions-learn-0018:local`; `image` tests that already-built image with a mounted temporary output. Each command emits JSON containing its boundary, raw numbered samples in seconds, and `cache_state: "not reset or controlled"`. Any process failure stops the measurement command; successful program/image samples must write the exact expected output. Timeouts cap each sample at 120 seconds. The timing script removes temporary output files and keeps the local image for inspection.
 
 Do not copy someone else's timings into expected output. A first run in an already used engine is not necessarily cold. Run clean-runner experiments in a disposable environment when cold behavior matters; do not delete shared caches or prune other users' images. Record host, engine/version, architecture/emulation, image identity, network, cache state and sample count alongside raw measurements.
 
@@ -178,7 +171,7 @@ Do not copy someone else's timings into expected output. A first run in an alrea
 | Registry-image-backed action | Prebuilt runtime where release binds source to an immutable image | Registry availability/access, pulls, per-platform images, provenance and digest/source alignment |
 | Bundled JavaScript action | Behavior served by the Actions Node runtime and bundled dependencies | JS dependency/runtime maintenance, distribution artifact integrity, any external tool requirements |
 
-A greeting does not itself justify Docker; it is a compact contract for learning. A domain tool requiring an exact Linux binary stack might. Prefer maintained actions for common build/push, registry login and metadata operations rather than rebuilding that platform glue in custom code. The [curated pre-built action guide](prebuilt-actions.md) and [Docker's maintained build action](https://github.com/docker/build-push-action) provide the later composition path; this lesson makes no registry writes.
+A greeting does not itself justify Docker; it is a compact contract for learning. A tool that needs specific Linux binaries may justify a container. Prefer maintained actions for common build/push, registry login and metadata operations rather than rebuilding that platform glue in custom code. The [curated pre-built action guide](prebuilt-actions.md) and [Docker's maintained build action](https://github.com/docker/build-push-action) provide the later composition path; this lesson makes no registry writes.
 
 A prebuilt image shifts build work to the publisher; it does not eliminate pulls, startup or maintenance. A bundled Node action avoids this custom image build but cannot magically supply unrelated native tools. Portability and security are properties to test against requirements, not labels conferred by the implementation language.
 
@@ -209,12 +202,14 @@ A team wants to wrap a native document renderer used by many repositories. It mu
 
 ## Evidence and transition to JavaScript actions
 
-Authoring ran the inventory, four policy tests, the stale-review failure and the current-date policy success. A single host measurement smoke check validates the harness; it supports no speed comparison. The engine connection was refused, so base/image digests, scans, container measurements and release integration are deferred. No container-safety or release-readiness claim is made.
+The recorded checks covered the inventory, four policy tests, the stale-review failure, and the current-date policy success. One host timing sample checked the measurement script. It is insufficient for a speed comparison.
+
+The engine refused the connection. Image digests, scans, container timings, and release integration remain unverified.
 
 Continue in catalog order to [0019 · JavaScript runtime and Toolkit](0019-javascript-action-runtime-and-toolkit.md), even though its lower startup boundary must still be tested on its own terms.
 
 Primary sources were checked on **2026-10-30**; details are preserved in `labs/module-3-handoff.md` with proposed additions to the [curated source library](../references/resources.md).
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0017 · Container exit codes, stderr, signals, timeouts, and cleanup](0017-container-errors-signals-and-cleanup.md) | [Curriculum](index.md) | [0019 · JavaScript action metadata, the Node runtime, and the Actions Toolkit](0019-javascript-action-runtime-and-toolkit.md) |

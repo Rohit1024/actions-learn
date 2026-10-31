@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0010 · Container engines, Linux images, sockets, and CPU architecture
 
-!!! note "Authored reference lesson"
-    Host diagnostics and a small image probe are developed under `labs/0010/`. The authoring environment had a stopped Podman VM, so image execution is explicitly deferred. A developed exercise is not evidence that its container ran or that the learner mastered it.
-
-## Prerequisites and goal
-
-Read [0009 · Function and process boundaries](0009-unit-tests-fixtures-and-output-files.md). Explain why running a Docker action's Python program on macOS does not prove its Linux image, entrypoint, or mounted output path works.
-
-Locate a failure at the client, engine connection, image, CPU, or process boundary before editing action code. Success means you can draw an environment map with measured values, leave unknown values unknown, and choose the next diagnostic. Reuse installed clients; this lesson does not require creating or starting infrastructure.
+Start with host diagnostics in `labs/0010/`, then try the image probe when the engine is reachable. During the recorded checks, the Podman VM was stopped, so image execution remains unverified.
 
 ## Identify the machines and processes
 
@@ -56,7 +49,7 @@ uv run --no-sync python labs/0010/probe.py
 
 That is **host-process evidence**. It cannot fill in a Linux VM or container row.
 
-The measured authoring map on **2026-10-30** was:
+The environment recorded on 2026-10-30 was:
 
 | Boundary | Observation | Implication |
 | --- | --- | --- |
@@ -93,7 +86,7 @@ DOCKER_HOST='unix:///actual/socket/path' act workflow_dispatch \
   -W labs/0011/smoke.yml -j smoke -l
 ```
 
-Replace the illustrative endpoint with the inspected one; it is not a path to copy literally. Listing is still only discovery. On this authoring run the VM remained stopped, so no setting was guessed and no machine was provisioned. Keep host tests useful while that environment boundary is deferred.
+Use the endpoint you inspected in place of the example path. Listing a VM does not prove the client can connect to it. The VM remained stopped during the recorded checks, so image tests were deferred. Host tests can still run.
 
 ## Reproduce an unavailable socket without changing configuration
 
@@ -126,7 +119,7 @@ COPY probe.py /probe/probe.py
 ENTRYPOINT ["python", "/probe/probe.py"]
 ```
 
-`FROM` selects a Linux Python base. `COPY` puts the program into the build context's image filesystem; `.dockerignore` keeps other lab files out. `ENTRYPOINT` starts the same program directly. The upstream [Python image manifest](https://github.com/docker-library/official-images/blob/master/library/python) lists the `3.14-slim` tag and supported CPU variants; that source check does not establish a successful build or run here. The base tag is mutable and is suitable for this exploratory probe, not a claim of a reproducibly pinned release. Record an image digest when reproducibility becomes the requirement in [the Docker module](0014-dockerfiles-layers-and-build-context.md).
+`FROM` selects a Linux Python base. `COPY` copies the program from the build context into the image. `.dockerignore` excludes the other lab files from that context. `ENTRYPOINT` starts the same program directly. The upstream [Python image manifest](https://github.com/docker-library/official-images/blob/master/library/python) lists the `3.14-slim` tag and supported CPU variants; that source check does not establish a successful build or run here. This probe uses a mutable base tag, so rebuilding it later may select different image bytes. Record an image digest when reproducibility becomes the requirement in [the Docker module](0014-dockerfiles-layers-and-build-context.md).
 
 After a successful engine check, run:
 
@@ -193,8 +186,8 @@ Retrieve from memory:
 
 Use the read-only map and direct probe first. Run the image helper only when its engine prerequisite is satisfied. Do not claim that a Python host result verifies a Docker action or that a probe image verifies GitHub orchestration. Continue to [0011 · A selected act job](0011-act-targeted-workflow-smoke-tests.md).
 
-The linked act sources and [curated library](../references/resources.md) were checked on **2026-10-30**. The module handoff records the authoring environment without inventing learner evidence.
+The linked act sources and [curated library](../references/resources.md) were checked on **2026-10-30**. The module handoff records the environment and which checks ran.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0009 · Unit tests, event fixtures, and temporary output files](0009-unit-tests-fixtures-and-output-files.md) | [Curriculum](index.md) | [0011 · Run one event and one job with act](0011-act-targeted-workflow-smoke-tests.md) |

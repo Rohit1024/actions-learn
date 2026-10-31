@@ -6,20 +6,13 @@ lesson_status: authored
 
 # 0011 · Run one event and one job with act
 
-!!! note "Authored reference lesson"
-    The good and deliberately broken workflow recipes under `labs/0011/` are developed. Host tests and job listing ran; container-backed workflow execution remains deferred because the existing engine was unavailable. Predict the mapping failure before opening the explanation.
-
-## Prerequisites and goal
-
-Read [0010 · Engine, socket, and CPU boundaries](0010-container-engines-images-and-architecture.md), [0009 · Process tests](0009-unit-tests-fixtures-and-output-files.md), and recall [0005 · Output mappings](0005-environment-files-and-output-contracts.md).
-
-Select a particular workflow file, event, fixture, and job. Explain what its assertions observe and why it cannot establish real GitHub policy. Success means you can distinguish a passing script from a passing caller-visible output, and stop at an unavailable prerequisite without calling the smoke test successful.
+Compare the working and broken recipes in `labs/0011/`. Host tests and job listing passed during the recorded checks. Container execution remains unverified because the engine was unavailable.
 
 ## Use emulation for a concrete wiring question
 
 `act` executes selected workflow jobs locally. In this lesson its Ubuntu runner is a Linux container supplied by a Docker-compatible engine. A **smoke test** is a small execution that checks a useful integration path; it is not comprehensive coverage.
 
-The question here is specific: “Does the greeting published by a composite's inner step reach the caller through `action.yml`?” Direct script tests cannot evaluate that expression mapping. A selected act job can exercise it with runner-like output processing, while real GitHub integration remains a separate environment.
+The question here is specific: "Does the greeting published by a composite's inner step reach the caller through `action.yml`?" Direct script tests cannot evaluate that expression mapping. A selected act job can exercise it with runner-like output processing, while real GitHub integration remains a separate environment.
 
 ```mermaid
 flowchart TD
@@ -35,13 +28,13 @@ flowchart TD
     Assertion --> Limits["Record execution evidence and remaining platform gaps"]
 ```
 
-The [act usage guide](https://nektosact.com/usage/index.html) documents event, workflow, job, and fixture selection. Read the selected workflow's actual operations before executing it: locally run code can still make network requests and external writes when supplied credentials or access.
+The [act usage guide](https://nektosact.com/usage/index.html) documents event, workflow, job, and fixture selection. Read what the selected workflow does before executing it. Local code can still make network requests and external writes if it has the required credentials or access.
 
 ## Inspect the intentionally small caller
 
 `labs/0011/smoke.yml` admits `push` and `workflow_dispatch`, but defines only one job, `smoke`, with no `needs` dependencies. It checks out files, calls a local composite, and asserts its output. There is no release, deployment, API mutation, or model call.
 
-```yaml title="labs/0011/smoke.yml — action and assertion excerpts"
+```yaml title="labs/0011/smoke.yml, action and assertion excerpts"
 - id: greet
   uses: ./labs/0011/action # (1)!
   with:
@@ -60,7 +53,7 @@ The [act usage guide](https://nektosact.com/usage/index.html) documents event, w
 2. The caller consumes the composite's **public** output after the action step completes. Its internal script output alone is insufficient.
 3. A missing or incorrect mapping makes this comparison fail. Values are supplied through environment data rather than interpolated into shell source.
 
-The manual input is a string with default `Ada`. The push path has no dispatch input, so the expression supplies `Ada`. The smoke contract intentionally uses ordinary, unpadded names; full trimming and invalid-input behavior already belong to the process suite. A padded name would be normalized by the script while this simple caller expects the original spelling, producing an assertion failure rather than a complete input-validation exercise.
+The manual input is a string with default `Ada`. The push path has no dispatch input, so the expression supplies `Ada`. Use an unpadded name for this smoke test. The script trims whitespace, but this caller compares the result with the original input. A padded name would fail that comparison. The process suite covers trimming and invalid inputs.
 
 The full recipe reuses the existing checkout commit pin, sets `contents: read`, disables persisted checkout credentials, and declares a five-minute hosted job timeout. Under act, the workflow timeout declaration is not a reliable local execution budget; use a bounded invocation and stop a stalled local run deliberately. The [documented limitations](https://nektosact.com/not_supported.html) include ignored timeout behavior.
 
@@ -81,7 +74,7 @@ action: PASS script output; metadata was not executed
 broken-action: PASS script output; metadata was not executed
 ```
 
-The harness runs both real scripts with `GREETING_NAME=Ada` and temporary output files. It asserts `greeting=Hello, Ada!` plus newline. A correct script is necessary, but these results intentionally say nothing about either metadata mapping.
+The test script runs both Bash scripts with `GREETING_NAME=Ada` and temporary output files. It asserts `greeting=Hello, Ada!` plus newline. A correct script is necessary, but these results intentionally say nothing about either metadata mapping.
 
 Static linting also accepts both callers:
 
@@ -103,7 +96,7 @@ act workflow_dispatch \
   --var-file /dev/null --input-file /dev/null
 ```
 
-Expected: one listed job, `smoke`, in `Module 2 selected output smoke`. The table can list both admitted event names. On the authoring machine act also warned that it could not obtain a valid Docker connection, then returned **0** after listing. **Listing did not run steps or prove engine readiness.**
+Expected: one listed job, `smoke`, in `Module 2 selected output smoke`. The table can list both admitted event names. During the recorded checks, act warned that it could not connect to Docker, then exited 0 after listing. No steps ran. Listing does not require a working engine.
 
 Repeat with `push` in place of `workflow_dispatch`; the same job is selected because the recipe admits both events. Existing act configuration files can contribute flags, so inspect your `.actrc` settings when selection or runner behavior is surprising. The explicit empty input files reduce accidental data loading; they do not sandbox the process or erase all inherited configuration.
 
@@ -115,7 +108,7 @@ Repeat with `push` in place of `workflow_dispatch`; the same job is selected bec
 
 ## Run one synthetic dispatch when the engine is available
 
-First run `docker info` and verify a compatible act API connection as explained in 0010. If that boundary fails, keep this step deferred. The authoring run stopped there.
+First run `docker info` and verify a compatible act API connection as explained in 0010. If that boundary fails, keep this step deferred. The recorded checks stopped at the failed engine connection.
 
 `dispatch.json` contains a synthetic branch ref and `inputs.name=Grace`. The same input is explicit on the command line so the intended typed workflow input is clear:
 
@@ -157,7 +150,7 @@ outputs:
     value: ${{ steps.greet.outputs.greeting }}
 ```
 
-```yaml title="labs/0011/broken-action/action.yml — intentional defect"
+```yaml title="labs/0011/broken-action/action.yml, intentional defect"
 outputs:
   greeting:
     description: Deliberately maps an output the script never publishes
@@ -211,6 +204,6 @@ Actual token permissions, OIDC federation, environment approvals, concurrency/ca
 
 Record the event and fixture, revision, exact job graph, act version, image digest, architecture, assertion output, and final status. Here act **0.2.89** listed both event selections; both script tests and static callers passed. No container-backed good or broken workflow was executed. Primary references were checked on **2026-10-30**, starting from the [curated library](../references/resources.md).
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0010 · Container engines, Linux images, sockets, and CPU architecture](0010-container-engines-images-and-architecture.md) | [Curriculum](index.md) | [0012 · Define the local/hosted coverage boundary and usage budget](0012-local-hosted-coverage-and-usage-budget.md) |

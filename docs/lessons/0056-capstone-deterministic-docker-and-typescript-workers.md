@@ -11,21 +11,9 @@ lesson_status: placeholder
 
 **Level:** Professional practice.
 
-## Prerequisites
-
-- [0055 · Specify the repository-health orchestrator and acceptance criteria](0055-capstone-specification-and-orchestrator-design.md)
-- [0016 · Test container logic directly and the built image separately](0016-docker-action-direct-and-image-tests.md)
-- [0021 · TypeScript compilation, bundling, and committed distribution files](0021-typescript-bundling-and-dist-drift.md)
-- [0022 · Output files, failure status, and mocked GitHub API responses](0022-output-contracts-and-mocked-github-api.md)
-
-## What you will learn to do
-
-- Implement and compare two workers against the same fixture contract.
-- Explain their packaging tradeoffs using actual test and runtime evidence.
-
 ## Explain the Actions behavior
 
-Start from the prerequisite workflow or action behavior and introduce these concepts with focused examples:
+Use a small workflow or action to explain these concepts:
 
 1. Different packaging choices can implement the same domain contract.
 2. A deterministic worker should make inputs, errors, and outputs testable without its orchestrator.

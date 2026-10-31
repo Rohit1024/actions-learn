@@ -11,21 +11,9 @@ lesson_status: placeholder
 
 **Level:** Professional practice.
 
-## Prerequisites
-
-- [0058 · Add an evidence-backed agentic report with bounded proposals](0058-capstone-bounded-agentic-reporting.md)
-- [0012 · Define the local/hosted coverage boundary and usage budget](0012-local-hosted-coverage-and-usage-budget.md)
-- [0033 · OIDC, deployment environments, approval, and real platform verification](0033-oidc-environments-and-hosted-policy.md)
-- [0057 · Compose shared setup and reusable workflow orchestration](0057-capstone-reusable-workflow-fanout-and-fanin.md)
-
-## What you will learn to do
-
-- Produce a complete local evidence pack and a short hosted verification plan.
-- Demonstrate failure-path behavior before considering a release candidate eligible.
-
 ## Explain the Actions behavior
 
-Start from the prerequisite workflow or action behavior and introduce these concepts with focused examples:
+Use a small workflow or action to explain these concepts:
 
 1. Release confidence is a collection of evidence from appropriate environments.
 2. Platform-dependent authorization, scheduling, environments, and target OS behavior need real integration checks.

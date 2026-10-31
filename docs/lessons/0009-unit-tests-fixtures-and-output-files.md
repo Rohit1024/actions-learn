@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0009 · Unit tests, event fixtures, and temporary output files
 
-!!! note "Authored reference lesson"
-    The isolated implementation and tests under `labs/0009/` are ready to run. Predict failures before opening solutions. Author execution is evidence about the examples, not demonstrated learner understanding.
-
-## Prerequisites and goal
-
-Start with [0008 · Static checks](0008-workflow-shell-and-security-linting.md) and [0005 · Output-file contracts](0005-environment-files-and-output-contracts.md). Explain why stdout, a named output, and the process exit status are independent observations.
-
-Build confidence in an action through two complementary boundaries: its function and its actual entrypoint process. You should be able to reproduce an invalid-input failure, show that no success output was published, and explain what a synthetic event fixture does not prove. Use installed Node 24 and Python; no packages, container engine, credentials, or network are required.
+Use the isolated implementation in `labs/0009/` to test the function and the real Node process. Predict which defects each test can catch.
 
 ## Separate behavior from transport
 
@@ -37,6 +30,8 @@ A function-only test can prove formatting and validation while missing a wrong e
 
 ## Run the smallest behavior tests first
 
+Use the installed Node 24 and Python. These tests need no container engine, credentials, or network access.
+
 Before running, predict the greeting for `  Ada  `, the result for `रोहित`, and whether `$(exit 99)` is executed.
 
 ```bash
@@ -50,7 +45,7 @@ Expected: **2 tests pass**, exit **0**. One test checks whitespace normalization
 
 Inspect the adapter's public boundary:
 
-```javascript title="labs/0009/index.cjs — adapter excerpt"
+```javascript title="labs/0009/index.cjs, adapter excerpt"
 try {
   const greeting = greet(process.env.INPUT_NAME ?? 'World'); // (1)!
   if (!process.env.GITHUB_OUTPUT) {
@@ -72,7 +67,7 @@ The [GitHub output-file protocol](https://docs.github.com/en/actions/reference/w
 
 ## Fixtures make cases repeatable
 
-A **fixture** is controlled test data. `cases.json` has ten named cases with independent expected values or error fragments. Its JSON `null` is a harness marker meaning “do not set `INPUT_NAME`”; it is not a literal action input.
+A **fixture** is controlled test data. `cases.json` has ten named cases with independent expected values or error fragments. The test script treats JSON `null` as an instruction to leave `INPUT_NAME` unset.
 
 | Case group | Expected contract |
 | --- | --- |
@@ -94,13 +89,13 @@ Expected: **14 tests pass**, exit **0**: ten fixture cases and four additional f
 node --test labs/0009/greet.test.cjs labs/0009/contract.test.cjs
 ```
 
-Each process case creates its own temporary directory and an output filename containing spaces. The harness removes inherited `INPUT_NAME` and `GITHUB_OUTPUT`, supplies only the intended transport values, invokes Node without a shell, and removes the directory afterward. This prevents a developer's input values or leftover output file from making a test pass accidentally.
+Each process case creates its own temporary directory and an output filename containing spaces. The test script removes inherited `INPUT_NAME` and `GITHUB_OUTPUT` values, then sets the values for that case. It invokes Node without a shell and removes the directory afterward. This prevents a developer's input values or leftover output file from making a test pass accidentally.
 
 !!! tip "Predict the four extra cases"
     What should happen when the file already contains `existing=value`, when validation fails with that prior record present, when the output variable is absent, and when its path points at a directory?
 
 ??? tip "Worked file assertions"
-    Success appends `greeting=Hello, Ada!` after `existing=value`; it does not truncate the earlier record. Invalid input leaves the prior bytes unchanged. Missing `GITHUB_OUTPUT` fails with a named diagnostic. A directory cannot receive an appended output record, so the real write fails and the adapter must return nonzero. The test checks that no success log or greeting record accompanies either failure; it does not rely on platform-specific operating-system error wording.
+    Success appends `greeting=Hello, Ada!` after `existing=value`; it does not truncate the earlier record. Invalid input leaves the prior bytes unchanged. Missing `GITHUB_OUTPUT` fails with a named diagnostic. A directory cannot receive an appended output record, so the real write fails and the adapter must return nonzero. For either failure, the test requires no success log and no new greeting record. It does not depend on the operating system's error wording.
 
 The tests observe the actual file bytes, stdout, stderr, and status. They do not source the output file as shell code, and they do not implement GitHub's complete parser. Exact byte comparisons are sufficient for the small single-line contract.
 
@@ -149,7 +144,7 @@ A second mutation exercise is replacing append with overwrite in an isolated cop
 A repository-report action accepts an event payload and returns a numeric finding count plus a report file. Design one pure-function test, one adapter test, and one downstream wiring check. Include a malformed payload and a failed output write.
 
 ??? tip "Worked transfer"
-    Unit-test the report transformation with deterministic event data. Invoke the real adapter with a temporary event path and output directory, asserting the count record, report bytes, stderr, and status. On validation or write failure, require nonzero status and no success-shaped new output. Use a selected workflow job to check the consumer's named-output mapping; neither the function nor the adapter test evaluates that mapping. If partial files can remain after failure, define their cleanup or invalid-state contract explicitly.
+    Unit-test the report transformation with deterministic event data. Invoke the real adapter with a temporary event path and output directory, asserting the count record, report bytes, stderr, and status. On validation or write failure, require nonzero status and no new success output. Use a selected workflow job to check the consumer's named-output mapping; neither the function nor the adapter test evaluates that mapping. If partial files can remain after failure, define their cleanup or invalid-state contract explicitly.
 
 Answer from memory:
 
@@ -168,6 +163,6 @@ Use the function/process tests while editing these isolated files. The shared `t
 
 Primary Node and GitHub references linked above were checked on **2026-10-30** through the [source library](../references/resources.md). The module handoff records author test results.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0008 · Workflow linting, shell diagnostics, metadata checks, and security analysis](0008-workflow-shell-and-security-linting.md) | [Curriculum](index.md) | [0010 · Container engines, Linux images, sockets, and CPU architecture](0010-container-engines-images-and-architecture.md) |

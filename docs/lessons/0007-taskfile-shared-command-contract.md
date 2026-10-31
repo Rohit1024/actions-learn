@@ -6,20 +6,15 @@ lesson_status: authored
 
 # 0007 · Taskfile as the command contract shared by humans and CI
 
-!!! note "Authored reference lesson"
-    The lab is developed under `labs/0007/`. Predict each result before opening its worked solution. Written content and author checks do not establish learner mastery.
-
-## Prerequisites and goal
-
-Read [0006 · Dependencies and failure propagation](0006-matrices-dependencies-and-cancellation.md) and recall the [local feedback model](0002-local-feedback-loop.md). Explain which program runs a workflow step, and why a failed required check must reach the job as a nonzero exit status.
-
-By the end, you should be able to expose one useful command to both a person and CI, explain its prerequisites and working directory, and reproduce a stale cached result. Use the already installed Task v3 and Python from the [local testing guide](../cheatsheet/local-testing.md). Commands below start at the repository root; no installation or hosted run is needed.
+Use `labs/0007/` to give local development and CI the same commands. Predict when Task will rerun a check and when it will reuse a result.
 
 ## Put one command behind the workflow step
 
+Run commands from the repository root using the installed Task v3 and Python from the [local testing guide](../cheatsheet/local-testing.md).
+
 A **command contract** states how to invoke work, what inputs it reads, what result it produces, and how failure is signaled. Task gives that operation a name. The program behind it owns validation and behavior; the workflow owns event admission, permissions, runners, and job dependencies.
 
-The lab's `check.py` reads `input.json` and `policy.json` in its working directory. The input supplies `Ada`; the policy supplies punctuation. It validates both, prints `PASS: Hello, Ada!`, and returns zero. Missing or invalid files produce a `FAIL` diagnostic on stderr and return one. This small check stands in for a repository-specific test command, without requiring a new action for ordinary CI command execution.
+The lab's `check.py` reads `input.json` and `policy.json` in its working directory. The input supplies `Ada`; the policy supplies punctuation. It validates both, prints `PASS: Hello, Ada!`, and returns zero. Missing or invalid files produce a `FAIL` diagnostic on stderr and return one. Treat this as a project test command. CI can call it directly without a custom action.
 
 ```mermaid
 flowchart TD
@@ -34,7 +29,7 @@ flowchart TD
 
 Here is the lab's uncached command:
 
-```yaml title="labs/0007/Taskfile.yml — command excerpt"
+```yaml title="labs/0007/Taskfile.yml, command excerpt"
 version: '3'
 dir: '{{.TASKFILE_DIR}}' # (1)!
 tasks:
@@ -78,13 +73,13 @@ Both invocations should execute `python3 check.py`, print `PASS: Hello, Ada!`, a
 
 The recipe sets `contents: read`, disables checkout credential persistence, and bounds the job to five minutes. Its Ubuntu runner supplies Python; the host supplies the already installed Python. The shared command reduces drift, but does not guarantee identical OS packages, runtime versions, locale, network, or permissions. Pin and test those environment contracts when they affect the result.
 
-A recipe under `labs/` does not register a GitHub workflow. Inspect the complete file rather than copying only its final step into a job without checkout or Task. No workflow installation or dispatch is part of this authoring exercise.
+A recipe under `labs/` does not register a GitHub workflow. Inspect the complete file rather than copying only its final step into a job without checkout or Task. The local exercise leaves the recipe under `labs/` and does not dispatch it.
 
 ## Separate ordering from parallel prerequisites
 
 A Task `deps` list describes prerequisites that can run concurrently. It does not promise list order. When one task consumes another's generated file, call them sequentially in `cmds`:
 
-```yaml title="labs/0007/Taskfile.yml — ordering excerpt"
+```yaml title="labs/0007/Taskfile.yml, ordering excerpt"
 ordered:
   cmds:
     - task: build:fixed
@@ -99,7 +94,7 @@ An **up-to-date check** allows Task to reuse prior work when declared inputs hav
 
 The lab contrasts these definitions:
 
-```yaml title="labs/0007/Taskfile.yml — deliberately incomplete and repaired inputs"
+```yaml title="labs/0007/Taskfile.yml, deliberately incomplete and repaired inputs"
 build:bad:
   sources: [check.py, input.json] # (1)!
   generates: [result.json]
@@ -122,7 +117,7 @@ Run the complete experiment without modifying shared files or leaving cache file
 uv run --no-sync python labs/0007/cache_demo.py
 ```
 
-The harness copies this lab into a temporary directory and selects that copy's **absolute Taskfile path**. It performs these steps:
+The test script copies this lab into a temporary directory and selects the copy's absolute Taskfile path. It performs these steps:
 
 | Step | Expected result |
 | --- | --- |
@@ -135,14 +130,14 @@ The harness copies this lab into a temporary directory and selects that copy's *
 | Change policy back and call `ordered` | Rebuild with `!` before comparison; passes |
 | Remove the input and call `check` | Nonzero with the explicit missing-file message |
 
-The harness expects those two negative cases and itself exits **0**, ending with:
+Both failures are expected. The test script exits 0 after confirming them and ends with:
 
 ```text
 PASS: stale cache detected, policy tracked, missing input explained
 ```
 
 ??? tip "Diagnosis and durable repair"
-    First inspect whether the script ran at all. An up-to-date message means the program never examined the new policy. Compare the files the program reads with the task's `sources`, add `policy.json`, and rebuild with the fixed task. Removing the cache would hide the symptom for one run; declaring the real input repairs future invalidation. Keep the independent verification because a generated file's existence does not prove its contents match the current contract.
+    First inspect whether the script ran at all. An up-to-date message means the program never examined the new policy. Compare the files the program reads with the task's `sources`, add `policy.json`, and rebuild with the fixed task. Clearing the cache only forces one rerun. Adding the missing input makes future policy changes trigger the task. Keep the independent verification because a generated file's existence does not prove its contents match the current contract.
 
 Avoid caching test success casually. Tests may depend on interpreter versions, environment values, generated artifacts, or remote state beyond a short source list. This lab keeps `check` uncached and uses caching only for the explicit generated-result experiment. No task runner can infer all dependencies of arbitrary programs.
 
@@ -169,6 +164,6 @@ The lab observes actual Task invocation, file fingerprints, ordering, and exit p
 
 Primary Task pages above and the [curated source library](../references/resources.md) were checked on **2026-10-30**. The module handoff records executed commands and environment limits.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0006 · Matrices, job dependencies, cancellation, and failure propagation](0006-matrices-dependencies-and-cancellation.md) | [Curriculum](index.md) | [0008 · Workflow linting, shell diagnostics, metadata checks, and security analysis](0008-workflow-shell-and-security-linting.md) |

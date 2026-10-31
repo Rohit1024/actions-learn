@@ -6,18 +6,11 @@ lesson_status: authored
 
 # 0014 · Dockerfile layers, build context, reproducible bases, and entrypoints
 
-!!! note "Authored reference lesson"
-    Work through each prediction before opening the answer. The runnable lab is isolated in `labs/0014/`; an authored page is not evidence of learner mastery.
-
-## Prerequisites and goal
-
-Start with [0013 · Metadata and lifecycle](0013-docker-action-metadata-and-lifecycle.md). Recall why metadata arguments reach a process only after the image builds and starts. Use [0010 · Engines and architecture](0010-container-engines-images-and-architecture.md) when an engine connection or executable format fails.
-
-Explain what the builder can read, what is baked into the image, what can be reused, and what is supplied only when an action runs. Success means you can predict a program-only rebuild and diagnose a failed `COPY` without changing action inputs or workflow permissions.
-
-Run commands from the repository root. The action package is `labs/0014/action/`; `labs/0014/outside-only.py` deliberately sits beside it, outside its build context. No dependency installation or VM setup is part of this lesson.
+Use the isolated lab in `labs/0014/` to follow a file from the build context into the image. Predict which layers a source change invalidates.
 
 ## Build context and runtime workspace are different inputs
+
+Run commands from the repository root. The action package is `labs/0014/action/`; `labs/0014/outside-only.py` deliberately sits beside it, outside its build context.
 
 The **build context** is the set of source files the builder can access. In this command, the final argument supplies the context; `-f` selects the Dockerfile:
 
@@ -62,7 +55,7 @@ ENTRYPOINT ["python3", "/opt/action/entrypoint.py"]
 2. `RUN` executes while building. This small stable-policy check is here to expose ordering and cache reuse; it is not a Python dependency installation. Its printed message is a build log, not an action output.
 3. The frequently edited program comes after the stable step. `COPY` changes the image filesystem; `ENV` and `ENTRYPOINT` configure the image rather than adding application file contents.
 
-The policy file contains exactly `single-line-inputs` followed by a newline. The copied entrypoint is the unchanged starter: a missing argument defaults to `World`, a nonempty single-line argument produces a greeting, and `GITHUB_OUTPUT` is required when it executes. It is not run during this build; therefore the builder does not need a runner output file.
+The policy file contains exactly `single-line-inputs` followed by a newline. The copied entrypoint keeps the starter behavior. A missing argument defaults to `World`. A nonempty single-line argument produces a greeting. Execution requires `GITHUB_OUTPUT`. It is not run during this build; therefore the builder does not need a runner output file.
 
 The image has no `WORKDIR` or `USER` instruction. GitHub supplies the action's runtime workspace and documents additional Dockerfile constraints. Keeping the entrypoint at `/opt/action/entrypoint.py` prevents a caller workspace mount from hiding the packaged tool. The [GitHub Dockerfile support reference](https://docs.github.com/en/actions/reference/workflows-and-actions/dockerfile-support) also explains metadata entrypoint overrides.
 
@@ -103,12 +96,12 @@ docker info
 uv run --no-sync python labs/0014/cache_experiment.py
 ```
 
-The experiment copies the action context into a temporary directory, builds it, appends a harmless comment to that copy's program, builds again under the same local tag, then runs the final image against a mounted output file. Expected behavior: both builds succeed; earlier steps are candidates for cache reuse; the final program copy changes; the image publishes `Hello, Ada!`; the script prints `PASS: edited image runs; inspect builder logs to determine actual cache reuse`.
+The experiment copies the action context into a temporary directory, builds it, appends a harmless comment to that copy's program, builds again under the same local tag, then runs the final image against a mounted output file. Both builds should succeed. The builder may reuse earlier layers, but it must copy the changed program. The final image should publish `Hello, Ada!`. The script then prints `PASS: edited image runs; inspect builder logs to determine actual cache reuse`.
 
 The command preserves the checked-in action. It leaves a local image tag for inspection and cleans its temporary source/output files. It neither clears shared engine caches nor proves a cold build. Different Docker-compatible builders format cache logs differently; record the engine/version and actual lines if you run it.
 
 !!! note "Current execution boundary"
-    Host Python is available. The existing Docker command connects to Podman, whose connection was refused during authoring. The host probe ran successfully; no build, layer-cache observation or image run is claimed. Do not start or provision a VM to make this reference page appear tested.
+    Host Python is available. The existing Docker command connects to Podman, which refused the connection during the recorded checks. The host probe passed. Image builds, cache reuse, and image execution remain unverified until an engine is available.
 
 ## Break the context, then locate the failure stage
 
@@ -138,13 +131,13 @@ A successful build can still omit a runtime file: `ENTRYPOINT` is stored configu
 
 Exec-form `ENTRYPOINT ["python3", "/opt/action/entrypoint.py"]` invokes Python directly. `docker run IMAGE Ada` appends `Ada`; no shell splits it or evaluates `$(...)`. A value such as `$GITHUB_SHA` remains literal unless the program reads that environment variable or a shell is deliberately introduced.
 
-`CMD` can provide default arguments for a direct image run. In an action, `runs.args` replaces the Dockerfile's `CMD`, and `runs.entrypoint` overrides `ENTRYPOINT`. Duplicating defaults across metadata, a Dockerfile, and program code creates drift: document which caller each default serves. This lab leaves `CMD` absent and retains the starter's program default for direct use. Docker documents the combination in its [Dockerfile reference](https://docs.docker.com/reference/dockerfile/#entrypoint).
+`CMD` can provide default arguments for a direct image run. In an action, `runs.args` replaces the Dockerfile's `CMD`, and `runs.entrypoint` overrides `ENTRYPOINT`. Defaults in metadata, the Dockerfile, and program code can disagree. Document which caller uses each default. This lab leaves `CMD` absent and retains the starter's program default for direct use. Docker documents the combination in its [Dockerfile reference](https://docs.docker.com/reference/dockerfile/#entrypoint).
 
 ## Reproducible dependencies require an update plan
 
 The [Official Images Python entry](https://raw.githubusercontent.com/docker-library/official-images/master/library/python), checked **2026-10-30**, lists `3.14-alpine` and its source directory. That supports using the tag in a teaching example. It does not establish the digest resolved on this machine, a vulnerability assessment, or a tested target architecture.
 
-A tag can move. A digest identifies immutable registry content; a multi-platform index digest identifies an index whose entries select platform images. A pinned base makes that input repeatable, but not every other build input: package repositories, downloads and source changes can still vary. This lab installs no extra packages, simplifying that dependency chain.
+A tag can move. A digest identifies immutable registry content; a multi-platform index digest identifies an index whose entries select platform images. A pinned base fixes that image input. Package repositories, downloads, and source changes can still change the build. This lab installs no extra packages, simplifying that dependency chain.
 
 A release should resolve a digest from the registry, review its upstream source, record the intended platform, run image tests and review updates. Do not paste an invented digest into `FROM`. Pinning forever without reviewing fixes is a maintenance defect; [0018](0018-container-security-and-release-tradeoffs.md) builds the review policy. See Docker's [base pinning guidance](https://docs.docker.com/build/building/best-practices/#pin-base-image-versions).
 
@@ -166,6 +159,6 @@ Host program evidence is available; engine/cache/image experiments remain deferr
 
 Primary sources above were checked on **2026-10-30**; the [curated library](../references/resources.md) and `labs/module-3-handoff.md` preserve source context and unexecuted boundaries.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0013 · Docker action metadata, arguments, and container lifecycle](0013-docker-action-metadata-and-lifecycle.md) | [Curriculum](index.md) | [0015 · Workspace mounts, user IDs, ownership, and output paths](0015-container-mounts-ownership-and-output-paths.md) |

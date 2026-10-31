@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0026 · Explicit shells, action paths, paths with spaces, and portability
 
-!!! note "Reference lesson"
-    `labs/0026/` separates downloaded action code, caller data, and the current directory. Its failures use disposable local copies. Completing a written exercise is separate from demonstrating understanding.
-
-## Prerequisites and observable goal
-
-Read [0025 · Composite interfaces](0025-composite-action-inputs-and-outputs.md) and retrieve the portability distinction from [0024](0024-cross-platform-actions-and-versioned-releases.md): a lexical path model does not execute another OS.
-
-Invoke an action-owned script against a caller-owned file while both paths contain spaces and the current directory belongs to neither. Success means the process receives exactly one file argument, publishes `lines=2`, and you can explain why the broken relative and unquoted invocations fail.
+`labs/0026/` puts action code, caller data, and the working directory in separate locations. Its disposable copies expose path assumptions that disappear when everything lives in one directory.
 
 ## Name the owner of each path
 
@@ -45,7 +38,7 @@ flowchart TD
 
 Every composite `run` step needs a `shell`. This lab requires Bash and Node 24; declaring `shell: bash` selects a shell but does not install Node. The inactive consumer uses maintained setup-node before the local composite. Its runtime selection is distinct from the Node runtime the setup action itself uses.
 
-```yaml title="labs/0026/action/action.yml — internal step"
+```yaml title="labs/0026/action/action.yml, internal step"
 - id: inspect
   shell: bash # (1)!
   env:
@@ -66,7 +59,7 @@ node "$ACTION_DIR/inspect.cjs" "$1" # (1)!
 
 1. Node opens the file directly. It does not construct another shell command containing the filename.
 
-The helper counts logical lines after normalizing CRLF and lone CR to LF. Empty content counts zero; a final terminator ends a line without adding another. The checked-in fixture has `alpha` and `beta`, so it produces two. Its stdout is JSON containing the received path and count, which lets the harness assert the exact argument rather than infer it from a successful exit.
+The helper counts logical lines after normalizing CRLF and lone CR to LF. Empty content counts zero; a final terminator ends a line without adding another. The checked-in fixture has `alpha` and `beta`, so it produces two. Its stdout is JSON containing the received path and count, so the test can check the exact path the helper received. A zero exit alone would not prove that path was correct.
 
 !!! note "Path lookup is not a filesystem sandbox"
     The `file` input in this exercise is a trusted relative fixture path. Concatenating a workspace path does not reject `..`, symlinks, or races, and quoting does not make an arbitrary input path safe to read. For an untrusted file selector, define and test a containment policy before granting access. Lesson 0024 demonstrates additional path validation.
@@ -79,7 +72,7 @@ Run from the repository root:
 .venv/bin/python labs/0026/paths.py
 ```
 
-The harness creates three independent directories under one temporary root: `downloaded action`, `caller workspace`, and `unrelated working directory`. It copies code and the file `input with spaces.txt`, uses a temporary output path, and runs all commands from the unrelated directory. It removes the entire fixture afterward.
+The test script creates three directories under one temporary root: `downloaded action`, `caller workspace`, and `unrelated working directory`. It copies code and the file `input with spaces.txt`, uses a temporary output path, and runs all commands from the unrelated directory. It removes the entire fixture afterward.
 
 Expected, exit **0**:
 
@@ -89,7 +82,7 @@ unquoted action path: EXPECTED FAILURE (space splits script path)
 quoted action path + workspace file: PASS (one argument, lines=2)
 ```
 
-The harness's successful exit means both deliberate child failures and the repaired child behaved as expected. It does not mean the broken child commands succeeded.
+The test script exits zero after observing both intended failures and the repaired child's success. The broken child commands still fail.
 
 !!! tip "Predict each invocation"
     From the unrelated directory, which path does `bash inspect.sh "$file"` use? What changes if you write `bash $ACTION_DIR/inspect.sh "$file"`? Does quoting only the data filename fix both problems?
@@ -130,9 +123,9 @@ Expected: exit **0**, no diagnostics. This does not execute setup-node, open the
 
 ## Supporting platforms is an evidence decision
 
-The runnable contract targets a Unix-style Bash/Node environment, with the inactive workflow choosing `ubuntu-latest`. The host harness is useful on the current macOS system too. Do not infer a Windows support promise from Bash being available on one Windows installation, or from a filename test on macOS.
+The runnable contract targets a Unix-style Bash/Node environment, with the inactive workflow choosing `ubuntu-latest`. The host test script also runs on the recorded macOS system. Do not infer a Windows support promise from Bash being available on one Windows installation, or from a filename test on macOS.
 
-A PowerShell implementation would use its own variable syntax, argument rules, encoding choices, and native path handling. Replacing `shell: bash` with `shell: pwsh` leaves Bash source invalid. Adding `runs-on` inside composite metadata is also not a solution: runner selection belongs to the job. If consumers need different runner families, expose that policy at a workflow/job boundary and execute representative runner cases.
+A PowerShell implementation would use its own variable syntax, argument rules, encoding choices, and native path handling. Replacing `shell: bash` with `shell: pwsh` leaves Bash source invalid. The job selects the runner. Adding `runs-on` inside composite metadata cannot change it. If consumers need different runner families, expose that policy at a workflow/job boundary and execute representative runner cases.
 
 For repository project commands that intentionally depend on a working directory, use an explicit `working-directory` on the appropriate `run` step. Do not rely on `defaults.run` to locate bundled action code. Keep action-owned helper paths anchored to the action directory even if the caller changes where it runs project commands.
 
@@ -151,7 +144,7 @@ Retrieve without looking:
 4. Does the path exercise prove containment or Windows execution?
 
 ??? tip "Retrieval check"
-    The action installation directory owns the bundled code. Runtime setup is a separate operation. A relative or split script path still fails even with a correct data argument. This harness checks path transport on its actual host; it is neither a filesystem sandbox nor an OS matrix.
+    Look for bundled code in the action installation directory. Runtime setup is a separate operation. A relative or split script path still fails even with a correct data argument. This test script checks paths on the host where it runs. It does not isolate the filesystem or run an OS matrix.
 
 ## Verification boundary and sources
 
@@ -159,6 +152,6 @@ The deterministic host exercise tests real files and processes. An engine-backed
 
 Sources checked **2026-10-30**: the linked GitHub composite and contexts references, the [metadata shell contract](https://docs.github.com/en/actions/reference/workflows-and-actions/metadata-syntax#runsstepsshell), and the pinned [setup-node metadata](https://raw.githubusercontent.com/actions/setup-node/949feb2413d6458794dcd2491c4babbbce0c15c1/action.yml). Continue to [0027](0027-untrusted-input-and-shell-quoting.md) for untrusted text transport.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0025 · Composite action structure, step IDs, and output mapping](0025-composite-action-inputs-and-outputs.md) | [Curriculum](index.md) | [0027 · Transport inputs safely through environment variables and quoted arguments](0027-untrusted-input-and-shell-quoting.md) |

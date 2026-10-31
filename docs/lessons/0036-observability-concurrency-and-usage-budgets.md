@@ -6,18 +6,11 @@ lesson_status: authored
 
 # 0036 · Logs, annotations, summaries, concurrency, and usage budgets
 
-!!! note "Authored reference lesson"
-    The lab evaluates a synthetic run ledger and reconciles temporary local markers. It creates no release or deployment, cancels no hosted run, and calls no model. Its results establish tested local behavior, not platform scheduling, actual billing, or learner mastery.
-
-## Prerequisites and observable goals
-
-Read [0035 · Release evidence](0035-sha-pins-semantic-releases-and-provenance.md), [0006 · Dependencies and cancellation](0006-matrices-dependencies-and-cancellation.md), and [0012 · Usage boundaries](0012-local-hosted-coverage-and-usage-budget.md). Recall why a skipped required check cannot be accepted as success.
-
-Produce a compact diagnostic summary without dumping sensitive context, reject missing/failed/over-budget evidence, choose a cancellation policy per operation, and explain recovery from interrupted side effects. Success means another operator can identify the failing boundary and next safe action from your evidence.
+Evaluate a synthetic run ledger and reconcile temporary local markers. The results test local policy and cleanup behavior. Hosted scheduling and actual billing remain unverified.
 
 ## Make the failure observable at the right boundary
 
-**Observability** means having enough evidence to explain system behavior. A log gives chronological detail, an annotation highlights a specific issue, and a job summary presents a concise result for an operator. None replaces the process exit status: emitting `::error::` text alone is not a reliable way to fail the process or enforce a release gate.
+**Observability** means having enough evidence to explain system behavior. A log gives chronological detail, an annotation highlights a specific issue, and a job summary presents a concise result for an operator. None replaces the process exit status. Emitting `::error::` text alone does not reliably fail the process or enforce a release gate.
 
 A useful record names run ID/attempt, source revision, worker and policy versions, required results, durations, artifact references, and a next diagnostic step. Keep unverified states visible. `success`, `failure`, `skipped`, and `cancelled` are distinct outcomes; a required worker must have matching success evidence. [0006](0006-matrices-dependencies-and-cancellation.md) develops the dependency-aware gate.
 
@@ -39,7 +32,7 @@ The sample ledger contains a deliberately private-looking synthetic string. The 
 
 Workflow annotations use command syntax on stdout; command data must escape percent and line endings so a supplied message cannot create extra command lines. Summary files contain Markdown, so arbitrary user text can also alter presentation or links; validate or escape it for that destination separately. The [workflow commands reference](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands), checked **2026-10-30**, documents annotations, groups, environment files, and summaries.
 
-```python title="labs/0036/operations.py — command data escaping"
+```python title="labs/0036/operations.py, command data escaping"
 def escape_command(text):
     return text.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A") # (1)!
 ```
@@ -98,7 +91,7 @@ Expected: seven test methods pass and actionlint exits 0 without diagnostics. Te
 
 A **concurrency group** coordinates jobs/runs with the same group string. Use enough context to avoid unrelated workflows cancelling one another. The read-only sample uses:
 
-```yaml title="labs/0036/observable-check.yml — run grouping"
+```yaml title="labs/0036/observable-check.yml, run grouping"
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }} # (1)!
   cancel-in-progress: true # (2)!
@@ -107,7 +100,7 @@ concurrency:
 1. Workflow and ref separate unrelated work. Group names are case-insensitive, so do not rely on case to separate release targets.
 2. Superseding a read-only check may save useless work. This is a policy request whose actual behavior needs real runs.
 
-Under default single-pending behavior, new pending work replaces an older pending entry. `cancel-in-progress: false` preserves currently running work; it does not guarantee every queued candidate executes. The current [concurrency guide](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency) also documents optional `queue: max` with up to 100 pending entries; it cannot combine with `cancel-in-progress: true`. Ordering depends on when work starts waiting, and this bounded queue is not a durable release transaction system. This lab does not configure or test that newer option.
+Under default single-pending behavior, new pending work replaces an older pending entry. `cancel-in-progress: false` preserves currently running work; it does not guarantee every queued candidate executes. The current [concurrency guide](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency) also documents optional `queue: max` with up to 100 pending entries; it cannot combine with `cancel-in-progress: true`. Queue order depends on when work starts waiting. The queue does not record release completion or recover partial external writes. This lab does not configure or test that newer option.
 
 For release/deployment operations, group by the actual target when conflicting writes must be serialized. Include cross-workflow collisions in the design. Preserve the running transaction where appropriate, then reconcile its state before starting another. A workflow-wide cancel policy can still terminate a side-effect job even when its own job policy looks conservative, so review both levels.
 
@@ -132,7 +125,7 @@ temporary journal removed; no real publication or cancellation
 The program creates one temporary upload marker, intentionally omits the receipt, verifies the gap, and reconciles the same operation identity twice. It checks existing content before completing a matching receipt. The marker is a local stand-in for external state; this is not a process-signal or GitHub cancellation experiment.
 
 ??? tip "Worked diagnosis and repair"
-    The failed boundary is completion bookkeeping after a side effect. Reconcile actual external state under an operation key tied to target and candidate; reject conflicting content, and record completion only after verifying the intended result. This is **idempotent recovery**: repeating it preserves the intended outcome. A real integration also needs service concurrency/precondition support and durable records. A local marker proves none of those distributed guarantees.
+    The failed boundary is completion bookkeeping after a side effect. Reconcile actual external state under an operation key tied to target and candidate; reject conflicting content, and record completion only after verifying the intended result. This recovery is idempotent. Repeating it preserves the intended outcome. A real integration also needs service concurrency/precondition support and durable records. A local marker proves none of those distributed guarantees.
 
 GitHub [cancellation behavior](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-cancellation) includes condition re-evaluation, process signals, and forced termination. `always()` may affect job/step eligibility, but it cannot guarantee recovery after runner loss or kill escalation. Keep cleanup bounded and make important reconciliation possible from a subsequent independent attempt.
 
@@ -145,7 +138,7 @@ GitHub [cancellation behavior](https://docs.github.com/en/actions/reference/work
 | Model/API consumption | Calls/tokens/service usage with retries | Tool/call ceilings and provider controls | Zero-call fixture policy only |
 | Wall-clock latency | Queue, approval wait, execution, dependencies | Remove unnecessary dependencies and repeated setup | No hosted latency measurement |
 
-The synthetic budgets are 90 runner seconds, 4096 artifact bytes, and zero model calls. They detect declared overruns after receiving measurements; they do not prevent dispatches or cap invoices. A timeout is a real workflow bound if GitHub enforces it, but repeated runs can still exceed a monthly budget. Storage byte totals omit retention-time billing. No pricing is asserted; verify current primary billing information when making a monetary estimate.
+The synthetic budgets are 90 runner seconds, 4096 artifact bytes, and zero model calls. They detect declared overruns after receiving measurements; they do not prevent dispatches or cap invoices. A timeout is a real workflow bound if GitHub enforces it, but repeated runs can still exceed a monthly budget. Storage byte totals omit retention time. Use current billing documentation when estimating cost.
 
 Path filtering can avoid unnecessary jobs, but skipped required checks need an explicit design so a gate does not wait forever or accept missing evidence. Cache dependencies where justified, keep tests authoritative, and avoid repeated installation/documentation checks during an edit loop. Optimize after identifying the costly boundary rather than weakening required evidence.
 
@@ -158,7 +151,7 @@ Design a pipeline that cancels superseded PR checks but preserves an approved pu
 
 Retrieve:
 
-1. What should an operator learn beyond “the job failed”?
+1. What should an operator learn beyond "the job failed"?
 2. Why do annotations and summary text not replace exit status?
 3. Why can `cancel-in-progress: false` still lose pending work under the default queue?
 4. Which observations are required before declaring a partial operation recovered?
@@ -170,6 +163,6 @@ Retrieve:
 
 Host tests cover supplied ledger decisions, formatting, escaping, and temporary marker reconciliation. Actual GitHub scheduling/cancellation, summary rendering, billing, environment admission, service writes, and multi-run recovery remain later integration evidence. No container or `act` execution, publication, deployment, or model call occurred. Continue in course order to [0037 · Select maintained pre-built actions](0037-selecting-popular-prebuilt-actions.md), applying these trust and operating boundaries to dependency selection.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0035 · Pins, releases, and distribution integrity](0035-sha-pins-semantic-releases-and-provenance.md) | [Curriculum](index.md) | [0037 · Choose popular pre-built actions and verify publishers](0037-selecting-popular-prebuilt-actions.md) |

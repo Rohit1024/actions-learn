@@ -6,20 +6,14 @@ lesson_status: authored
 
 # 0042 · Compose an action-based pipeline and maintain its dependencies
 
-A useful action-based pipeline makes platform operations reusable and project behavior explicit. Its dependency-maintenance process must preserve both interfaces and trust: changing a SHA is a proposal to execute a different release, not a complete upgrade review.
-
-## Prerequisites and observable goal
-
-Read [0041 · Write and reporting effects](0041-release-pr-and-reporting-actions.md), [0035 · Pins and distribution integrity](0035-sha-pins-semantic-releases-and-provenance.md), and [0006 · Evidence joins](0006-matrices-dependencies-and-cancellation.md). Retrieve the npm cache/install distinction from [0039](0039-setup-cache-and-artifact-actions.md) before continuing.
-
-You will classify pipeline responsibilities, check exact-pin input contracts, reproduce an obsolete-input failure, and run the actual join policy used by an inactive workflow. Success means you can reject missing required evidence, explain an intentional optional skip, and specify the local and hosted evidence required for an action update.
+A useful action-based pipeline makes platform operations reusable and project behavior explicit. Changing an action SHA selects different code. Review the release, its interface, and its access before accepting that change.
 
 !!! note "Local scope"
     All commands run from the repository root with the already installed `.venv`. The lab performs no dependency installation or remote action execution. The Dependabot file is a proposal under `labs/0042/`, not installed repository configuration.
 
 ## Put each responsibility in the right place
 
-The complete inactive workflow is `labs/0042/pipeline.yml`. Manual dispatch always selects the Node branch; a typed Boolean `include_image` additionally selects the bounded OCI build from 0040. The branches have independent runners and can become eligible together.
+The complete inactive workflow is `labs/0042/pipeline.yml`. Manual dispatch always selects the Node branch; a typed Boolean `include_image` also selects the OCI build with a timeout from 0040. The branches have independent runners and can become eligible together.
 
 | Responsibility | Interface in this pipeline | Policy still visible to the reader |
 | --- | --- | --- |
@@ -36,7 +30,7 @@ These interfaces remove acquisition/upload/builder glue while retaining the repo
 
 The gate declares both branches as direct dependencies and runs for non-cancelled workflows even when a dependency fails or skips:
 
-```yaml title="labs/0042/pipeline.yml — gate excerpt"
+```yaml title="labs/0042/pipeline.yml, gate excerpt"
 gate:
   needs: [node, image]
   if: ${{ !cancelled() }} # (1)!
@@ -79,11 +73,11 @@ The module reuses project pins after re-resolving their upstream tags and readin
 
 For each proposed update, review:
 
-1. **Identity and release mapping:** exact upstream repository, tag-to-commit resolution, release notes and advisories. A changed comment beside an unchanged SHA does not update executable code.
-2. **Interface compatibility:** input/output names, defaults, value formats, post steps, failure behavior and dynamic outputs. A metadata parser can check some names; it cannot infer every runtime output or undocumented behavior.
-3. **Runtime and transitive behavior:** runner compatibility, packaged JavaScript/bundle changes, downloaded tools, builder images and network endpoints. Action pins do not automatically pin every resource fetched by the action.
-4. **Authority:** event/ref trust, token scopes, credential persistence, OIDC/provider expectations and new external effects.
-5. **Verification and recovery:** smallest meaningful host/static checks, then targeted integration for changed boundaries; previous reviewed commit and a plan for partial effects.
+1. Confirm the upstream repository and the commit selected by the release tag. Read its release notes and advisories. A changed comment beside an unchanged SHA does not update executable code.
+2. Compare input and output names, defaults, value formats, post steps, failure behavior, and dynamic outputs. A metadata parser can check some names; it cannot infer every runtime output or undocumented behavior.
+3. Check runner compatibility, bundled JavaScript changes, downloaded tools, builder images, and network endpoints. Action pins do not automatically pin every resource fetched by the action.
+4. Review event and ref trust, token scopes, persisted credentials, provider identity requirements, and new external operations.
+5. Run host and static checks, then test the changed integrations. Keep the previous reviewed commit and a recovery plan for partial writes.
 
 GitHub's [secure-use reference](https://docs.github.com/en/actions/reference/security/secure-use#using-third-party-actions) explains full-SHA references and third-party action review. A stable pin makes updates deliberate; ignoring it indefinitely can retain known vulnerabilities.
 
@@ -166,8 +160,8 @@ Draft a review for updating setup-node and the artifact pair in a monorepo. Stat
 
 ## Verification boundary
 
-Host tests exercise real policy and fixture-consumer code; metadata/actionlint checks inspect declared structure. Actual remote action execution, runner mapping, hosted caches/artifacts, GitHub authorization, provider identity, cancellation and intended OS coverage require separate evidence. No assistant check establishes learner mastery. Module 8 begins at [0043](0043-agentic-markdown-and-compiled-workflows.md), applying the same explicit-contract discipline to agentic workflows.
+Host tests exercise real policy and fixture-consumer code; metadata/actionlint checks inspect declared structure. Actual remote action execution, runner mapping, hosted caches/artifacts, GitHub authorization, provider identity, cancellation and intended OS coverage require separate evidence. Module 8 begins at [0043](0043-agentic-markdown-and-compiled-workflows.md), applying the same explicit-contract discipline to agentic workflows.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0041 · Automate releases, pull requests, and reports with pre-built actions](0041-release-pr-and-reporting-actions.md) | [Curriculum](index.md) | [0043 · Agentic Markdown sources, frontmatter, lock workflows, and execution stages](0043-agentic-markdown-and-compiled-workflows.md) |

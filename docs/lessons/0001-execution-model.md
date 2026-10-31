@@ -6,22 +6,15 @@ lesson_status: authored
 
 # 0001 · The GitHub Actions execution model
 
-!!! note "Authored reference lesson"
-    This page and its lab are ready for a guided session. Written content does not establish learner mastery. Predict each result before opening the worked explanation.
-
-## Prerequisites
-
-This is the course entry point; no earlier lesson is required. You need a local checkout and the host tools in the [local testing guide](../cheatsheet/local-testing.md#install-the-host-tools) to run the lab. Supporting syntax is explained as it appears.
-
-## What you will be able to explain
-
-Trace an event into a workflow run, identify which process executes a step, and explain why a file, an exported variable, and a named output have different lifetimes. Success means you can annotate the lab workflow and predict both its assertions without running it.
+A file can survive a step even when a shell variable does not. Predict what the next step can read before running the lab.
 
 ## Follow the execution boundary
 
-An **event** is repository activity or a manual request that can start automation. A **workflow** is the YAML definition stored in `.github/workflows/`; a **workflow run** is one execution of that definition for an event and revision. A **job** groups steps and selects a **runner**, the machine and runner software that execute them. A **step** runs a command with `run` or invokes a reusable **action** with `uses`. See GitHub's [workflow overview](https://docs.github.com/en/actions/concepts/workflows-and-actions/workflows).
+An **event** is repository activity or a manual request that can start automation. A **workflow** is the YAML definition stored in `.github/workflows/`; a **workflow run** is one execution of that definition for an event and revision.
 
-The ordinary foreground steps used here run in order. Each `run` step starts a fresh shell process. Steps in one job can share workspace files, but an `export` in one shell does not change the next shell's environment. GitHub-hosted jobs receive separate runner instances. A self-hosted runner may retain disk state, so never use leftover files as an intentional cross-job interface.
+A **job** groups steps and selects a **runner**, the machine and runner software that execute them. A **step** runs a command with `run` or invokes a reusable **action** with `uses`. See GitHub's [workflow overview](https://docs.github.com/en/actions/concepts/workflows-and-actions/workflows).
+
+The steps in this workflow run in order. Each `run` step starts a fresh shell process. Steps in one job can share workspace files, but an `export` in one shell does not change the next shell's environment. GitHub-hosted jobs receive separate runner instances. A self-hosted runner may retain disk state, so never use leftover files as an intentional cross-job interface.
 
 ```mermaid
 flowchart TD
@@ -44,7 +37,7 @@ The complete inactive recipe is `labs/0001/module1-execution.yml`. Files under `
 
 This is the first part of the recipe:
 
-```yaml title="labs/0001/module1-execution.yml — opening"
+```yaml title="labs/0001/module1-execution.yml, opening"
 name: Module 1 execution boundaries
 on:
   workflow_dispatch: # (1)!
@@ -69,7 +62,7 @@ YAML indentation groups configuration. `jobs.greet` is the job's identifier; a d
 
 Later steps demonstrate the process boundary and call the existing local action:
 
-```yaml title="labs/0001/module1-execution.yml — steps excerpt"
+```yaml title="labs/0001/module1-execution.yml, steps excerpt"
 - name: First shell
   shell: bash
   run: |
@@ -99,9 +92,11 @@ A local `uses: ./...` path is relative to the checked-out workspace. Its `action
 | TypeScript-authored action | Bundled JavaScript in that Node runtime | Type-check, test, and compare distribution bundle |
 | Composite action | A group of steps within the caller's job | Script tests, then input/output wiring |
 
-TypeScript is an authoring language here, rather than a fourth action runtime. The [metadata reference](https://docs.github.com/en/actions/reference/workflows-and-actions/metadata-syntax) defines each runtime. A composite does not create an independent job; actions it invokes can introduce their own processes or containers.
+You write TypeScript, but the action runs the compiled JavaScript in Node. The [metadata reference](https://docs.github.com/en/actions/reference/workflows-and-actions/metadata-syntax) defines each runtime. A composite does not create an independent job; actions it invokes can introduce their own processes or containers.
 
 ## Experiment
+
+Run the lab from the repository root with the [host tools](../cheatsheet/local-testing.md#install-the-host-tools).
 
 Before executing anything, write your prediction for the two shell steps. Then run this host-only exercise:
 
@@ -117,7 +112,7 @@ Ada
 PASS: the file survived; the exported variable did not cross processes
 ```
 
-This observes a real process/file boundary without pretending to run GitHub's scheduler. Inspect `labs/0001/module1-execution.yml` and identify the matching two steps, the checkout, the action, and the cross-job output. Batch workflow linting is available through `task lint:module1`.
+This tests which data survives between two processes. It does not run a GitHub workflow. Inspect `labs/0001/module1-execution.yml` and identify the matching two steps, the checkout, the action, and the cross-job output. Batch workflow linting is available through `task lint:module1`.
 
 ??? tip "Worked prediction"
     The second shell inherits the environment supplied by its parent, not modifications made inside the first shell. Both shells use the same directory, so the file is readable. A separate hosted job gets neither that file nor the shell's export automatically; its greeting arrives through an explicit output mapping.
@@ -151,6 +146,6 @@ The host lab checks process behavior. Static linting checks workflow structure a
 
 Primary sources were checked on **2026-10-30**; the [source library](../references/resources.md) records the trusted references.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [Mission and starting point](../mission.md) | [Curriculum](index.md) | [0002 · Build a local feedback loop](0002-local-feedback-loop.md) |

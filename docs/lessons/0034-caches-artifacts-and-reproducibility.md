@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0034 · Caches, artifacts, retention, poisoning risks, and reproducible inputs
 
-!!! note "Authored reference lesson"
-    The lab uses deterministic byte strings, an in-memory cache, and unsigned synthetic manifests. It contacts no cache/artifact service and publishes nothing. A checksum comparison or assistant-run test is neither authenticated provenance nor learner mastery.
-
-## Prerequisites and observable goals
-
-Read [0033 · Identity and policy](0033-oidc-environments-and-hosted-policy.md), [0007 · Task invalidation](0007-taskfile-shared-command-contract.md), and [0032 · Artifact boundaries](0032-script-injection-artifacts-and-privileged-events.md).
-
-Reproduce a stale hit caused by an undeclared builder change, repair the key, compare two clean outputs, and reject wrong-producer/tampered/expired evidence. Success means you state independently why bytes are reusable, who produced them, and what a downstream consumer may do with them.
+The lab uses fixed byte strings, an in-memory cache, and unsigned manifests. It tests content checks without contacting a cache or artifact service. Matching a checksum does not authenticate the producer.
 
 ## Give stored data a purpose
 
@@ -44,11 +37,11 @@ flowchart TD
 
 ## A key is not an access-control boundary
 
-A clever key does not prevent another authorized writer from producing malicious bytes under it. **Cache poisoning** is reuse of attacker-influenced cached content in a more trusted execution context. Restoring an executable tool, dependency tree, or build script can turn cache reuse into code execution. Store no credentials, private environment dumps, or token files in cache paths; readers may include fork PR contexts.
+Even a detailed cache key lets an authorized writer store malicious bytes under it. **Cache poisoning** is reuse of attacker-influenced cached content in a more trusted execution context. Restoring an executable tool, dependency tree, or build script can turn cache reuse into code execution. Store no credentials, private environment dumps, or token files in cache paths; readers may include fork PR contexts.
 
 The [dependency caching reference](https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching#controlling-cache-access-with-cache-mode) currently documents `cache-mode` at workflow/job level (`read`, `write`, `write-only`, `none`) and trigger-based defaults. Explicit write-capable declarations can override low-trust restrictions. Reusable callers can impose explicit limits. Review the actual trigger, scope, and declaration; assuming an event can always write, or can never write, hides the policy decision. No hosted cache-mode enforcement is tested here.
 
-For `actions/cache`, an exact hit and a restore-prefix match have different meanings. A broad fallback can provide useful package downloads, but cannot certify a compiled output or an old test report for the current source. Keep locked installation/build/tests authoritative. Missing lockfile selection must fail or be diagnosed; do not silently turn an empty hash into a shared correctness key. Consult the [cache action interface](https://github.com/actions/cache) before selecting its reviewed version and inputs.
+For `actions/cache`, an exact hit and a restore-prefix match have different meanings. A broad fallback can provide useful package downloads, but cannot certify a compiled output or an old test report for the current source. Install from the lockfile, then run the build and tests. Do not use a cache hit as their result. Missing lockfile selection must fail or be diagnosed; do not silently turn an empty hash into a shared correctness key. Consult the [cache action interface](https://github.com/actions/cache) before selecting its reviewed version and inputs.
 
 For example, a dependency key can include:
 
@@ -62,7 +55,7 @@ key: npm-v2-${{ runner.os }}-${{ runner.arch }}-node24-${{ hashFiles('package-lo
 
 A useful artifact record identifies repository, workflow, run/attempt, exact source, artifact ID, expected file set, digest, and intended consumer. Require missing files to fail when evidence is mandatory. Name artifacts per producer or matrix case to avoid accidental merging. Retain enough evidence for the approval/incident window, then expire it deliberately.
 
-The [upload action](https://github.com/actions/upload-artifact) exposes artifact IDs and digests, retention configuration, missing-file behavior, and replacement semantics. Overwriting a name creates a new artifact identity; a familiar name is not the previous artifact. The [download action](https://github.com/actions/download-artifact) supports ID selection, run/repository selection, destination control, and version-specific integrity options. Check the exact pinned version: current download documentation includes a configurable digest mismatch policy; older examples may warn instead of fail. Service transfer integrity alone does not authorize executing the producer's content.
+The [upload action](https://github.com/actions/upload-artifact) exposes artifact IDs and digests, retention configuration, missing-file behavior, and replacement semantics. Overwriting a name creates a new artifact identity; a familiar name is not the previous artifact. The [download action](https://github.com/actions/download-artifact) supports ID selection, run/repository selection, destination control, and version-specific integrity options. Check how the pinned version handles a digest mismatch. The referenced download documentation includes a configurable policy, while older examples may only warn. Service transfer integrity alone does not authorize executing the producer's content.
 
 An application-file SHA-256 is not necessarily the same value as the service's archive digest. Compare hashes over the defined bytes and format. A trusted expected digest detects changes to those bytes; a digest supplied alongside attacker-controlled bytes can be replaced too.
 
@@ -94,7 +87,7 @@ unsigned manifest: matching checksum alone cannot authenticate a producer
 
 `build()` serializes the declared source, lock, and builder into canonical JSON bytes. This intentionally small builder makes two clean builds comparable without downloading dependencies. Its broken cache keys only the lock; the fixed key hashes source, lock, builder, policy, OS, and architecture, prefixed by `lab-v2` so key semantics can change deliberately.
 
-```python title="labs/0034/reuse.py — independent checks"
+```python title="labs/0034/reuse.py, independent checks"
 if observed != expected:
     raise ValueError("producer context mismatch")
 if manifest["sha256"] != digest(data): # (1)!
@@ -112,7 +105,7 @@ Expected: four test methods pass, including six independent key-input mutations 
 
 ## Diagnose and repair the undeclared input
 
-The stale-hit experiment is a deliberate incorrect reuse decision, asserted inside a passing demo. Trace the cached result back to the declared inputs before clearing caches indiscriminately. Add the missing builder input, select a new key schema if needed, and rebuild. A wider restore prefix does not repair the validity rule; it can make the same defect easier to repeat.
+The stale-hit demo passes by detecting an incorrect reuse decision. Trace the cached result back to the declared inputs before clearing caches indiscriminately. Add the missing builder input, select a new key schema if needed, and rebuild. A wider restore prefix does not repair the validity rule; it can make the same defect easier to repeat.
 
 ??? tip "Worked repair for validation evidence"
     If a result says a report passed policy-v1, changing to policy-v2 requires reevaluation even if the report bytes remain identical. Include the policy/check implementation in the validation key or stop caching that decision. Preserve package-download caches independently when they remain useful. A required check should run after dependency restoration rather than treating a cache hit as its success result.
@@ -144,6 +137,6 @@ Retrieve:
 
 The deterministic host experiments exercise key design and supplied manifest decisions. Actual branch scopes, cache tokens/modes, hosted transfer, retention/eviction, service digests, and attestations remain unobserved. Container and `act` execution remain deferred. Continue to [0035 · Release references and distribution integrity](0035-sha-pins-semantic-releases-and-provenance.md).
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0033 · OIDC, environments, and hosted policy](0033-oidc-environments-and-hosted-policy.md) | [Curriculum](index.md) | [0035 · Pins, releases, and distribution integrity](0035-sha-pins-semantic-releases-and-provenance.md) |

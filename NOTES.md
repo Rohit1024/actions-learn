@@ -13,19 +13,19 @@
 - Start directly with GitHub Actions: events, workflows, jobs, steps, runners, expressions, inputs, outputs, and dependencies.
 - The user explicitly requested deletion of the basic Linux and general programming lessons. Keep supporting YAML, shell, language, Git, or API explanations brief and inside the relevant Actions example.
 - Progress toward independent professional orchestration: worker contracts, workflow DAGs, evidence joins, trust boundaries, release gates, diagnostics, usage budgets, and recovery.
-- Develop one lesson in each future teaching thread. Read its exact page, the mission, these notes, `docs/lessons/teaching-guide.md`, and prerequisite Actions pages; expand the existing page in place.
+- Develop one lesson in each future teaching thread. Read its exact page, the mission, these notes, and `docs/lessons/teaching-guide.md`; consult related Actions pages when needed and expand the existing page in place.
 - Pause for learner predictions, exercises, and retrieval answers. Written content and placeholders do not establish mastery.
 - Make the local loop part of action lessons: direct tests, workflow linting, container checks when needed, selected `act` execution, then targeted GitHub validation.
 - Explain process boundaries and input/output contracts with vertical Mermaid diagrams.
 - Use runnable workflows and actions, failure experiments, and retrieval questions.
-- Completed lessons must contain learner-facing content: keep prerequisites, lab instructions, exercises, and navigation; remove lesson-creation prompts, thread-start blocks, and authoring coordination notes. Keep session and authoring instructions in the teaching guide, these notes, or module handoffs.
+- Start each lesson with its current workflow or action. Omit standalone prerequisite, recall, and goal sections; explain needed context within the example. Keep lab setup beside the relevant commands, along with exercises and navigation. Remove lesson-creation prompts, thread-start blocks, and authoring coordination notes. Keep session and authoring instructions in the teaching guide, these notes, or module handoffs.
 - Keep navigation at section roots and catalog lessons within their section, with previous/catalog/next links.
 - Use primary documentation for current runtime versions and `gh aw` behavior. Treat `gh aw trial` as hosted execution with runner and possible model usage.
 
 ## Active state
 
 - **Current starting point:** lesson 0001, the GitHub Actions execution model. The earlier basic-lesson exercises are superseded by the user's course-scope change.
-- **Authored content:** 54 reference lessons in Modules 1–9: 0001–0054, with prerequisites, local labs, explained examples, exercises, and diagrams. There are no starter pages.
+- **Authored content:** 54 reference lessons in Modules 1–9: 0001–0054, with local labs, explained examples, exercises, and diagrams. There are no starter pages.
 - **Placeholders:** six detailed capstone briefs in Module 10: 0055–0060.
 - **Roadmap:** 60 consecutive GitHub Actions lessons, 0001–0060, across 10 modules with six lessons each. Follow workflow execution (1), local testing (2), Docker (3), JavaScript/TypeScript (4), composite actions/reusable workflows (5), security (6), pre-built actions (7), agentic workflows (8), create your own action (9), capstone (10). Module order, lesson numbers, filenames, lab paths, and pagination now agree. Checked items track written content, not mastery.
 - **Next suggested teaching session:** `/teach 0001`, using the authored `docs/lessons/0001-execution-model.md`. Begin with a prediction; no learner exercise evidence has been collected. The remaining authoring target is Module 10, the production capstone beginning at 0055.

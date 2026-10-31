@@ -6,18 +6,11 @@ lesson_status: authored
 
 # 0043 · Agentic Markdown sources, frontmatter, lock workflows, and execution stages
 
-!!! note "Authored reference lesson"
-    This begins Module 8's bounded repository-reporting path. The local labs use synthetic evidence and never call a model. Written lessons and assistant-run checks establish availability, not learner mastery.
-
-## Prerequisites and observable goals
-
-Continue from [0042 · Action composition and dependency updates](0042-compose-maintained-actions-and-manage-updates.md). Retrieve [0036 · Usage and diagnostics](0036-observability-concurrency-and-usage-budgets.md) and [0012 · Verification boundaries](0012-local-hosted-coverage-and-usage-budget.md). You should be able to identify a trigger, job, step, token permission, and generated artifact before adding an agent.
-
-By the end, trace a report from source configuration to a potential repository mutation, distinguish instruction edits from configuration edits, and reject an execution claim supported only by compilation. Success is an annotated source inventory plus the assertions in `labs/0043/exercise.py`. All commands run from the repository root with the existing [host tools](../cheatsheet/local-testing.md); no installation is required for the deterministic lab.
+Start Module 8 by tracing a repository report through source, compilation, and execution. The local labs use synthetic evidence and make no model calls.
 
 ## Add an agent at a defined boundary
 
-A conventional Actions job runs commands selected by its author. An **agentic workflow** gives a configured coding agent a task and capabilities; the agent chooses steps within those constraints. Deterministic checks should still compute facts such as bundle drift or test status directly. An agent can summarize those facts and explain findings, but its prose does not replace the checks.
+A conventional Actions job runs commands selected by its author. An **agentic workflow** gives a configured coding agent a task and a set of allowed tools. The agent chooses steps within those limits. Deterministic checks should still compute facts such as bundle drift or test status directly. An agent can summarize those facts and explain findings, but its prose does not replace the checks.
 
 GitHub's [tutorial](https://docs.github.com/en/actions/tutorials/develop-agentic-workflows-in-github-actions) describes Markdown sources compiled by the `gh aw` extension into Actions `.lock.yml` files. A **source** contains YAML frontmatter followed by instructions. A **lock workflow** is generated executable configuration consumed by Actions. The filename extension does not mean every runtime dependency, model response, or repository byte is frozen.
 
@@ -38,7 +31,7 @@ The arrows below the lock require runtime observations. Even runtime success is 
 
 `labs/0043/repo-report.md` copies and narrows the shared repository-report example. The original `examples/agentic/repo-report.md` stays unchanged. This lab source remains outside the active `.github/workflows/` directory.
 
-```yaml title="labs/0043/repo-report.md — frontmatter excerpt"
+```yaml title="labs/0043/repo-report.md, frontmatter excerpt"
 on:
   workflow_dispatch: # (1)!
 permissions:
@@ -65,7 +58,7 @@ max-turns: 4
 
 The [frontmatter reference](https://github.github.com/gh-aw/reference/frontmatter/) documents these fields. The five-minute setting bounds the agentic execution step in the current implementation; generated jobs have separate timeouts. Do not call five minutes the complete run budget. Likewise, four turns does not promise four billable API requests.
 
-The body asks the agent to inspect README, Taskfile, examples, and test scripts, cite actual paths, distinguish failures from suggestions, and name unavailable evidence. Its instruction “do not claim tests passed unless a tool result provides evidence” matters here: this source disables shell commands, so reading a test script cannot establish that it ran.
+The body asks the agent to inspect README, Taskfile, examples, and test scripts, cite actual paths, distinguish failures from suggestions, and name unavailable evidence. The body says "do not claim tests passed unless a tool result provides evidence". This source disables shell commands. The agent can read a test script, but it cannot claim to have run it.
 
 !!! tip "Predict"
     You replace the report's heading without changing frontmatter. You then change `max: 1` to `max: 2`. Which edit changes generated execution policy? Does either prove the report is accurate?
@@ -74,6 +67,8 @@ The body asks the agent to inspect README, Taskfile, examples, and test scripts,
     The heading changes instructions; the output limit changes configuration and requires regeneration/review of the lock. Neither verifies the report. The current [Markdown contract](https://github.github.com/gh-aw/reference/markdown/) loads instructions at runtime, so instruction-only changes can affect behavior without a new lock. Include both source revision and generated workflow in review evidence.
 
 ## Lab: inspect real bytes without inventing execution
+
+Run commands from the repository root with the existing [host tools](../cheatsheet/local-testing.md).
 
 Run the inventory with the already-installed Python environment and PyYAML:
 
@@ -108,7 +103,7 @@ The script mutates strings in memory, checks changed policy, reproduces malforme
 
 ## Diagnose a false success claim
 
-A report says, “The source passed inspection, therefore the agent inspected the repository and all tests passed.” Locate the unsupported transition before changing YAML.
+A report says, "The source passed inspection, therefore the agent inspected the repository and all tests passed." Locate the unsupported transition before changing YAML.
 
 ??? tip "Diagnosis and repair"
     Inspection observed configuration bytes. It did not observe an engine reading files or a test process returning success. Replace the claim with the inventory's exact scope. Preserve `runtime unverified` until relevant runtime evidence exists, and `tests not executed` until a test actually ran at the target revision. Adding permissions or extending a prompt cannot turn static evidence into execution.
@@ -127,12 +122,12 @@ Explain from memory:
 4. What would a successful strict compile leave unknown?
 
 ??? tip "Worked transfer and retrieval"
-    A direct metadata/adapter check should produce revision-specific evidence. The report can read it and the changed metadata, with at most one staged proposal. Actions consumes the lock; the configured engine receives instructions. Runtime body loading explains the separate review requirement. Command status and output support execution claims. Compilation leaves authentication, runtime tool access, model quality, and handler behavior unobserved.
+    A direct metadata/adapter check should produce revision-specific evidence. The report can read it and the changed metadata, with at most one staged proposal. Actions consumes the lock; the configured engine receives instructions. Review the Markdown body too, because the engine loads its instructions at runtime. Command status and output support execution claims. Compilation leaves authentication, runtime tool access, model quality, and handler behavior unobserved.
 
 ## Verification boundary
 
 The installed GitHub CLI was **2.96.0** on **2026-10-30**. `gh aw version` and `gh aw compile --help` reported the extension as available to install, rather than returning its version/help: **gh-aw is absent**. No compiler success is claimed. [0045](0045-agentic-local-compilation-and-generated-yaml.md) supplies a guarded compile path and a labeled inspection schematic. No credentials, agent execution, or active workflow registration are needed here.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0042 · Compose an action-based pipeline and maintain its dependencies](0042-compose-maintained-actions-and-manage-updates.md) | [Curriculum](index.md) | [0044 · Agent engines, authentication, tools, and network boundaries](0044-agentic-engines-tools-and-authentication.md) |

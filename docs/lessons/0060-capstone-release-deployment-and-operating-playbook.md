@@ -11,20 +11,9 @@ lesson_status: placeholder
 
 **Level:** Professional practice.
 
-## Prerequisites
-
-- [0059 · Exercise local checks and the hosted integration gate](0059-capstone-local-and-hosted-integration-gates.md)
-- [0035 · Commit pins, semantic releases, major tags, and distribution integrity](0035-sha-pins-semantic-releases-and-provenance.md)
-- [0036 · Logs, annotations, summaries, concurrency, and usage budgets](0036-observability-concurrency-and-usage-budgets.md)
-
-## What you will learn to do
-
-- Prepare a reviewable versioned release with documented compatibility and provenance.
-- Explain and rehearse a bounded failure-response and recovery plan.
-
 ## Explain the Actions behavior
 
-Start from the prerequisite workflow or action behavior and introduce these concepts with focused examples:
+Use a small workflow or action to explain these concepts:
 
 1. A release publishes reviewed behavior and artifacts through deliberate consumer references.
 2. Deployment and rollback are operations with side effects, identities, and recovery constraints.

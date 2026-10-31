@@ -6,18 +6,11 @@ lesson_status: authored
 
 # 0019 · JavaScript action metadata, the Node runtime, and the Actions Toolkit
 
-!!! note "Authored reference lesson"
-    This lesson and `labs/0019/` are developed for a guided session. Predict before running the examples or opening solutions. Written material and author-run tests do not establish learner mastery.
-
-## Prerequisites and observable goal
-
-Read [0018 · Container release tradeoffs](0018-container-security-and-release-tradeoffs.md) and [0005 · Output contracts](0005-environment-files-and-output-contracts.md). Recall how a runner reads a named result from `GITHUB_OUTPUT`. If that is unclear, trace the greeting example in 0005 first.
-
-Build and test a Node action that requires a recipient, returns a validated greeting, and fails without publishing a greeting when the input is invalid. Success means you can trace `with.name` through metadata, environment input, application code, output bytes, and the caller's expression.
+Follow the Node runtime selected by metadata into the adapter in `labs/0019/`. Predict which values reach the function and which reach the runner.
 
 ## From a workflow step to a Node process
 
-A **JavaScript action** is an action whose metadata tells the runner to execute a JavaScript file in a supported Node runtime. It runs directly on the runner. The lab has no container image, package installation step, or shell in its implementation. That reduces packaging requirements for this particular task; a Node action can still acquire external dependencies through its own code.
+A **JavaScript action** is an action whose metadata tells the runner to execute a JavaScript file in a supported Node runtime. It runs directly on the runner. The lab has no container image, package installation step, or shell in its implementation. This greeting needs only its JavaScript files. A Node action that downloads tools or imports packages has additional dependencies to review.
 
 The complete `labs/0019/action.yml` declares this interface:
 
@@ -107,7 +100,7 @@ The **Actions Toolkit** is a set of maintained packages for action authors. `@ac
 
 The installed workspace has neither package. The following is a **reference-only replacement adapter**, not an installed or executed lab file:
 
-```javascript title="Toolkit reference excerpt — requires a packaged @actions/core dependency"
+```javascript title="Toolkit reference excerpt, requires a packaged @actions/core dependency"
 const core = require('@actions/core');
 const { greet } = require('./greet.cjs');
 
@@ -163,7 +156,7 @@ node labs/0019/demo.cjs --missing
 The broken child exits **0** and writes `greeting=Hello, !`. The repaired child exits **1**, reports `name must be a nonempty, single-line string`, and leaves the output file empty.
 
 ??? tip "Worked diagnosis and repair"
-    The broken process never calls validation. Metadata cannot supply the missing check. Follow `INPUT_NAME` into `broken.cjs`: it formats an empty string immediately. `index.cjs` repairs the boundary by calling `greet` before any output write. In an actual runner invocation, `required: true` still does not provide automatic runtime rejection. The direct exercise isolates the missing implementation check without pretending to execute metadata.
+    The broken process never calls validation. Metadata cannot supply the missing check. Follow `INPUT_NAME` into `broken.cjs`: it formats an empty string immediately. `index.cjs` repairs the boundary by calling `greet` before any output write. In an actual runner invocation, `required: true` still does not provide automatic runtime rejection. The direct exercise tests the missing validation. It does not execute action metadata.
 
 Run the full focused check:
 
@@ -180,7 +173,9 @@ Expected: **8 tests pass**. Cases include append behavior, missing and blank inp
 3. Transfer: design a `release-channel` input restricted to `stable` or `preview`. Identify what metadata can document and which code must reject an unknown value.
 
 ??? tip "Worked exercise"
-    The existing append test uses `  Ada  ` and expects `Hello, Ada!`. The literal-data test already includes shell-like text: Node passes it through the string function and never invokes a shell. For a channel input, document the accepted strings, read `process.env['INPUT_RELEASE-CHANNEL']` or use `core.getInput('release-channel')`, validate membership, and fail before publishing a channel output. Hyphens in input IDs remain hyphens in environment names; bracket notation avoids treating the name as JavaScript subtraction.
+    The existing append test uses `  Ada  ` and expects `Hello, Ada!`. The literal-data test already includes text that resembles a shell command. Node passes it to the string function without invoking a shell.
+
+    For a channel input, document the accepted strings. Read `process.env['INPUT_RELEASE-CHANNEL']` or use `core.getInput('release-channel')`, then reject unknown values before writing an output. Hyphens in input IDs remain hyphens in environment names; bracket notation avoids treating the name as JavaScript subtraction.
 
 Explain without rereading:
 
@@ -198,6 +193,6 @@ The host suite exercises Node 24 on the current machine, real environment reads,
 
 Continue to [0020](0020-pure-functions-and-node-tests.md), separating application logic from the process adapter. The Module 4 handoff records source checks dated **2026-10-30**; the [curated source library](../references/resources.md) remains the entry point for references.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0018 · Container scanning, dependency pinning, cold starts, and release tradeoffs](0018-container-security-and-release-tradeoffs.md) | [Curriculum](index.md) | [0020 · Pure functions, process adapters, and Node unit tests](0020-pure-functions-and-node-tests.md) |

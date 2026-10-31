@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0029 · Reusable workflows, typed inputs, explicit secrets, and permissions
 
-!!! note "Reference lesson"
-    All YAML in `labs/0029/` is inactive. The runnable worker uses synthetic fixtures and the public constant `fixture-only-not-a-credential`; it has no API access or credential authority. Passing local examples does not demonstrate learner mastery or GitHub authorization.
-
-## Prerequisites and observable goal
-
-Read [0028 · Composite test boundaries](0028-composite-script-tests-and-workflow-wiring.md) and retrieve job dependencies and result propagation from [0006](0006-matrices-dependencies-and-cancellation.md). Recall [0005](0005-environment-files-and-output-contracts.md): workflow outputs require a step-to-job-to-workflow mapping chain.
-
-Define a reusable job with a string, boolean, number, named synthetic secret, and public summary. Success means you can make a valid caller, diagnose a missing input or secret, distinguish type checking from domain validation, and explain why a callee cannot grant itself a more privileged token.
+The YAML in `labs/0029/` is inactive. Its runnable worker uses synthetic fixtures and the public constant `fixture-only-not-a-credential`. Local tests check the worker contract without exercising GitHub authorization.
 
 ## Move reuse to the right boundary
 
@@ -47,7 +40,7 @@ flowchart TD
 
 The callee's actual interface includes:
 
-```yaml title="labs/0029/module5-reusable.yml — workflow_call excerpt"
+```yaml title="labs/0029/module5-reusable.yml, workflow_call excerpt"
 on:
   workflow_call:
     inputs:
@@ -76,13 +69,13 @@ on:
 
 `workflow_call` input types are `string`, `boolean`, and `number`. Dispatch-only interface types such as `choice` are not a reusable-workflow input type. The caller should pass a boolean `true`, not route it through arbitrary flag text. When inputs become environment variables for a process, the environment representation is text again; the adapter explicitly accepts only `true` or `false` for `STRICT`.
 
-Type `number` alone does not mean positive integer, maximum three, or an acceptable usage budget. The worker enforces the integer range **1–3**, validates the label, and rejects more fixture rows than the configured bound. With the two checked-in rows, `max-items: 1` is a valid number but an invalid processing bound. In strict mode any failed fixture row rejects the operation; tolerant mode reports its count without making that row pass.
+The `number` type allows values outside this action's accepted range. It does not enforce an integer, a maximum of three, or a usage budget. The worker enforces the integer range **1–3**, validates the label, and rejects more fixture rows than the configured bound. With the two checked-in rows, `max-items: 1` is a valid number but an invalid processing bound. In strict mode any failed fixture row rejects the operation; tolerant mode reports its count without making that row pass.
 
 GitHub's [workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onworkflow_callinputs) defines types. Its [reuse guide](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows) explains declarations and call placement. Domain semantics still belong to your implementation.
 
 ## Make the caller concrete
 
-```yaml title="labs/0029/module5-caller.yml — call job"
+```yaml title="labs/0029/module5-caller.yml, call job"
 call:
   uses: ./.github/workflows/module5-reusable.yml # (1)!
   permissions:
@@ -117,7 +110,7 @@ This lab explicitly maps one synthetic secret. Avoid `secrets: inherit` when a n
 
 A required secret declaration checks that the caller passes the named secret; it does not guarantee the resolved value is nonempty, valid, or authorized. The worker therefore validates the value it receives. Real environment secrets add environment-specific selection and protection rules; the job that sets an environment participates in that policy. No environment is configured here.
 
-For token policy, treat the caller's grant as the ceiling for the call chain. A callee can retain or reduce available permissions; it cannot silently elevate them. This caller and callee both declare only `contents: read`. A callee requiring `issues: write` cannot manufacture that grant when the caller denies it. Reducing this fixture caller to `permissions: {}` can also make a real private-repository checkout fail even though the host worker still passes.
+For token policy, treat the caller's grant as the ceiling for the call chain. A callee can keep or reduce the available permissions. It cannot grant itself more. This caller and callee both declare only `contents: read`. A callee requiring `issues: write` cannot manufacture that grant when the caller denies it. Reducing this fixture caller to `permissions: {}` can also make a real private-repository checkout fail even though the host worker still passes.
 
 See GitHub's [reusable configuration reference](https://docs.github.com/en/actions/reference/workflows-and-actions/reusing-workflow-configurations#supported-keywords-for-jobs-that-call-a-reusable-workflow) for caller keywords and permission rules. Repository access settings, token effectiveness, secret resolution, and checkout behavior remain GitHub contracts; local policy diagrams and fake tokens do not establish them.
 
@@ -176,7 +169,7 @@ Predict each diagnostic before running:
 | `wrong-boolean` | Exit 0: nonboolean text is accepted by this static checker |
 | `wrong-number` | Exit 1: `two` cannot be assigned to the number input |
 
-The wrapper itself exits **0** when these observed expectations hold. For `wrong-boolean`, it prints `STATIC GAP` and explicitly makes no execution claim. A clean lint result does not overrule the documented boolean contract. The separate process test rejects invalid `STRICT` text; actual GitHub handling of a malformed call still needs platform evidence. These cases illustrate why static type analysis and domain/process checks complement one another.
+The wrapper itself exits **0** when these observed expectations hold. For `wrong-boolean`, it prints `STATIC GAP` and explicitly makes no execution claim. A clean lint result does not overrule the documented boolean contract. The separate process test rejects invalid `STRICT` text; actual GitHub handling of a malformed call still needs platform evidence. Use static analysis to check the call syntax and process tests to check the worker's validation rules.
 
 ??? tip "Diagnose and repair the interface failures"
     Add `label: preview` and the explicitly named fixture secret mapping to repair the missing-field cases. Replace `max-items: two` with numeric `2`. Replace invalid flag text with boolean `true` or `false`, even though this pinned linter misses that particular defect. Rerun the positive staging check and the worker tests. Do not use broader secret inheritance or more token scopes to repair a misspelled or absent input.
@@ -205,6 +198,6 @@ Host tests and temporary static staging provide useful process/interface evidenc
 
 Continue to [0030](0030-compose-step-and-job-orchestration.md) to fan out two reusable calls and join their explicit evidence without relying on one last-writer output.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0028 · Test composite scripts and then their workflow wiring](0028-composite-script-tests-and-workflow-wiring.md) | [Curriculum](index.md) | [0030 · Compose setup/build/test steps and reusable job workflows](0030-compose-step-and-job-orchestration.md) |

@@ -8,12 +8,6 @@ lesson_status: authored
 
 Replace repeated changed-file parsing with named action outputs, then keep the job-selection policy visible. A path filter decides what changed; your workflow decides which work that evidence requires.
 
-## Prerequisites and observable goal
-
-Read [0037 · Action selection](0037-selecting-popular-prebuilt-actions.md), [0005 · Output contracts](0005-environment-files-and-output-contracts.md), and [0004 · Expressions and conditions](0004-contexts-expressions-and-conditions.md). Recall the distinction between the Boolean `false` and the nonempty string `'false'`.
-
-You will trace a named filter through a step output, a job output, and a dependent job condition. Success means you can predict code-only, docs-only, mixed, unrelated, and manual selections, diagnose a misspelled mapping, and explain which changes still require a real PR run.
-
 !!! note "Lab scope"
     Run commands from the repository root with the existing `.venv`. The fixture consumer reads actual recipe mappings but receives synthetic action outputs. It does not run paths-filter, match globs, query a PR, or emulate GitHub expressions.
 
@@ -66,7 +60,7 @@ steps:
 1. This permission belongs to the discovery job. Dependent jobs need only the permissions required for their own work. Fork policy and repository settings can affect effective credentials.
 2. `id: filter` names the step. The job's output mapping makes its result available through `needs.changes.outputs.code`. Identical names do not make this mapping automatic; see [passing job outputs](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/pass-job-outputs).
 
-Under the default predicate, a filter matches when at least one changed file matches one of its patterns. Paths-filter returns text `'true'` or `'false'` for each filter, plus counts and optional file lists. Its metadata lists the static `changes` output; named outputs are generated from the supplied filter names. A metadata-only checker cannot infer all such dynamic names.
+Under the default predicate, a filter matches when at least one changed file matches one of its patterns. Paths-filter returns text `'true'` or `'false'` for each filter, plus counts and optional file lists. Its metadata lists the static `changes` output; the action generates named outputs from the supplied filter names. Reading metadata alone cannot reveal every output name.
 
 Workflow files appear in both groups because changing orchestration can affect both branches. A production repository should include all inputs that affect its builds, including lockfiles and tool configuration. Copying this intentionally small filter list without that inventory can silently omit work.
 
@@ -161,12 +155,12 @@ Design a third `api` filter for a monorepo. Include its source directory, lockfi
 4. Which check can prove that the real matcher handled a renamed or deleted file as intended?
 
 ??? tip "Worked explanation"
-    PR API discovery needs its token/read contract; Git discovery needs checkout/history. Map the new filter explicitly and compare its output with `'true'`. Test fixture consumers locally, then use a reviewed bounded PR run to observe actual file discovery, matching, rename/deletion behavior, API permission and job selection. A synthetic list cannot establish those upstream behaviors.
+    PR API discovery needs a token with the required read permission. Git discovery needs a checkout with enough history. Map the new filter explicitly and compare its output with `'true'`. Test fixture consumers locally, then use a reviewed bounded PR run to observe actual file discovery, matching, rename/deletion behavior, API permission and job selection. A synthetic list cannot establish those upstream behaviors.
 
 ## Verification boundary
 
-The local policy and recipe syntax are testable without a daemon. Actual API calls, fork token behavior, Git-history discovery, picomatch behavior in this action, runner output mapping and hosted job selection remain integration boundaries. No remote action is executed by the lab. Written explanations and supplied fixtures do not demonstrate learner mastery.
+The local policy and recipe syntax are testable without a daemon. Actual API calls, fork token behavior, Git-history discovery, picomatch behavior in this action, runner output mapping and hosted job selection remain integration boundaries. No remote action is executed by the lab.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0037 · Choose popular pre-built actions and verify their publishers](0037-selecting-popular-prebuilt-actions.md) | [Curriculum](index.md) | [0039 · Use setup, cache, and artifact actions instead of bootstrap scripts](0039-setup-cache-and-artifact-actions.md) |

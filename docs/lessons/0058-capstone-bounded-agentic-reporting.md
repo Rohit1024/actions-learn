@@ -11,20 +11,9 @@ lesson_status: placeholder
 
 **Level:** Professional practice.
 
-## Prerequisites
-
-- [0057 · Compose shared setup and reusable workflow orchestration](0057-capstone-reusable-workflow-fanout-and-fanin.md)
-- [0046 · Safe outputs, staging, write limits, and human review](0046-agentic-safe-outputs-and-human-review.md)
-- [0047 · Agentic fixtures, adversarial repository text, and quality evaluation](0047-agentic-fixtures-adversarial-input-and-evaluation.md)
-
-## What you will learn to do
-
-- Connect deterministic worker evidence to a constrained agentic report.
-- Evaluate report usefulness and honesty without granting unnecessary release authority.
-
 ## Explain the Actions behavior
 
-Start from the prerequisite workflow or action behavior and introduce these concepts with focused examples:
+Use a small workflow or action to explain these concepts:
 
 1. Agentic interpretation can enrich a deterministic report while release decisions remain tied to verifiable evidence.
 2. The report should separate observed results, inferred suggestions, and unavailable checks.

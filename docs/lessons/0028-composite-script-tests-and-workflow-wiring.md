@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0028 · Test composite scripts and then their workflow wiring
 
-!!! note "Reference lesson"
-    `labs/0028/` contains identical real scripts behind good and deliberately broken metadata. Both script checks can pass. Predict the caller result before reading the solution; passing examples alone do not establish learner mastery.
-
-## Prerequisites and observable goal
-
-Read [0027 · Safe input transport](0027-untrusted-input-and-shell-quoting.md), [0009 · Process contracts](0009-unit-tests-fixtures-and-output-files.md), and [0011 · Selected act smoke checks](0011-act-targeted-workflow-smoke-tests.md).
-
-Design complementary direct-process and caller-visible tests. Success means you can show which check detects a validation error, which observes metadata execution, and why an unavailable engine leaves a runtime claim open even when the other checks pass.
+The two actions in `labs/0028/` have identical scripts but different metadata. Both script tests can pass. Predict what the caller receives from each action.
 
 ## Choose a test for a concrete claim
 
@@ -63,7 +56,7 @@ action: PASS direct adapter; public mapping NOT executed
 broken-action: PASS direct adapter; public mapping NOT executed
 ```
 
-The harness supplies `REPORT_NAME=Ada`, invokes each real Bash script, and compares a real temporary output file with `summary=Ready, Ada!` plus LF. It deliberately makes no assertion about the public action output, because it did not execute that boundary.
+The test script sets `REPORT_NAME=Ada`, invokes each Bash script, and checks the temporary output file for `summary=Ready, Ada!` plus LF. It does not invoke the composite, so it cannot assert the public action output.
 
 The validation and file-append cases from 0025 remain useful:
 
@@ -83,7 +76,7 @@ Expected: **3 unittest methods pass**, including invalid input and a missing out
 
 The good metadata maps the script result:
 
-```yaml title="labs/0028/action/action.yml — output excerpt"
+```yaml title="labs/0028/action/action.yml, output excerpt"
 outputs:
   report:
     description: Ready report for the caller.
@@ -92,7 +85,7 @@ outputs:
 
 The negative package deliberately exports an empty value:
 
-```yaml title="labs/0028/broken-action/action.yml — intentional runtime defect"
+```yaml title="labs/0028/broken-action/action.yml, intentional runtime defect"
 outputs:
   report:
     description: Intentional defect; caller receives no summary.
@@ -101,7 +94,7 @@ outputs:
 
 1. This is a valid scalar and a legal empty public output. It is wrong for this action's promised behavior. Keeping the fixture syntactically valid isolates a runtime contract failure from a YAML error.
 
-Changing a private step ID without updating its mapping is another wiring defect, but some static checks may catch a nonexistent ID. This fixture makes the test-layer distinction unambiguous: the implementation succeeds, while the public interface returns the wrong result.
+Changing a private step ID without updating its mapping is another wiring defect, but some static checks may catch a nonexistent ID. The script succeeds, but the composite returns the wrong public output. The fixture shows why testing the script alone misses the defect.
 
 ## Assert what the caller actually receives
 
@@ -188,7 +181,7 @@ When the consumer receives empty text, trace backward:
 A composite outputs both `count` and `report-path`. Direct tests verify the count and write the report file, but a later caller step sees an empty path. Design the smallest checks that distinguish an absent file, a bad public mapping, and a caller reading the wrong step ID.
 
 ??? tip "Worked transfer"
-    Directly assert both the output record and actual file bytes in a temporary workspace. Add a selected workflow that invokes the composite with a controlled fixture, checks its public `report-path`, and then opens that path. Trace the caller ID before changing the package. A correct local file does not prove the public mapping; a public path string does not prove the file exists. If another job needs the report, use an artifact rather than assuming the same filesystem.
+    Directly assert both the output record and actual file bytes in a temporary workspace. Add a selected workflow that invokes the composite with a controlled fixture, checks its public `report-path`, and then opens that path. Trace the caller ID before changing the package. Check the mapping and the file separately. A script can create the right file while the composite returns the wrong path, or return a path without creating a file. If another job needs the report, use an artifact rather than assuming the same filesystem.
 
 Retrieve without looking:
 
@@ -199,7 +192,7 @@ Retrieve without looking:
 5. Why can green act output not establish permission enforcement?
 
 ??? tip "Retrieval check"
-    The scripts are identical and metadata is outside those invocations. Empty output is allowed syntax but violates this interface's expected result. Listing establishes selection, not execution. The caller must assert its public output after the composite completes. Act documents incomplete platform behavior, including ignored job permissions and cancellation differences.
+    The scripts are identical and metadata is outside those invocations. An empty output can pass a syntax check while violating the promised result. Listing establishes selection, not execution. The caller must assert its public output after the composite completes. Act documents incomplete platform behavior, including ignored job permissions and cancellation differences.
 
 ## Remaining verification limits
 
@@ -207,6 +200,6 @@ The [act support limitations](https://nektosact.com/not_supported.html) leave re
 
 Continue to [0029](0029-reusable-workflows-and-permission-interfaces.md): moving reuse to a job boundary adds typed inputs, secrets, token policy, and another output mapping.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0027 · Transport inputs safely through environment variables and quoted arguments](0027-untrusted-input-and-shell-quoting.md) | [Curriculum](index.md) | [0029 · Reusable workflows, typed inputs, explicit secrets, and permissions](0029-reusable-workflows-and-permission-interfaces.md) |

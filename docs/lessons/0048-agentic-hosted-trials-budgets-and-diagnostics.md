@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0048 · Hosted trials, model variability, usage budgets, and diagnostics
 
-!!! note "Authored reference lesson"
-    This lesson produces an unexecuted plan and classifies synthetic failures. No trial, workflow dispatch, model request, repository creation, credential change, or publication is performed.
-
-## Prerequisites and observable goals
-
-Read [0047 · Fixture evaluation](0047-agentic-fixtures-adversarial-input-and-evaluation.md), [0045 · Local compilation](0045-agentic-local-compilation-and-generated-yaml.md), and [0036 · Diagnostics and budgets](0036-observability-concurrency-and-usage-budgets.md). Retrieve [0012 · Coverage limits](0012-local-hosted-coverage-and-usage-budget.md): an internally consistent plan is different from passing execution evidence.
-
-Specify a bounded experiment, calculate its aggregate execution allowance, keep runner and inference usage separate, and classify a failure before considering a rerun. Success means the saved plan passes consistency checks while failing readiness checks honestly, and the diagnostic exercise rejects blind retries. Run all commands from the repository root with installed host tools.
+Prepare a trial plan and classify synthetic failures. The lab does not execute a trial, dispatch a workflow, call a model, or change repository credentials.
 
 ## A trial changes where work runs
 
@@ -41,7 +34,7 @@ flowchart TD
 
 The planning budget allows two runs and separately models five job deadlines:
 
-```json title="plan.json — deadline and budget excerpt"
+```json title="plan.json, deadline and budget excerpt"
 {
   "planned_job_deadlines_minutes": {
     "activation": 2,
@@ -63,9 +56,9 @@ The planning budget allows two runs and separately models five job deadlines:
 }
 ```
 
-These job labels/deadlines are proposed planning inputs. They were not extracted from compiler output and do not configure a runner. The sum is 16 job-minutes per run; two runs give 32 job-minutes. Parallel execution can reduce wall time while consuming aggregate job time. Queueing, setup, billing granularity, runner rates, retries, and additional generated jobs require separate accounting; this arithmetic is not a price quote.
+These job labels and timeouts are planning values. They do not come from compiler output or configure a runner. The sum is 16 job-minutes per run; two runs give 32 job-minutes. Parallel execution can reduce wall time while consuming aggregate job time. Queueing, setup, billing granularity, runner rates, retries, and additional generated jobs require separate accounting; this arithmetic is not a price quote.
 
-The source's five-minute agent-step timeout and `max-turns: 4` do not automatically enforce this complete budget. The [cost-management reference](https://github.github.com/gh-aw/reference/cost-management/) documents turn and usage controls, which must be checked against engine behavior. A turn is not a guaranteed unit of billable requests, tokens, or money. The proposed eight-request allowance needs observable usage and an actual enforcement route before readiness can be claimed. The saved plan explicitly marks that route unverified.
+The source's five-minute agent-step timeout and `max-turns: 4` do not automatically enforce this complete budget. The [cost-management reference](https://github.github.com/gh-aw/reference/cost-management/) documents turn and usage controls, which must be checked against engine behavior. A turn is not a guaranteed unit of billable requests, tokens, or money. Before running the plan, identify how to measure requests and enforce the eight-request limit. The saved plan marks that enforcement as unverified.
 
 !!! tip "Predict"
     The plan audit exits 0 while all readiness booleans are false. Did it authorize a run? Would reducing wall time with parallel jobs also halve aggregate runner use?
@@ -74,6 +67,8 @@ The source's five-minute agent-step timeout and `max-turns: 4` do not automatica
     Exit 0 means the declarations are consistent. The program has no dispatch capability and does not establish readiness or authorization. Parallel execution overlaps job durations; summing job time still counts each job. The planned ceiling must include the actual generated graph and retry policy before a real experiment.
 
 ## Lab: audit the unexecuted plan
+
+Run commands from the repository root with the installed host tools.
 
 ```bash
 .venv/bin/python labs/0048/plan.py labs/0048/plan.json
@@ -140,7 +135,7 @@ All failure fixtures are evaluated locally. The synthetic auth-denied signal doe
 The [debugging guide](https://github.github.com/gh-aw/troubleshooting/debugging/) describes runtime diagnostics. A green engine step does not imply the output handler completed. A red workflow does not prove nothing happened. Preserve stage-level status and inspect any partial effects before retrying; automatic reruns can duplicate operations or spend usage without addressing the cause.
 
 ??? tip "Diagnosis and repair"
-    For repeated authentication denial, stop rather than buying more model attempts. Review the configured identity through an authorized credential-management process without printing values. For a missing read tool, report the limit or redesign the required observation. For poor groundedness after successful tool access, add the failure to the rubric and revise one prompt hypothesis. For handler rejection, repair the proposal or intended policy instead of widening the agent's write credentials. None of these repairs is performed by this synthetic classifier.
+    For repeated authentication denial, stop rather than buying more model attempts. Review the configured identity through an authorized credential-management process without printing values. For a missing read tool, report the limit or redesign the required observation. If the agent reads the files but makes unsupported claims, add that failure to the rubric. Change one prompt instruction and test whether it fixes the claim. For handler rejection, repair the proposal or intended policy instead of widening the agent's write credentials. None of these repairs is performed by this synthetic classifier.
 
 ## Design the next smallest hosted experiment
 
@@ -166,6 +161,6 @@ You see a cancelled run with a valid report artifact but unknown handler status.
 
 Primary CLI, usage, and diagnostic references were checked on **2026-10-30**. Local checks establish plan consistency and classifier behavior. No live trial, repository provisioning, model evaluation, hosted cancellation, service authorization, billing, or output publication was verified. The absent compiler and unavailable container socket remain explicit local gaps. Module 9 begins with [0049 · Reuse, compose, or create](0049-reuse-compose-or-create-an-action.md).
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0047 · Agentic fixtures, adversarial repository text, and quality evaluation](0047-agentic-fixtures-adversarial-input-and-evaluation.md) | [Curriculum](index.md) | [0049 · Decide when to reuse, compose, or create your own action](0049-reuse-compose-or-create-an-action.md) |

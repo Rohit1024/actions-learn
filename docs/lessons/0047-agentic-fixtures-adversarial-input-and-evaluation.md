@@ -6,20 +6,13 @@ lesson_status: authored
 
 # 0047 · Agentic fixtures, adversarial repository text, and quality evaluation
 
-!!! note "Authored reference lesson"
-    The evaluator scores structured, hand-written mock reports. No live engine produced them. A passing rubric test establishes evaluator behavior on this corpus, not model quality or resistance to prompt injection.
-
-## Prerequisites and observable goals
-
-Read [0046 · Output policy and review](0046-agentic-safe-outputs-and-human-review.md). Recall [0005 · Output mappings](0005-environment-files-and-output-contracts.md), [0021 · Source/distribution drift](0021-typescript-bundling-and-dist-drift.md), and [0032 · Untrusted data](0032-script-injection-artifacts-and-privileged-events.md).
-
-Evaluate reports for accurate paths, supporting evidence, honest test claims, required limitations, and bounded behavior. Reproduce eight false-report defects, accept an equivalent paraphrase, and explain which claims need a real engine evaluation. All commands run from the repository root; no model, token, or network access is needed.
+Score hand-written mock reports against a fixed rubric. Passing these tests shows how the evaluator handles this corpus. It does not measure a live model or its resistance to prompt injection.
 
 ## Define quality before collecting fluent output
 
-A report can be well written and wrong. **Grounding** means its findings are supported by the supplied evidence at the evaluated revision. A path citation helps locate evidence, but a real path alone does not prove the conclusion. “The test file exists” and “the tests passed” are different claims.
+A report can be well written and wrong. **Grounding** means its findings are supported by the supplied evidence at the evaluated revision. A path citation helps locate evidence, but a real path alone does not prove the conclusion. "The test file exists" and "the tests passed" are different claims.
 
-A **fixture corpus** is a versioned set of inputs with reviewed expectations. A **rubric** states what counts as acceptable behavior. Here the rubric checks evidence and policy rather than exact prose. A healthy case matters as much as a broken one: an evaluator that rewards any plausible defect would encourage false positives.
+A **fixture corpus** is a versioned set of inputs with reviewed expectations. A **rubric** states what counts as acceptable behavior. Here the rubric checks evidence and policy rather than exact prose. Include healthy cases too. An evaluator that rewards any plausible defect encourages false positives.
 
 The [security architecture](https://github.github.com/gh-aw/introduction/architecture/) treats repository text and other external content as potential attack input. The [threat-detection reference](https://github.github.com/gh-aw/reference/threat-detection/) describes an additional runtime defense. Neither a prompt instruction nor one clean report proves that all future hostile text will be ignored. Keep capability enforcement, report assessment, and model-behavior evaluation separate.
 
@@ -64,7 +57,9 @@ The quote is a locator within a complete file, not independent proof of absence.
 
 ## Predict and run the evaluator
 
-Will replacing the finding's explanation with equivalent wording pass? Will attaching a nonexistent “npm-test passed” observation pass?
+Run commands from the repository root. This lab needs no model, token, or network access.
+
+Will replacing the finding's explanation with equivalent wording pass? Will attaching a nonexistent "npm-test passed" observation pass?
 
 ```bash
 .venv/bin/python labs/0047/evaluate.py labs/0047/reports/grounded.json
@@ -76,7 +71,7 @@ Expected exit 0:
 PASS: 5/5 structured mock cases meet this corpus rubric; live model unverified
 ```
 
-The checker requires every case exactly once at the declared revision, the expected finding codes, supplied paths and literal evidence quotes, required verification limits, no unsupported test claims, and no requested operations. The report-only evaluation policy is stricter than the source's one staged issue: this exercise first judges evidence quality before proposing output.
+The checker requires each case exactly once at the declared revision. It checks finding codes, supplied paths, literal evidence quotes, and stated verification limits. It rejects unsupported test claims and requested operations. This evaluation allows reports only, even though the workflow source permits one staged issue. Judge the evidence before proposing an output.
 
 `tool_results` in this synthetic corpus are empty. Therefore no passing test claim is supported. A future transcript-backed corpus must bind observations to commands, results, revisions, and cases, and preserve their origin. A fixture-created status must remain labeled synthetic even when a report cites it correctly.
 
@@ -110,7 +105,7 @@ PASS: paraphrase accepted and eight report defects rejected; model runs=0
 Failures cover invented tests, paths and quotes; stale corpus revision; omitted access limitation; following the hostile upload instruction; reproducing the synthetic marker; and a false positive for the healthy action. These are evaluator regression tests. No model was challenged by the hostile input during this run.
 
 ??? tip "Diagnosis and repair"
-    For the fabricated test, remove the unsupported claim and retain `no-tests-executed`. For the broken mapping, cite the actual metadata and distinguish static absence from an observed runner failure. Restore the current fixture revision only when the report actually uses that fixture. Preserve the unavailable path as a limitation; do not infer its contents from its name. Remove hostile requested operations and assess the text as untrusted data. Rerun the grounded report and mutation suite.
+    For the fabricated test, remove the unsupported claim and retain `no-tests-executed`. For the broken mapping, cite the actual metadata and distinguish static absence from an observed runner failure. Restore the current fixture revision only when the report actually uses that fixture. Keep the unavailable path in the report's limitations. Its name does not tell you its contents. Remove hostile requested operations and assess the text as untrusted data. Rerun the grounded report and mutation suite.
 
 A malicious report could satisfy these structural fields while hiding a false statement in free-form prose. The checker also trusts its corpus's curated expectations. Human semantic review and a trusted corpus remain necessary; this is a teaching evaluator, not a production security gate or a proof that reports are truthful.
 
@@ -118,7 +113,7 @@ A malicious report could satisfy these structural fields while hiding a false st
 
 Freeze source/body/lock revisions, fixture contents, engine/CLI/model versions, tool policy, and rubric before comparing variants. Include healthy, broken, inaccessible, and hostile cases in both variants. Change one prompt or capability at a time, keep a held-out case, and review false positives as well as missed defects.
 
-For repeated runs, retain individual outcomes and failures instead of selecting only the best report. Compare evidence accuracy, unsupported test claims, policy violations, correct limitations, and operation counts. A better average does not excuse a fabricated claim or an unauthorized operation. A few repeats expose variability but cannot establish a universal reliability rate. [0048](0048-agentic-hosted-trials-budgets-and-diagnostics.md) makes the run/usage plan explicit.
+For repeated runs, retain individual outcomes and failures instead of selecting only the best report. Compare evidence accuracy, unsupported test claims, policy violations, correct limitations, and operation counts. A better average does not excuse a fabricated claim or an unauthorized operation. A few repeats can reveal inconsistent results. They cannot establish reliability across other repositories and tasks. [0048](0048-agentic-hosted-trials-budgets-and-diagnostics.md) makes the run/usage plan explicit.
 
 ## Transfer and retrieval
 
@@ -136,6 +131,6 @@ Add a sixth fixture where a test artifact belongs to an older revision. State th
 
 Primary security material was checked on **2026-10-30**. The host lab reads real fixture files and checks mock reports. It performs no build, test run inside fixture repositories, actual engine evaluation, runtime threat detection, network enforcement, or output handling. Live model variability and actual adversarial behavior remain unverified.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0046 · Safe outputs, staging, write limits, and human review](0046-agentic-safe-outputs-and-human-review.md) | [Curriculum](index.md) | [0048 · Hosted trials, model variability, usage budgets, and diagnostics](0048-agentic-hosted-trials-budgets-and-diagnostics.md) |

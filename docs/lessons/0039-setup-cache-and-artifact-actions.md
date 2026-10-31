@@ -6,13 +6,7 @@ lesson_status: authored
 
 # 0039 · Use setup, cache, and artifact actions instead of bootstrap scripts
 
-Use setup actions to prepare tools, caches to avoid repeated downloads, and artifacts to exchange named results. Keep the commands that install, test and build your project visible: those commands decide whether the application is actually ready.
-
-## Prerequisites and observable goal
-
-Read [0038 · Named selection outputs](0038-paths-filter-and-selective-jobs.md), [0034 · Cache validity and artifact trust](0034-caches-artifacts-and-reproducibility.md), and [0005 · Output contracts](0005-environment-files-and-output-contracts.md). Recall that jobs have separate filesystems; a dependency orders jobs but does not copy files.
-
-You will explain what each action prepares, why installation remains necessary after a cache hit, and how a named artifact reaches a separate consumer. Success means you can reproduce a missing-module failure, repair the fixture's installed tree, and reject a wrong artifact name or altered result.
+Use setup actions to prepare tools, caches to avoid repeated downloads, and artifacts to exchange named results. Keep the project's install, test, and build commands explicit. Those commands establish whether it is ready.
 
 !!! note "Run locally without installing anything"
     Use the repository root and existing `.venv` and Node. The runnable lab materializes a tiny synthetic module in a temporary directory. It performs no npm installation, network download, hosted cache operation, or artifact-service call.
@@ -56,7 +50,7 @@ Setup-action caching handles a standard package-manager case. Use `actions/cache
 
 1. The key names declared validity inputs: platform, architecture, tool major, and lockfile content. A real compiler cache may also require compiler version, flags and source inputs. This is a custom-key example, not a claim to reproduce setup-node's internal key.
 
-A restore prefix permits reuse from a less specific key. Its bytes are a starting point, not evidence that current work is complete. The [cache action contract](https://github.com/actions/cache/blob/55cc8345863c7cc4c66a329aec7e433d2d1c52a9/README.md) distinguishes an exact hit (`'true'`), a non-exact restore (`'false'`), and a miss (empty output). Use explicit comparisons. A cache hit does not certify tests, artifact provenance, or the source revision. Keep secrets out of caches and respect trust boundaries when sharing reusable data.
+A restore prefix permits reuse from a less specific key. Its bytes are a starting point, not evidence that current work is complete. The [cache action contract](https://github.com/actions/cache/blob/55cc8345863c7cc4c66a329aec7e433d2d1c52a9/README.md) specifies `'true'` for an exact key hit and `'false'` for a non-exact restore. A miss produces an empty output. Use explicit comparisons. A cache hit does not certify tests, artifact provenance, or the source revision. Keep secrets out of caches and respect trust boundaries when sharing reusable data.
 
 !!! tip "Prediction"
     A runner restores npm's download cache, but `node_modules` is absent. Will a Node program requiring a project dependency start? Does an exact cache hit justify skipping `npm ci` in this recipe?
@@ -112,7 +106,7 @@ flowchart TD
 
 ## Local lab: observe real module resolution
 
-`contract.py` creates a temporary project with a synthetic download-cache marker. It can materialize `fixture-dependency.cjs` under that project's `node_modules/fixture-dependency/index.cjs`, then invokes the real Node program `build.cjs`. The build writes a bounded JSON result. A separate local directory receives a copy, whose digest and message are checked. These operations test actual host behavior without pretending to implement a cache or artifact service.
+`contract.py` creates a temporary project with a synthetic download-cache marker. It can create `fixture-dependency.cjs` under that project's `node_modules/fixture-dependency/index.cjs`, then invokes the real Node program `build.cjs`. The build writes a bounded JSON result. A separate local directory receives a copy, whose digest and message are checked. These checks exercise Node resolution and local file copies. They do not test hosted cache or artifact services.
 
 ```bash
 node --version
@@ -159,8 +153,8 @@ A monorepo app lives under `apps/web/` and a two-OS matrix produces bundles. Ada
 
 ## Verification boundary
 
-The local lab proves real Node resolution, build failure status, recipe-name consistency and local file integrity. It does not prove setup-node installed a runtime, npm installed a real project, hosted cache keys hit, artifacts uploaded/downloaded, permissions were effective, or another OS behaved identically. A future bounded GitHub run should collect those separate observations. Written material and assistant checks establish no learner mastery.
+The local lab proves real Node resolution, build failure status, recipe-name consistency and local file integrity. It does not prove setup-node installed a runtime, npm installed a real project, hosted cache keys hit, artifacts uploaded/downloaded, permissions were effective, or another OS behaved identically. A future bounded GitHub run should collect those separate observations.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0038 · Replace git-diff shell logic with dorny/paths-filter](0038-paths-filter-and-selective-jobs.md) | [Curriculum](index.md) | [0040 · Compose Docker build and cloud authentication actions](0040-docker-build-and-cloud-auth-actions.md) |

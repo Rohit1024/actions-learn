@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0012 · Define the local/hosted coverage boundary and usage budget
 
-!!! note "Authored reference lesson"
-    The coverage declarations and executable audit under `labs/0012/` are developed. The saved plan deliberately retains unexecuted and deferred states. A consistent plan does not establish passing checks, release readiness, or learner mastery.
-
-## Prerequisites and goal
-
-Read [0011 · Selected act execution](0011-act-targeted-workflow-smoke-tests.md). Retrieve [0006 · Required evidence joins](0006-matrices-dependencies-and-cancellation.md): a skipped or absent required check cannot silently become success.
-
-Write a verification plan that maps each claim to an observing environment, records actual results at a revision, and limits further runner/model usage. Success means you can reject a false “all locally green, therefore deployment approved” conclusion while keeping the next integration experiment small. No hosted workflow, credential request, or model call is needed to complete this lab.
+Audit the coverage plan in `labs/0012/`. It records checks that have not run or remain deferred. A consistent plan still needs passing results before it can support a release.
 
 ## Start with the claim rather than a tool checklist
 
@@ -71,7 +64,7 @@ Those are the template's declarations. Actual author checks are recorded separat
 
 One claim has this shape:
 
-```json title="labs/0012/plan.json — OIDC claim excerpt"
+```json title="labs/0012/plan.json, OIDC claim excerpt"
 {
   "id": "oidc-federation",
   "required_for": "deployment",
@@ -157,7 +150,7 @@ The sample budget is deliberately small:
 }
 ```
 
-The declared hosted experiment has one job instance and a five-minute job timeout. Its planned execution ceiling is therefore five job-minutes for one run. Parallelizing jobs can reduce wall-clock time without reducing aggregate runner use; expanding a matrix multiplies job instances. Timeouts constrain execution, but retries, setup, queueing, billing rules, and additional runs require separate accounting. The audit's arithmetic is not an invoice estimate or a monetary enforcement mechanism.
+The declared hosted experiment has one job instance and a five-minute job timeout. Its planned execution ceiling is therefore five job-minutes for one run. Parallelizing jobs can reduce wall-clock time without reducing aggregate runner use; expanding a matrix multiplies job instances. Timeouts constrain execution, but retries, setup, queueing, billing rules, and additional runs require separate accounting. The audit counts planned execution time. It neither estimates an invoice nor enforces a spending limit.
 
 GitHub's [workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idtimeout-minutes) documents job timeouts, and its [billing and usage overview](https://docs.github.com/en/actions/concepts/billing-and-usage) distinguishes plan/runner charging. Record the actual runner type and account usage instead of applying a guessed per-minute rate. Local act/image downloads consume developer resources even though they do not dispatch GitHub runs.
 
@@ -167,9 +160,9 @@ Use this operating policy for the greeting integration:
 2. Review the selected job graph and external operations. The greeting path requires no model access or write credentials.
 3. At an intentionally authorized later integration session, choose one reviewed revision and one manual smoke job. Record its run URL, attempt, runner, duration, and assertions.
 4. After failure, inspect the earliest failing boundary. Reproduce locally where possible before budgeting another hosted attempt. Do not rerun repeatedly without a changed hypothesis.
-5. Observe actual usage and side effects. A manual dispatch trigger does not itself enforce “one run per revision”; the declaration needs operator or automation enforcement outside this teaching audit.
+5. Observe actual usage and side effects. A manual dispatch trigger does not itself enforce "one run per revision"; the declaration needs operator or automation enforcement outside this teaching audit.
 
-The known Module 2 local checks performed here used **zero hosted workflow runs and zero model calls**. They did not request external writes. These counts describe this authoring task, not unrelated repository activity.
+The recorded Module 2 checks used zero hosted workflow runs and zero model calls. They requested no external writes. These counts cover the lesson checks only.
 
 ## Keep agentic compilation and execution separate
 
@@ -180,7 +173,7 @@ The later [agentic module guide](agentic-workflows.md) adds another boundary:
 gh aw compile examples/agentic/repo-report.md --no-emit --strict
 ```
 
-This is a reference command for a later lesson, **not executed in Module 2**. Compilation can resolve references over the network; local validation does not mean fully offline. `gh aw trial` and `gh aw run` are hosted execution paths and can consume runner and model usage. Confirm current installed help and review the [primary CLI reference](https://github.github.com/gh-aw/setup/cli/) before scheduling either. A successful compile cannot certify model behavior, output quality, or a zero-cost hosted trial.
+This command is for a later lesson and was not run in Module 2. Compilation can resolve references over the network, so local validation may still need network access. `gh aw trial` and `gh aw run` are hosted execution paths and can consume runner and model usage. Confirm current installed help and review the [primary CLI reference](https://github.github.com/gh-aw/setup/cli/) before scheduling either. A successful compile cannot certify model behavior, output quality, or a zero-cost hosted trial.
 
 Keep the Module 2 model-call budget at zero. An action-output smoke test does not need an AI request to answer its wiring question.
 
@@ -208,6 +201,6 @@ The course now moves from local testing to [0013 · Docker metadata and lifecycl
 
 Primary sources linked here were checked on **2026-10-30** from the [curated source library](../references/resources.md). `labs/module-2-handoff.md` records the actual author checks, deferred engine/act execution, checked URLs, and proposed shared integration.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0011 · Run one event and one job with act](0011-act-targeted-workflow-smoke-tests.md) | [Curriculum](index.md) | [0013 · Docker action metadata, arguments, and container lifecycle](0013-docker-action-metadata-and-lifecycle.md) |

@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0023 · Action lifecycle hooks, state files, and cleanup
 
-!!! note "Authored reference lesson"
-    `labs/0023/` creates only owned temporary directories, runs main and cleanup as separate Node processes, and removes its exercise files. Its harness models one action's state exchange; it is not a GitHub runner. Written content and author-run checks do not establish learner mastery.
-
-## Prerequisites and goal
-
-Read [0022 · Truthful failure contracts](0022-output-contracts-and-mocked-github-api.md). Recall that a successful intermediate operation does not make the whole action successful and that a variable belongs to one process.
-
-Develop setup, primary-work, and cleanup responsibilities around a disposable resource. Success means you can explain what must survive the process boundary, clean up after partial work, and preserve the primary failure even when cleanup succeeds.
+`labs/0023/` runs main and cleanup as separate Node processes. The test script passes saved state between them and removes its temporary directories. GitHub runner scheduling remains a separate check.
 
 ## A lifecycle hook is another process
 
@@ -24,7 +17,7 @@ The [metadata reference](https://docs.github.com/en/actions/reference/workflows-
 !!! warning "Local actions do not support runs.pre"
     GitHub documents `runs.pre` as unsupported for local `uses: ./...` actions. The runnable lab deliberately performs setup inside `main` and declares only `main` and `post`. The full three-hook example below is a reference for an action consumed remotely; do not add its `pre` field to this local lab and assume it ran.
 
-```yaml title="Remote-action lifecycle reference — not the local lab's metadata"
+```yaml title="Remote-action lifecycle reference, not the local lab's metadata"
 runs:
   using: node24
   pre: setup.cjs
@@ -122,7 +115,7 @@ Run from the repository root:
 node labs/0023/lifecycle.cjs success
 ```
 
-The harness creates temporary state/output files under this lab and launches **two separate child processes**. After main exits, it reads the one supported `resource=` state record and supplies `STATE_resource` to cleanup. It launches cleanup a second time to check repeatability.
+The test script creates temporary state and output files under the lab, then launches main and cleanup as separate child processes. After main exits, it reads the one supported `resource=` state record and supplies `STATE_resource` to cleanup. It launches cleanup a second time to check repeatability.
 
 Expected fields:
 
@@ -137,7 +130,7 @@ Expected fields:
 }
 ```
 
-The harness trims displayed log endings. Its own exit status remains zero after it displays a scenario; child and combined statuses are data that tests assert. `combinedStatus` is the harness's explicit “main or post failed” policy, not a claim that it implements all runner job conclusions.
+The test script trims log endings for display and exits zero after showing a scenario. Tests assert the child statuses and `combinedStatus` fields. Here, `combinedStatus` reports failure if either main or post failed. It does not reproduce every GitHub job conclusion.
 
 !!! tip "Predict the failure boundaries"
     If main fails after saving state, should cleanup run? If cleanup succeeds, should the original failure disappear? If main succeeds but cleanup fails, should the caller see an entirely clean success?
@@ -161,10 +154,10 @@ Now reproduce a lost-state defect:
 node labs/0023/lifecycle.cjs lost-state
 ```
 
-Expected: main succeeds, post says `cleanup skipped: no resource state`, and **`resourceRemaining` is true** before harness teardown. The harness intentionally omits forwarding `STATE_resource`. It removes the leftover at the end so the experiment leaves no resource behind.
+Expected: main succeeds, post says `cleanup skipped: no resource state`, and **`resourceRemaining` is true** before the test script removes its temporary files. This case deliberately omits `STATE_resource` when starting cleanup. It removes the leftover at the end so the experiment leaves no resource behind.
 
 ??? tip "Diagnosis and repair"
-    A main-process local variable cannot cross into cleanup. In a real runner invocation, write the locator through `GITHUB_STATE` and read the resulting `STATE_resource` in post, or use Toolkit's state helpers. In the harness, restore the explicit forwarding of the saved key. The positive scenario verifies the repair. A zero cleanup exit does not alone prove no resource leaked: assert resource absence as well.
+    A main-process local variable cannot cross into cleanup. In a real runner invocation, write the locator through `GITHUB_STATE` and read the resulting `STATE_resource` in post, or use Toolkit's state helpers. In the test script, pass the saved key to cleanup again. The positive scenario verifies the repair. A zero cleanup exit can still leave a resource behind. Assert that the resource is absent too.
 
 ## Cleanup failure is its own evidence
 
@@ -174,7 +167,7 @@ node labs/0023/lifecycle.cjs cleanup-failure
 
 Expected: main status **0**, post status **1**, `resourceRemaining: true`, and `combinedStatus: 1`. Main has already published `resource=ready`; cleanup cannot retract that output. A downstream workflow should consider job/step status and the resource lifecycle, not treat a previously written success value as a complete final health signal.
 
-The normal `cleanup.cjs` catches cleanup errors, prints the error, and sets `process.exitCode = 1`. A nonzero post action can affect the job result. The exact runner conclusion, log presentation, and scheduling still need a real workflow check; the local harness only asserts its documented combined policy.
+The normal `cleanup.cjs` catches cleanup errors, prints the error, and sets `process.exitCode = 1`. A nonzero post action can affect the job result. The exact runner conclusion, log presentation, and scheduling still need a real workflow check; the local test script checks only its own combined-status rule.
 
 Run all focused cases:
 
@@ -205,7 +198,7 @@ Answer without reopening the example:
 4. Can a successful main output establish that job-end cleanup succeeded?
 
 ??? tip "Retrieval check"
-    Local actions do not support `runs.pre`. The runner supplies saved state to later lifecycle processes; the harness explicitly simulates that one exchange. Repeated cleanup must tolerate an already absent owned resource. Main outputs precede post, so final status and cleanup evidence remain necessary.
+    Local actions do not support `runs.pre`. The runner supplies saved state to later lifecycle processes; the test script simulates that state transfer. Repeated cleanup must tolerate an already absent owned resource. Main outputs precede post, so final status and cleanup evidence remain necessary.
 
 ## Verification limits and next session
 
@@ -213,6 +206,6 @@ The lab proves actual process isolation, its explicit state-record handoff, file
 
 Continue to [0024](0024-cross-platform-actions-and-versioned-releases.md) for portability and release compatibility.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0022 · Output files, failure status, and mocked GitHub API responses](0022-output-contracts-and-mocked-github-api.md) | [Curriculum](index.md) | [0024 · Cross-platform action behavior, dependency updates, and release versions](0024-cross-platform-actions-and-versioned-releases.md) |

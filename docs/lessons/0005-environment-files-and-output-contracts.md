@@ -6,16 +6,7 @@ lesson_status: authored
 
 # 0005 · Environment files and step, job, and workflow output contracts
 
-!!! note "Authored reference lesson"
-    Follow one greeting through each boundary before opening the worked solutions. The lab has real adapter checks and three inactive workflow recipes. Authored content does not establish learner mastery.
-
-## Prerequisites
-
-Read [0004 · Contexts and conditions](0004-contexts-expressions-and-conditions.md). You should distinguish Actions expressions from shell expansion and recognize that named outputs arrive as strings.
-
-## What you will learn to do
-
-Choose a log, environment value, named output, or file transfer intentionally. Trace a result from a program to another step, another job, and a reusable-workflow caller. Success means you can locate a missing mapping rather than adding unrelated permissions.
+Follow one greeting from its producer to its consumers. The lab includes adapter checks and three inactive workflow recipes for tracing each output mapping.
 
 ## Explain the Actions behavior
 
@@ -158,7 +149,7 @@ jobs:
         run: test "$GREETING" = 'Hello, Ada!'
 ```
 
-The caller's `call` job uses `uses`, rather than adding `runs-on` and ordinary `steps` to that same job. The local workflow reference resolves at the caller's commit; it is not a path relative to the caller YAML file. Both recipes must be copied to `.github/workflows/` with their existing basenames for GitHub execution. Deeper input, secret, and permission contracts are taught in [0029](0029-reusable-workflows-and-permission-interfaces.md). See GitHub's [reusable-workflow output guide](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows#using-outputs-from-a-reusable-workflow).
+The caller's `call` job invokes the reusable workflow with `uses`. It cannot also declare `runs-on` and ordinary `steps` in that job. The local workflow reference resolves at the caller's commit; it is not a path relative to the caller YAML file. Both recipes must be copied to `.github/workflows/` with their existing basenames for GitHub execution. Deeper input, secret, and permission contracts are taught in [0029](0029-reusable-workflows-and-permission-interfaces.md). See GitHub's [reusable-workflow output guide](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows#using-outputs-from-a-reusable-workflow).
 
 ## Multiline, empty, missing, and invalid values
 
@@ -168,7 +159,7 @@ A single-line record has the form `name=value`. The existing action rejects name
 uv run python labs/0005/inspect_output.py --name $'Ada\nother=injected'
 ```
 
-Expected: the real adapter exits **1**, explains that input must be a nonempty single line, and publishes no greeting. Invalid input should fail before a success-shaped result is emitted.
+Expected: the real adapter exits **1**, explains that input must be a nonempty single line, and publishes no greeting. Reject invalid input before writing a success output.
 
 For a genuine multiline result, the complete output recipe writes:
 
@@ -180,7 +171,9 @@ printf '%s\n' 'empty=' >> "$GITHUB_OUTPUT"
 
 `LESSON_REPORT` is safe for this fixed two-line value because it cannot appear as a standalone content line. Arbitrary data needs a collision-free delimiter or file transfer; never assume a constant marker is safe for unknown text. The [multiline protocol](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands#multiline-strings) explains the delimiter requirement.
 
-An explicitly empty output and an absent output can both appear as an empty string to a consumer. If that distinction matters, publish a separate status such as `present=true`, or a validated JSON envelope with an explicit field. Do not rely on truthiness to distinguish them. Outputs also do not provide a secret-sharing channel: GitHub can suppress job outputs it detects as containing secrets. Use proper secret interfaces and avoid printing sensitive values.
+An explicitly empty output and an absent output can both appear as an empty string to a consumer. If that distinction matters, publish a separate status such as `present=true`, or a validated JSON envelope with an explicit field. Do not rely on truthiness to distinguish them.
+
+GitHub can suppress job outputs it detects as containing secrets. Pass secrets through the supported secret interfaces and avoid printing them.
 
 ## Local lab and a missing-mapping failure
 
@@ -219,6 +212,6 @@ A build job computes `package_version` and creates a package file. Specify which
 
 Direct scripts check real process output; static checks inspect interfaces; a selected workflow run exercises runner-style consumption. Actual GitHub output processing, secret suppression, and hosted artifact exchange remain platform contracts. Continue to [0006](0006-matrices-dependencies-and-cancellation.md). Primary sources were checked on **2026-10-30** and are listed in the [source library](../references/resources.md).
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0004 · Contexts, expressions, conditions, status, and input types](0004-contexts-expressions-and-conditions.md) | [Curriculum](index.md) | [0006 · Matrices, job dependencies, cancellation, and failure propagation](0006-matrices-dependencies-and-cancellation.md) |

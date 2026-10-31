@@ -6,18 +6,13 @@ lesson_status: authored
 
 # 0033 · OIDC, deployment environments, approval, and real platform verification
 
-!!! note "Authored reference lesson"
-    All identity values below are synthetic claims, not a JWT or credential. The lab requests no identity, configures no cloud trust, and accesses no resource. Passing its selection rules establishes no real GitHub/cloud enforcement or learner mastery.
-
-## Prerequisites and observable goals
-
-Read [0032 · Privileged data boundaries](0032-script-injection-artifacts-and-privileged-events.md), [0031 · Authority inventory](0031-github-token-forks-and-trust-boundaries.md), and [0012 · Coverage limits](0012-local-hosted-coverage-and-usage-budget.md). Explain why a mock allow decision cannot certify a remote permission.
-
-Trace a job identity through an issuer and relying provider, reject incorrect audience/subject/ref/approval contexts, and specify separate real-platform observations. Success means you distinguish token issuance, claim verification, cloud authorization, and environment admission without needing a permanent cloud secret.
+The lab matches synthetic identity claims against policy rules. It does not request a JWT, configure cloud trust, or access a cloud resource. Real enforcement needs a hosted test.
 
 ## Separate four decisions
 
-**OpenID Connect (OIDC)** provides an identity token whose claims describe the requesting workflow context. GitHub is the issuer. A configured cloud identity system is the relying party: it verifies the token and applies its trust policy, then may issue short-lived cloud credentials. The cloud role/resource policy determines what those credentials can do. Environment protection is another configured GitHub decision that controls whether the job proceeds. See the [OIDC overview](https://docs.github.com/en/actions/concepts/security/openid-connect), checked **2026-10-30**.
+OpenID Connect, or OIDC, lets a workflow request an identity token from GitHub. Its claims describe the workflow context.
+
+The cloud identity system verifies the token and applies its configured trust policy. It may then issue short-lived cloud credentials. Cloud role and resource policies determine what those credentials can do. Environment protection is another configured GitHub decision that controls whether the job proceeds. See the [OIDC overview](https://docs.github.com/en/actions/concepts/security/openid-connect), checked **2026-10-30**.
 
 | Decision | Real enforcement owner | What a local fixture can test |
 | --- | --- | --- |
@@ -85,15 +80,15 @@ The fictional lab repository chooses the ID-bearing environment subject:
 }
 ```
 
-The audience and IDs above are teaching values, not a provider configuration to paste into a real account. A legacy name-only subject for the same environment would be `repo:example/lesson:environment:staging`. The policy intentionally accepts one explicit format; it does not accept both by wildcard. Subject context changes with an environment, PR, or branch, and subject metadata containing `:` requires documented encoding.
+The audience and IDs above are teaching values, not a provider configuration to paste into a real account. A legacy name-only subject for the same environment would be `repo:example/lesson:environment:staging`. The policy accepts one explicit subject format. It does not use a wildcard to accept both. Subject context changes with an environment, PR, or branch, and subject metadata containing `:` requires documented encoding.
 
-An environment subject does not by itself encode a branch restriction. Constrain allowed refs through environment deployment rules and a provider-supported claim or customized subject policy. Reusable workflows add caller/callee identity questions: a reusable workflow claim is useful only when verified under the intended provider policy and tied to reviewed workflow code.
+An environment subject does not by itself encode a branch restriction. Constrain allowed refs through environment deployment rules and a provider-supported claim or customized subject policy. With reusable workflows, check both caller and callee identity. Verify the claims under the provider's policy and tie them to reviewed workflow code.
 
 !!! tip "Predict the missing boundary"
     A synthetic claim object has the intended environment subject, but `ref` names a topic branch. Another object has correct claims but no observed approval. Which should this lesson's policy accept? Could a caller set `approved=true` and obtain cloud credentials from this program?
 
 ??? tip "Worked prediction"
-    Both are rejected under the lab policy: ref and approval are separate checks. The boolean is just a supplied test input. Setting it changes local selection behavior and obtains no identity or credentials. A real environment approval is GitHub state; a provider must validate a real signed token and its own trust/resource policy.
+    The lab policy rejects both. It checks the ref and approval separately. The boolean is just a supplied test input. Setting it changes local selection behavior and obtains no identity or credentials. A real environment approval is GitHub state; a provider must validate a real signed token and its own trust/resource policy.
 
 ## Local lab: test allowed and rejected descriptions
 
@@ -116,7 +111,7 @@ The allowed case exits 0 with `ALLOW: synthetic claim selection and approval mat
 | `expired` | `outside validity window` |
 | `unapproved` | `approval not observed in simulation` |
 
-Every case prints `NOT VERIFIED: signature, issuer keys, real approval, federation, resource authorization`. Time is a deterministic fictional integer (`now=1100`, validity `[1000,1300)`), not the real clock or a live token expiry.
+Every case prints `NOT VERIFIED: signature, issuer keys, real approval, federation, resource authorization`. The tests use fictional time `now=1100` and validity interval `[1000,1300)`. These values do not track the real clock or a live token's expiry.
 
 ```bash
 python3 -B -m unittest discover -s labs/0033 -p 'test_*.py' -v
@@ -130,7 +125,7 @@ Expected: seven test methods pass and actionlint emits no diagnostics, exit 0. T
 A developer replaces exact subject matching with `sub.startswith('repo:')` to make a fork case pass. Diagnose what authority this broadens, then repair it without trying a real login.
 
 ??? tip "Worked diagnosis"
-    The prefix describes almost every repository subject. It no longer binds the identity to the intended repository, owner, or environment. Restore exact intended identity conditions and keep negative cases. If a legitimate repository changed subject format, migrate its configured policy with reviewed identity evidence rather than accepting unrelated namespaces. Verify signature, issuer, audience, timing, and provider-supported conditions in the real federation boundary later; JSON field equality cannot substitute for those checks.
+    The prefix describes almost every repository subject. It no longer binds the identity to the intended repository, owner, or environment. Restore exact intended identity conditions and keep negative cases. If the repository changes its subject format, review its identity evidence and update the configured policy. Do not broaden the rule to unrelated namespaces. Verify signature, issuer, audience, timing, and provider-supported conditions in the real federation boundary later; JSON field equality cannot substitute for those checks.
 
 ## Transfer and retrieval
 
@@ -153,6 +148,6 @@ Retrieve:
 
 No token was minted, decoded, or printed; no credentials were changed; no cloud or environment setup occurred. Actual environment admission, OIDC signatures/claims, provider mapping, resource access, and rejection behavior remain later integration evidence. `act` cannot certify these contracts. Continue to [0034 · Reuse and provenance](0034-caches-artifacts-and-reproducibility.md).
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0032 · Injection and privileged-event boundaries](0032-script-injection-artifacts-and-privileged-events.md) | [Curriculum](index.md) | [0034 · Caches, artifacts, and reproducibility](0034-caches-artifacts-and-reproducibility.md) |

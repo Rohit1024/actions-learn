@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0052 · Create a JavaScript or TypeScript action with a tested distribution
 
-!!! note "Authored reference lesson"
-    Build a small domain action, then observe a stale distribution and its repair in a temporary copy. All implementation files are isolated under `labs/0052/`. Predictions and exercises remain for the learner; authoring does not establish mastery.
-
-## Prerequisites and goal
-
-Read [0051 · Compose maintained setup](0051-own-composite-action-from-prebuilt-actions.md), [0050 · Metadata contracts](0050-own-action-metadata-and-contracts.md), and [0005 · Output channels](0005-environment-files-and-output-contracts.md). Use the installed Node 24, TypeScript, and esbuild listed in the [local testing guide](../cheatsheet/local-testing.md); do not install another dependency tree.
-
-The goal is to implement the contract proposed in 0049: compute a reusable release key from validated component and channel inputs. This action only computes a label. The caller decides whether to use it for a report, artifact name, or future release. You will test the pure rule, the actual distributed process, and source/distribution agreement. All commands run from the repository root.
+Build a small naming-policy action, then observe a stale distribution and its repair in a temporary copy. The implementation files stay under `labs/0052/`.
 
 ## Separate domain behavior from the runner adapter
 
@@ -31,9 +24,9 @@ export function releaseKey(component: string, channel: string): string {
 }
 ```
 
-1. The expression permits a lowercase ASCII letter followed by zero to 31 lowercase letters, digits, or hyphens. The explicit CR/LF check also rejects a trailing newline, which JavaScript's `$` anchor can otherwise allow. The rule does not trim input: accepting ` Docs ` would change this contract.
+1. The expression permits a lowercase ASCII letter followed by zero to 31 lowercase letters, digits, or hyphens. The explicit CR/LF check also rejects a trailing newline, which JavaScript's `$` anchor can otherwise allow. The rule does not trim input. Accepting ` Docs ` would change this contract.
 
-`releaseKey('docs', 'preview')` returns `docs-preview`. Empty strings, uppercase labels, traversal-like text, newline-containing values, and arbitrary channels fail. The output's limited alphabet also makes a single-line output record safe. This is a naming policy, not a globally unique identifier or a concurrency lock: two callers can compute the same key.
+`releaseKey('docs', 'preview')` returns `docs-preview`. Empty strings, uppercase labels, traversal-like text, newline-containing values, and arbitrary channels fail. The output's limited alphabet also makes a single-line output record safe. Two callers can compute the same key. Use it as a label, not as a globally unique identifier or a concurrency lock.
 
 The **process adapter** in `src/index.ts` translates the Actions interface into that rule:
 
@@ -77,9 +70,9 @@ runs:
 
 1. This file path is relative to the action directory. The runner executes the packaged JavaScript; it does not compile `src/index.ts` for the consumer.
 
-TypeScript is an authoring language, not an additional action runtime. `dist` is a conventional directory name; the decisive field is `runs.main`. JavaScript actions can run directly on supported runner operating systems, but actual portability depends on their dependencies and behavior. This example uses Node built-ins only; the host test is still not evidence for an untested Windows runner. See the [JavaScript action tutorial](https://docs.github.com/en/actions/tutorials/create-actions/create-a-javascript-action) for the packaging model.
+The runner executes the JavaScript generated from TypeScript. `dist` is a conventional directory name. `runs.main` selects the executable file. JavaScript actions can run directly on supported runner operating systems, but actual portability depends on their dependencies and behavior. This example uses Node built-ins only; the host test is still not evidence for an untested Windows runner. See the [JavaScript action tutorial](https://docs.github.com/en/actions/tutorials/create-actions/create-a-javascript-action) for the packaging model.
 
-The official [TypeScript action template](https://github.com/actions/typescript-action) provides fuller maintenance patterns. This introductory lab stays small: no new toolkit dependency is installed. A production action with API requests, multiline outputs, masking, or annotations can benefit from the maintained Actions Toolkit. Choose helpers for those transport responsibilities without confusing them with the custom domain policy.
+The official [TypeScript action template](https://github.com/actions/typescript-action) provides fuller maintenance patterns. This lab uses the installed dependencies and adds no Toolkit package. A production action with API requests, multiline outputs, masking, or annotations can benefit from the maintained Actions Toolkit. Choose helpers for those transport responsibilities without confusing them with the custom domain policy.
 
 !!! tip "Prediction"
     You change `releaseKey` to return `v2-docs-preview`, leave the bundle untouched, and invoke the consumer. Which spelling does the caller get? Can `npm ci` in the caller repair your published action package?
@@ -88,6 +81,8 @@ The official [TypeScript action template](https://github.com/actions/typescript-
     The caller executes the old distribution and gets `docs-preview`. Dependency installation in the caller's project does not rebuild a separately supplied action. The action publisher must ship the correct runtime artifact.
 
 ## Lab: type-check, compare, and test different boundaries
+
+Run commands from the repository root using the installed Node 24, TypeScript, and esbuild listed in the [local testing guide](../cheatsheet/local-testing.md).
 
 The lab contains already-generated `action/dist/index.cjs`. Begin with a check that does not repair anything:
 
@@ -127,7 +122,7 @@ After rebuild: release-key=v2-docs-preview
 PASS: stale failure and repair observed in a temporary copy
 ```
 
-The demonstration first verifies the copied distribution, changes the copied domain source to prefix `v2-`, and checks again. The comparison child exits **1**. It then invokes the unchanged distribution to observe the old result, explicitly rebuilds the temporary copy, checks agreement, and observes the new result. The demonstration as a whole exits zero only if the failure and repair both match expectations.
+The demonstration first verifies the copied distribution, changes the copied domain source to prefix `v2-`, and checks again. The comparison child exits **1**. It then invokes the unchanged distribution to observe the old result, explicitly rebuilds the temporary copy, checks agreement, and observes the new result. The demonstration exits zero only after confirming both the stale result and its repair.
 
 ??? tip "Diagnosis and repair"
     Identify `runs.main`, inspect the artifact it names, and compare it with a fresh build. The consumer is correctly running the artifact you supplied. For an intentional real source edit, run `node labs/0052/build.cjs --write`, review the generated diff, then repeat type-checking, the read-only comparison, and behavior tests. A changed naming rule may require a major version even when every local check passes. Do not silently rebuild inside the comparison check; that would hide the release mistake.
@@ -169,14 +164,14 @@ A team wants a `nightly` channel. Write the compatibility decision and changed c
 4. Does a stable output string prove a release operation occurred?
 
 ??? tip "Worked transfer and retrieval"
-    Adding `nightly` is an accepted-input expansion if all existing behavior remains compatible. Add pure and process cases expecting `docs-nightly`, then rebuild and compare. The consumer executes `dist/index.cjs` because metadata names it. A pure test observes policy; a process test observes transport/I/O; the comparison observes agreement between source and shipped bytes. Environment values remain uncontrolled runtime strings despite the function's TypeScript parameter type. The output is a computed label and does not publish anything.
+    Adding `nightly` is an accepted-input expansion if all existing behavior remains compatible. Add pure and process cases expecting `docs-nightly`, then rebuild and compare. The consumer executes `dist/index.cjs` because metadata names it. Pure tests check the naming rule. Process tests check input handling and output writes. The bundle comparison checks that the shipped bytes match the source. Environment values remain uncontrolled runtime strings despite the function's TypeScript parameter type. The output is a computed label and does not publish anything.
 
 ## Evidence and next lesson
 
-The lab gives local type, policy, process, distribution, and static consumer evidence. GitHub runner download/runtime behavior, the intended OS matrix, and public output mapping remain integration checks. No hosted run has been performed by this authoring task. Sources were checked on **2026-10-30**, including the [Node 24 test-runner documentation](https://nodejs.org/docs/latest-v24.x/api/test.html); exact check results are in `labs/module-9-handoff.md`.
+The lab gives local type, policy, process, distribution, and static consumer evidence. GitHub runner download/runtime behavior, the intended OS matrix, and public output mapping remain integration checks. The recorded checks include no hosted runs. Sources were checked on **2026-10-30**, including the [Node 24 test-runner documentation](https://nodejs.org/docs/latest-v24.x/api/test.html); exact check results are in `labs/module-9-handoff.md`.
 
 Continue to [0053](0053-own-docker-action-and-image-contract.md) for a different runtime/package boundary. Revisit [Module 4](0019-javascript-action-runtime-and-toolkit.md) for toolkit APIs, lifecycle hooks, cross-platform behavior, and dependency maintenance.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0051 · Create a composite action by composing pre-built actions](0051-own-composite-action-from-prebuilt-actions.md) | [Curriculum](index.md) | [0053 · Create a Docker action with tested arguments, mounts, and outputs](0053-own-docker-action-and-image-contract.md) |

@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0022 · Output files, failure status, and mocked GitHub API responses
 
-!!! note "Authored reference lesson"
-    `labs/0022/` uses local response fixtures and fake time. It never contacts GitHub, loads a token, or retries a real request. The executable lab develops the adapter contract; it does not prove real API authorization or learner mastery.
-
-## Prerequisites and goal
-
-Read [0021 · Shipped entrypoints](0021-typescript-bundling-and-dist-drift.md) and [0009 · Fixtures and output files](0009-unit-tests-fixtures-and-output-files.md). Recall that zero exit status and a success-shaped output can both be wrong when an adapter hides a service failure.
-
-Create an issue-report adapter that follows a normalized pagination contract, validates responses, retries one transient read within a budget, and publishes a report only after all pages succeed. Success means you can distinguish an empty successful list from inaccessible data and prove that a page-two failure does not leak a partial success report.
+`labs/0022/` uses local response fixtures and fake time. The adapter never contacts GitHub, loads a token, or retries a real request, so these tests cannot establish API authorization.
 
 ## Establish the service boundary before mocking it
 
@@ -53,7 +46,7 @@ flowchart TD
 
 `issueReport` takes explicit `request`, `sleep`, and `now` dependencies. The initial route is an issues listing. The GitHub issues endpoint can include pull requests, so this report excludes rows with a `pull_request` field. The first fixture page includes one on purpose.
 
-The adapter accumulates successful rows in memory and returns only after the final page. Each row must have a safe-integer ID and a string title. Invalid shapes are failures, not silently discarded rows. A repeated next URL is rejected as a cycle; more than three pages is rejected as a bounded lab limit. A real large repository needs a documented pagination policy rather than silently truncating results.
+The adapter accumulates successful rows in memory and returns only after the final page. Each row must have a safe-integer ID and a string title. Invalid shapes are failures, not silently discarded rows. The adapter rejects a repeated next URL to prevent a cycle. It also stops with an error if the result needs more than three pages. For a larger repository, document whether the action fetches all pages or returns an explicit partial result.
 
 | Fixture scenario | Interpretation | Output policy |
 | --- | --- | --- |
@@ -86,7 +79,7 @@ await sleep(250); // (1)!
 
 When rate limited, GitHub instructs clients to respect `retry-after`, quota-reset timestamps, or the documented secondary-limit backoff. This short-lived lab fails promptly instead of making another request sooner than allowed. A production adapter may defer a job or wait within an explicit overall budget. It should not turn every 403 into an automatic retry.
 
-A POST that creates an issue has different semantics: if the server created it but the response was lost, repeating the request may create a duplicate. Safe writes need an operation-specific idempotency or reconciliation strategy. Merely adding exponential backoff does not solve duplication.
+Retrying an issue-creation POST can create a duplicate if the server completed the first request but its response was lost. Safe writes need an operation-specific idempotency or reconciliation strategy. Merely adding exponential backoff does not solve duplication.
 
 !!! warning "A clock check cannot interrupt a hung transport"
     The fake resolves immediately. A production network adapter also needs a request timeout or abort signal tied to the remaining deadline. Checking `now()` only after an awaited request cannot stop a request that never returns. No claim of real network deadline enforcement is made by this lab.
@@ -140,7 +133,7 @@ report = await issueReport(client).catch(() => ({ count: 0, titles: [] }));
 ```
 
 ??? tip "Diagnosis and repair"
-    The broken denied case exits 0 and publishes `report={"count":0,"titles":[]}`. That falsely claims a completed empty query. Repair it by allowing the error to reach the failure handler before any output is written, as the normal adapter does. The `partial` case confirms that a successful first page is insufficient: the repaired process exits 1 after page-two retries are exhausted and leaves the output file empty. Inspect status and output together; stdout text alone cannot prove success.
+    The broken denied case exits 0 and publishes `report={"count":0,"titles":[]}`. That falsely claims a completed empty query. Repair it by allowing the error to reach the failure handler before any output is written, as the normal adapter does. The `partial` case tests a failure after the first page succeeds. The repaired process exhausts its page-two retries, exits 1, and leaves the output file empty. Inspect status and output together; stdout text alone cannot prove success.
 
 Run the focused suite:
 
@@ -154,7 +147,7 @@ Expected: **10 tests pass**. The tests cover exact request method/URL, multiple 
 
 The Toolkit [GitHub package](https://github.com/actions/toolkit/blob/main/packages/github/README.md) supplies `getOctokit(token)` and context. It is absent from this installed workspace, so this conceptual adaptation is reference-only:
 
-```javascript title="Toolkit reference excerpt — not executed here"
+```javascript title="Toolkit reference excerpt, not executed here"
 const octokit = github.getOctokit(token);
 const rows = await octokit.paginate(octokit.rest.issues.listForRepo, {
   owner,
@@ -166,7 +159,7 @@ const rows = await octokit.paginate(octokit.rest.issues.listForRepo, {
 
 A real adaptation must match Octokit's actual thrown-error shape, pagination behavior, request timeout API, and retry plugins. It must obtain the repository explicitly, require only the necessary read permissions, and keep the token out of logs and outputs. Do not copy the fake's resolved `status: 403` contract into code that actually receives a rejected promise without translating it.
 
-The smallest later integration would use a disposable repository with a known issue/PR fixture, read-only permissions, and a single bounded report run. That can verify authentication, response shape, and hosted output mapping; it is out of scope for this authoring batch.
+The smallest later integration would use a disposable repository with a known issue/PR fixture, read-only permissions, and a single bounded report run. That can verify authentication, response shape, and hosted output mapping; that integration test has not run.
 
 ## Exercises and retrieval
 
@@ -193,6 +186,6 @@ This suite establishes report rules, request sequencing, simulated waits, and re
 
 Continue to [0023](0023-javascript-action-lifecycle-and-state.md), where one action uses separate primary and cleanup processes.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0021 · TypeScript compilation, bundling, and committed distribution files](0021-typescript-bundling-and-dist-drift.md) | [Curriculum](index.md) | [0023 · Action lifecycle hooks, state files, and cleanup](0023-javascript-action-lifecycle-and-state.md) |

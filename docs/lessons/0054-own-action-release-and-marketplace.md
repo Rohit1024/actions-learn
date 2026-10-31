@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0054 · Document, version, and publish your action for real consumers
 
-!!! note "Authored reference lesson"
-    Assemble and test a local release candidate. Publishing is a deliberate future exercise: this lab creates no repository, commit, tag, release, or Marketplace listing. Written content and author-run checks do not establish mastery.
-
-## Prerequisites and goal
-
-Read [0053 · Docker interfaces](0053-own-docker-action-and-image-contract.md), [0052 · Node distribution](0052-own-node-action-and-distribution.md), and the [module guide](create-your-own-action.md). Recall [0012 · Verification limits](0012-local-hosted-coverage-and-usage-budget.md): readiness is a collection of supported claims with explicit remaining gaps.
-
-Your goal is to assemble the tested Node release-key implementation as a single-action package, run it from an unrelated working directory, reject incomplete packages, and write a bounded release/rollback plan. You will distinguish local reuse, remote reuse at a revision, a versioned release, and an optional Marketplace listing. Commands run from the repository root using installed tools.
+Assemble and test a local release candidate. Publishing comes later. This lab creates no repository, commit, tag, release, or Marketplace listing.
 
 ## Understand the four distribution milestones
 
@@ -41,6 +34,8 @@ flowchart TD
 ```
 
 ## Assemble the local package
+
+Run commands from the repository root using the installed tools.
 
 `labs/0054/prepare.py` copies the owned 0052 action into `labs/0054/package/` and adds the prepared README, MIT license, and proposed release notes. It does not build automatically, so a stale source bundle cannot be silently repaired by packaging.
 
@@ -71,7 +66,7 @@ labs/0054/package/
   CHANGELOG.md
 ```
 
-`action.yml` and `dist/index.cjs` are required for this consumer runtime. Source supports review and future maintenance; it does not replace executable distribution. README, license, and release notes explain the public contract and use rights. There is no runtime npm installation: this bundle uses Node built-ins only. For a different action, include every file `runs.main`, imports, Dockerfile `COPY`, or composite step needs, not just a similar-looking tree.
+`action.yml` and `dist/index.cjs` are required for this consumer runtime. Source helps reviewers inspect and maintain the action. Callers still need the executable distribution. README, license, and release notes explain the public contract and use rights. This bundle uses only Node built-ins, so callers do not run npm install. For a different action, include every file `runs.main`, imports, Dockerfile `COPY`, or composite step needs, not just a similar-looking tree.
 
 The candidate deliberately contains no new dependency manifest. A future standalone maintenance repository must include its own reviewed locked build/test tooling before ongoing development. The current runnable consumer snapshot is built and tested by the learning checkout's existing toolchain.
 
@@ -113,7 +108,7 @@ PASS: root metadata selects a runnable distribution from a different working dir
 PASS: isolated consumer received release-key=docs-stable
 ```
 
-The checker verifies this lab's root metadata and expected Node runtime, reads its `runs.main` path, launches that artifact with explicit inputs from a temporary unrelated working directory, and checks the exact output record. This exposes hidden reliance on the source directory or caller project modules. The inspector supports this lab's simple metadata format; it is not a general YAML parser or GitHub runner.
+The checker verifies the package's root metadata and expected Node runtime, then reads `runs.main`. It launches that file with explicit inputs from an unrelated temporary working directory and checks the exact output record. This exposes hidden reliance on the source directory or caller project modules. The inspector supports this lab's simple metadata format; it is not a general YAML parser or GitHub runner.
 
 The complete inactive recipe is `labs/0054/consumer.yml`. After checkout it uses the candidate rather than the development source action:
 
@@ -172,7 +167,7 @@ Do not execute remote writes during this lab. The future consumer template is `u
 
 For this API, changing `docs-preview` to `v2-docs-preview`, removing a public input/output, or rejecting previously accepted values is breaking behavior. Adding a compatible input or supported channel can be minor; a compatible correction can be patch. Record actual supported behavior rather than inferring compatibility from a tag name.
 
-A movable `v1` alias is a convenience for consumers that intentionally accept updates. A consumer requiring reviewed content should retain a full SHA and its release association. Keep version releases immutable under the chosen policy. Repository release protections may constrain tag updates; account for them rather than blindly force-moving a tag. Rollback normally restores the consumer's last known-good SHA; a corrected action gets a new version/commit.
+A movable `v1` alias is a convenience for consumers that intentionally accept updates. A consumer requiring reviewed content should retain a full SHA and its release association. Keep version releases immutable under the chosen policy. Check repository release protections before attempting a tag update. Rollback normally restores the consumer's last known-good SHA; a corrected action gets a new version/commit.
 
 ## Transfer exercise and retrieval
 
@@ -192,6 +187,6 @@ Local readiness includes working program contracts, matching distribution, a com
 
 Continue sequentially to [0055 · Capstone specification and orchestrator design](0055-capstone-specification-and-orchestrator-design.md), the start of Module 10.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0053 · Create a Docker action with tested arguments, mounts, and outputs](0053-own-docker-action-and-image-contract.md) | [Curriculum](index.md) | [0055 · Specify the repository-health orchestrator and acceptance criteria](0055-capstone-specification-and-orchestrator-design.md) |

@@ -6,20 +6,13 @@ lesson_status: authored
 
 # 0020 · Pure functions, process adapters, and Node unit tests
 
-!!! note "Authored reference lesson"
-    `labs/0020/` contains a deterministic timing-report function, its real Node adapter, and a temporary mutation experiment. Pause at predictions during teaching. Passing author-run tests is not evidence that a learner has completed the exercises.
-
-## Prerequisites and goal
-
-Read [0019 · Runtime and adapter](0019-javascript-action-runtime-and-toolkit.md) and [0009 · Function and process tests](0009-unit-tests-fixtures-and-output-files.md). You should be able to explain why a valid return value does not prove that an action wrote the correct output file.
-
-Produce a report from supplied workflow-step durations and a total-time budget. Success means one function test catches a boundary error, one process test catches an input/output defect, and you can justify why both layers are necessary.
+`labs/0020/` separates a deterministic timing-report function from its Node adapter. Use the temporary mutation experiment to see which tests catch a broken failure path.
 
 ## Separate the policy from its transport
 
 The existing `examples/javascript-action/greet.cjs` already receives a value and returns a value. Its companion entrypoint reads environment strings and writes outputs. Inspect that split before extending it into the timing-report lab. The shared example remains unchanged.
 
-A **pure function** depends on explicit arguments and returns a result without reading environment variables, doing I/O, or changing its arguments. This makes a rule testable without constructing a workflow. The useful rule here is deliberately small: sum the supplied durations and decide whether their total is at most the supplied budget.
+A **pure function** depends on explicit arguments and returns a result without reading environment variables, doing I/O, or changing its arguments. This makes a rule testable without constructing a workflow. The function sums the supplied durations and checks whether the total exceeds the supplied budget.
 
 ```javascript title="Core of labs/0020/report.cjs"
 function timingReport(durations, budget) {
@@ -113,7 +106,7 @@ Node's built-in [test runner](https://nodejs.org/docs/latest-v24.x/api/test.html
 
 ## Test the actual entrypoint too
 
-Predict whether a passing pure-function suite would detect this adapter bug: reading `INPUT_DURATION` instead of the declared `INPUT_DURATIONS`. The function itself would remain correct.
+The adapter reads `INPUT_DURATION` instead of the declared `INPUT_DURATIONS`. Predict whether the pure-function tests would detect this bug. The function itself would remain correct.
 
 ```bash
 node --test labs/0020/process.test.cjs
@@ -156,7 +149,7 @@ The script creates a temporary copy **inside this lab**, changes only that opera
 For a second deliberate failure, in your own lab copy replace `budget` inside the function with `Number(process.env.INPUT_BUDGET ?? 10)`. Call the function twice with the same arguments while changing that environment value. Predict what happens before trying it.
 
 ??? tip "Hidden-state diagnosis"
-    A function advertised as depending on explicit `budget` now reads a second, hidden budget. Identical arguments can produce different answers, and test order can affect results if a test fails to restore the environment. Keep environment reading in `index.cjs`, pass the number once, and keep the function independent of process configuration. A regression test can call with an explicit budget under two environments and require the same result, restoring the environment afterward.
+    The function now reads a hidden budget as well as its `budget` argument. Identical arguments can produce different answers. A test that leaves the environment changed can also affect later tests. Keep environment reading in `index.cjs`, pass the number once, and keep the function independent of process configuration. A regression test can call with an explicit budget under two environments and require the same result, restoring the environment afterward.
 
 ## Transfer and retrieval
 
@@ -177,10 +170,10 @@ Answer from memory:
 
 ## Verification limits and next session
 
-Function tests establish deterministic policy examples. Process tests establish the real Node adapter's local I/O behavior. They do not measure real workflow duration, execute metadata, evaluate the gate expression, or prove GitHub output consumption. There are no API or hosted calls in this lab. The [local-testing guide](../cheatsheet/local-testing.md) explains when to add a workflow run.
+Function tests check the report rules with fixed inputs. Process tests check how the Node adapter reads inputs, writes outputs, and reports failure. They do not measure real workflow duration, execute metadata, evaluate the gate expression, or prove GitHub output consumption. There are no API or hosted calls in this lab. The [local-testing guide](../cheatsheet/local-testing.md) explains when to add a workflow run.
 
 Primary references were checked on **2026-10-30** through the [curated library](../references/resources.md); commands and author-run evidence are recorded in the module handoff. Continue to [0021](0021-typescript-bundling-and-dist-drift.md), where correct source code can still be packaged incorrectly.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0019 · JavaScript action metadata, the Node runtime, and the Actions Toolkit](0019-javascript-action-runtime-and-toolkit.md) | [Curriculum](index.md) | [0021 · TypeScript compilation, bundling, and committed distribution files](0021-typescript-bundling-and-dist-drift.md) |

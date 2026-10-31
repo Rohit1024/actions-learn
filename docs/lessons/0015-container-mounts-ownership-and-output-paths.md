@@ -6,16 +6,7 @@ lesson_status: authored
 
 # 0015 · Workspace mounts, user IDs, ownership, and output paths
 
-!!! note "Authored reference lesson"
-    The lab is developed under `labs/0015/`. Predict file visibility and status before running commands or opening solutions. No learner mastery is inferred from author checks.
-
-## Prerequisites and goal
-
-Use [0014 · Build context](0014-dockerfiles-layers-and-build-context.md), [0005 · Output files](0005-environment-files-and-output-contracts.md), and [0010 · Engines and architecture](0010-container-engines-images-and-architecture.md). Recall that image files are packaged at build time, while a runner supplies workspace and command-file paths at execution time.
-
-Make an action read a caller fixture, write a report visible to later steps, and publish a named result through the supplied output path. Success means you can map both filesystem views and diagnose an absent output without loosening unrelated permissions.
-
-The program in `labs/0015/action/` reads `GITHUB_WORKSPACE/name.txt`, writes `report.txt` beside it, and appends two records to `GITHUB_OUTPUT`. This is a focused extension of the greeting example. All commands run from the repository root; the probe creates and cleans temporary fixture directories, including a path containing spaces.
+Use `labs/0015/` to predict which files the container can read and write. Check file visibility and exit status before opening the solutions.
 
 ## A mount maps paths; it does not copy results afterward
 
@@ -52,11 +43,11 @@ Bind-mount paths are resolved on the **engine host**. With a remote daemon, an a
 
 The Dockerfile copies the entrypoint to `/opt/action/entrypoint.py` and uses exec-form `ENTRYPOINT ["python3", "/opt/action/entrypoint.py"]`. It has no `WORKDIR` or `USER`. GitHub sets the working directory to its workspace and mounts that directory over the corresponding image location. Content baked into the image at that mount target can be obscured; putting tool code at an absolute path elsewhere avoids that collision.
 
-For manual image tests, the probe supplies `--workdir /work` as well as `GITHUB_WORKSPACE=/work`. Those are distinct settings: an environment variable does not change the current directory by itself. This program uses `Path(os.environ["GITHUB_WORKSPACE"])` explicitly, so its file contract is not dependent on an accidental cwd.
+For manual image tests, the probe supplies `--workdir /work` as well as `GITHUB_WORKSPACE=/work`. Setting the environment variable does not change the working directory. The command needs both settings. This program uses `Path(os.environ["GITHUB_WORKSPACE"])` explicitly, so its file contract is not dependent on an accidental cwd.
 
 The action metadata exposes `greeting` and `report`, selects `using: docker` and `image: Dockerfile`, and needs no arguments. The caller fixture is its input. Here is the program's essential path:
 
-```python title="labs/0015/action/entrypoint.py — core operations"
+```python title="labs/0015/action/entrypoint.py, core operations"
 workspace = Path(workspace_value)
 name = (workspace / "name.txt").read_text(encoding="utf-8").strip()
 if not name or "\n" in name or "\r" in name:
@@ -76,16 +67,18 @@ The complete program first requires both environment paths and catches validatio
     If writing the report succeeds but opening `GITHUB_OUTPUT` fails, which file remains? Should a later step treat that file as proof the action succeeded?
 
 ??? tip "Worked prediction"
-    `report.txt` can remain, while the action exits 1 and publishes no new named result. The two writes are separate filesystem operations. The caller must inspect status; a preexisting or partial report is not a substitute. A production action can stage artifacts and publish only after validation, but still needs an explicit policy for a failure between artifact commit and output publication.
+    `report.txt` can remain, while the action exits 1 and publishes no new named result. The two writes are separate filesystem operations. The caller must inspect status; a preexisting or partial report is not a substitute. A production action can write temporary artifacts and publish them after validation. It must still handle a failure between committing the artifact and writing the named output.
 
 ## Observe paths on the host first
+
+The program in `labs/0015/action/` reads `GITHUB_WORKSPACE/name.txt`, writes `report.txt` beside it, and appends two records to `GITHUB_OUTPUT`. Run commands from the repository root. The probe creates and cleans temporary fixture directories, including a path containing spaces.
 
 ```bash
 uv run --no-sync python labs/0015/mount_probe.py
 uv run --no-sync python labs/0015/mount_probe.py --mode missing
 ```
 
-The first command runs the actual entrypoint with host paths. Expected: adapter exit 0, no stderr, output bytes `greeting=Hello, Ada!\nreport=report.txt\n`, and report bytes `Hello, Ada!\n`. It also prints the process's effective UID and the report owner's UID. Exact temporary paths and user IDs vary; authoring observed UID **501** for this host run.
+The first command runs the actual entrypoint with host paths. Expected: adapter exit 0, no stderr, output bytes `greeting=Hello, Ada!\nreport=report.txt\n`, and report bytes `Hello, Ada!\n`. It also prints the process's effective UID and the report owner's UID. Temporary paths and user IDs vary. The recorded host run used UID 501.
 
 The second supplies an output file in a nonexistent parent directory. Expected: adapter exit 1, a file-not-found diagnostic, an empty original output file, and a report that still exists. The **probe exits 0** because it asserts that intended failure and the remaining side effect. It ends with `PASS: observed the selected path boundary (including intended failure)`.
 
@@ -137,7 +130,7 @@ uv run --no-sync python labs/0015/mount_probe.py --container --mode read-only
 Expected: adapter exit 1, filesystem diagnostic on stderr, empty command file, and an existing report. This marks the command-file mount read-only; workspace writes remain permitted. A read-only mount provides a meaningful negative check even if the container user is root. A `chmod` test alone can be misleading when privileged processes bypass some mode-bit checks.
 
 !!! note "Deferred container evidence"
-    During authoring, the existing Podman connection was refused. The image, private-path and read-only tests above are developed but unexecuted. An engine/socket error is earlier than these intended mount failures and cannot be counted as reproducing them.
+    Podman refused the connection during the recorded checks. The image, private-path, and read-only tests have not run. An engine connection error happens before any mount check and does not reproduce the intended failures.
 
 ## Ownership is part of the caller contract
 
@@ -159,7 +152,7 @@ Do not apply `chmod -R 777` to a repository as a diagnostic shortcut. It cannot 
 
 `labs/0015/consumer.yml` is an inactive manual-dispatch recipe. After the pinned checkout and `printf '%s\n' Ada > name.txt`, it calls:
 
-```yaml title="labs/0015/consumer.yml — caller excerpt"
+```yaml title="labs/0015/consumer.yml, caller excerpt"
 - id: report
   uses: ./labs/0015/action
 - env:
@@ -195,6 +188,6 @@ The author executed both host modes and linted the consumer. Mount behavior, ima
 
 Primary sources were checked on **2026-10-30**; see the [reference library](../references/resources.md) and `labs/module-3-handoff.md`.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0014 · Dockerfile layers, build context, reproducible bases, and entrypoints](0014-dockerfiles-layers-and-build-context.md) | [Curriculum](index.md) | [0016 · Test container logic directly and the built image separately](0016-docker-action-direct-and-image-tests.md) |

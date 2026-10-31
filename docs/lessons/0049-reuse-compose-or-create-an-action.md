@@ -6,20 +6,13 @@ lesson_status: authored
 
 # 0049 · Decide when to reuse, compose, or create your own action
 
-!!! note "Authored reference lesson"
-    This starts Module 9's complete creation path. Predict each decision before opening its worked explanation. The lesson and assistant-run checks establish available material, not learner mastery.
-
-## Prerequisites and goal
-
-Continue after [0048 · Hosted trials and diagnostics](0048-agentic-hosted-trials-budgets-and-diagnostics.md). Review [0042 · Maintained action composition](0042-compose-maintained-actions-and-manage-updates.md), [0012 · Local and hosted coverage](0012-local-hosted-coverage-and-usage-budget.md), and the [module guide](create-your-own-action.md). Recall [0001's execution boundaries](0001-execution-model.md): a workflow owns jobs, a job selects a runner, and a step either runs a command or calls an action. If a repeated step sequence needs a second runner, the reuse boundary has changed.
-
-By the end, you should be able to choose a maintained action, a composite, a Node action, a Docker action, or a reusable workflow for a concrete request. Your evidence is a written caller contract and an explanation of the cheapest check that can observe it. All commands on this page run from the repository root with the [existing host tools](../cheatsheet/local-testing.md).
+Start Module 9 with the caller's requirement. Choose an implementation only after you can state what the caller needs to observe.
 
 ## Begin with a caller requirement
 
-An **action** is a reusable unit invoked by a job step. Creating one introduces a public interface and a maintenance obligation: callers depend on its names, defaults, outputs, failure behavior, and runtime files. A short script that only one workflow uses can remain an explicit project command. Wrapping it becomes useful when several callers need a stable policy or reusable behavior.
+An **action** is a reusable unit invoked by a job step. Callers depend on its input names, defaults, outputs, failure behavior, and runtime files. Creating an action means maintaining those promises. A short script that only one workflow uses can remain an explicit project command. Wrapping it becomes useful when several callers need a stable policy or reusable behavior.
 
-Before implementing anything, write one sentence describing the caller's need. For example: “Every repository should select Node 24, restore npm's download cache using its lockfile, and receive the installed version.” Runtime installation is already maintained by `actions/setup-node`; our own contribution can be the narrower team interface. GitHub's [building-block guide](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/find-and-customize-actions) explains how callers reference actions.
+Before implementing anything, write one sentence describing the caller's need. For example: "Every repository should select Node 24, restore npm's download cache using its lockfile, and receive the installed version." Runtime installation is already maintained by `actions/setup-node`; our own contribution can be the narrower team interface. GitHub's [building-block guide](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/find-and-customize-actions) explains how callers reference actions.
 
 The [dated catalog](../references/prebuilt-actions.md) is a discovery aid. Check task fit and upstream input/output metadata before choosing a component. Popularity is dated evidence, and a verified creator badge identifies the publisher; neither establishes that the code meets your contract. This module reuses the existing reviewed full commit references instead of silently updating them.
 
@@ -56,9 +49,11 @@ flowchart TD
 
 A **composite** packages steps in the caller's job. A **reusable workflow** is called at the job level and can contain multiple jobs. GitHub's [comparison in the composite tutorial](https://docs.github.com/en/actions/tutorials/create-actions/create-a-composite-action#composite-actions-and-reusable-workflows) describes these distinct scopes. An action does not declare its own trigger or job-level token permissions.
 
-A **Node action** executes JavaScript selected by metadata. TypeScript can author that implementation, but the consumer runs JavaScript. A **Docker action** packages a Linux process in an image; the runner still supplies arguments, workspace mounts, output files, and status handling. Python existing on the host is not by itself a reason to introduce a container. Use one when consistent Linux tooling or dependencies justify its cost.
+A **Node action** executes JavaScript selected by metadata. You can write the implementation in TypeScript. The consumer runs its generated JavaScript. A **Docker action** packages a Linux process in an image; the runner still supplies arguments, workspace mounts, output files, and status handling. Python existing on the host is not by itself a reason to introduce a container. Use one when consistent Linux tooling or dependencies justify its cost.
 
 ## Inspect the existing examples before adding code
+
+Run commands from the repository root with the [existing host tools](../cheatsheet/local-testing.md).
 
 Open `examples/project-setup-action/action.yml`. Its useful team interface is two inputs, `node-version` and `cache-dependency-path`, and the `node-version` output. Internally, it calls setup-node. The caller still owns checkout and project commands:
 
@@ -83,7 +78,7 @@ uv run python scripts/test_actions.py
 
 Expected: four test methods report `ok`, followed by `OK`. Their subcases exercise the JavaScript, bundled TypeScript, Python entrypoint, and composite script directly. They verify equivalent greeting output, invalid inputs, append behavior, and missing-output errors. They do not invoke setup-node or execute Docker metadata.
 
-**Prediction:** if all four implementations produce `greeting=Hello, Ada!`, have you proved that four custom runtimes are needed?
+If all four implementations produce `greeting=Hello, Ada!`, does that justify maintaining all four? Explain your choice before opening the answer.
 
 ??? tip "Worked interpretation"
     Equivalent results expose packaging choices, not a requirement for four implementations. Choose the cheapest maintainable boundary that satisfies actual runtime and portability needs. The Node function is enough for this tiny transformation; the other examples teach interfaces and test layers.
@@ -101,9 +96,9 @@ Record input names and accepted strings, defaults, invalid cases, output name, e
 
 ## Break the design, then repair its responsibility
 
-Propose a custom installer that downloads “latest Node,” extracts it into a hardcoded system directory, and assumes every runner has the same architecture. Do not run it. Identify who now maintains integrity checks, platform selection, PATH updates, caching, and new releases.
+Propose a custom installer that downloads "latest Node," extracts it into a hardcoded system directory, and assumes every runner has the same architecture. Do not run it. Identify who now maintains integrity checks, platform selection, PATH updates, caching, and new releases.
 
-**Observable design failure:** your proposed installer cannot satisfy the declared cross-repository setup contract without adding responsibilities already owned by setup-node. A successful download on your laptop would not resolve the other cases.
+The proposed installer takes on work that setup-node already maintains. It cannot meet the cross-repository setup contract until you also implement and maintain those parts. A successful download on your laptop would not resolve the other cases.
 
 ??? tip "Diagnosis and repair"
     Trace the requirement to the existing action's metadata, rather than debugging an installer implementation. Replace installation logic with a reviewed setup-node call. Add a composite only if the narrower team defaults and output mapping are valuable. In 0051, the actual failure becomes a missing caller lockfile; adding an installer fallback would conceal that error instead of fixing the file boundary.
@@ -124,10 +119,10 @@ Answer without reopening the table:
 
 ## Verification limits and next lesson
 
-The decision record is a design artifact. The adapter tests give actual process evidence for existing examples; neither establishes that a chosen remote action executed successfully. A reviewed, bounded GitHub consumer remains necessary for platform services and intended runner compatibility. No hosted or model execution is part of this authoring work.
+The decision record is a design artifact. The adapter tests give actual process evidence for existing examples; neither establishes that a chosen remote action executed successfully. A reviewed, bounded GitHub consumer remains necessary for platform services and intended runner compatibility. The recorded checks include no hosted execution or model calls.
 
 Primary references were checked on **2026-10-30**; exact URLs and executed checks are recorded in `labs/module-9-handoff.md`. Continue to [0050](0050-own-action-metadata-and-contracts.md) to turn the chosen boundary into metadata and executable assertions.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0048 · Hosted trials, model variability, usage budgets, and diagnostics](0048-agentic-hosted-trials-budgets-and-diagnostics.md) | [Curriculum](index.md) | [0050 · Design action.yml inputs, outputs, runtimes, and failure contracts](0050-own-action-metadata-and-contracts.md) |

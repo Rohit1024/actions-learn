@@ -6,13 +6,7 @@ lesson_status: authored
 
 # 0040 · Compose Docker build and cloud authentication actions
 
-Separate builder setup, image metadata, build/export, registry login and cloud identity. A build can produce an OCI file without publishing an image. Authentication is a distinct authority boundary, not a side effect to hide inside a build script.
-
-## Prerequisites and observable goal
-
-Read [0039 · Setup and result exchange](0039-setup-cache-and-artifact-actions.md), [0014 · Docker build context](0014-dockerfiles-layers-and-build-context.md), and [0033 · OIDC and environments](0033-oidc-environments-and-hosted-policy.md). Be ready to distinguish the filesystem used as a build context from the credentials used to access a registry.
-
-You will trace tags and labels into a build-only recipe, explain its OCI output, and reject an unintended push. You will also test a synthetic intended-identity policy that rejects a wrong subject or absent token-request permission. Success means you can state exactly which image, registry and cloud claims still need real integration evidence.
+Separate builder setup, image metadata, build/export, registry login and cloud identity. A build can produce an OCI file without publishing an image. Registry and cloud credentials determine which protected operations the job can perform. Configure that access explicitly.
 
 !!! note "No infrastructure is needed for the host lab"
     Run commands from the repository root using the existing `.venv`. The policy programs make no Docker, registry or cloud calls. Check engine availability before any future container exercise; a local policy pass cannot establish that an image was built.
@@ -137,12 +131,12 @@ Design a separate job that would publish a reviewed image to GHCR after tests, w
 4. Which identity questions cannot be answered by this lab's JSON policy?
 
 ??? tip "Worked explanation"
-    Metadata supplies tags and labels; the build action consumes them. A path context uses checkout files, while Git context selects repository content independently of earlier local changes. OCI export creates transferable image data. Publication needs intended credentials and service authorization; OIDC additionally needs signed claims and real provider trust. Record immutable image identity and partial-side-effect recovery separately from build success.
+    Metadata supplies tags and labels; the build action consumes them. A path context uses checkout files, while Git context selects repository content independently of earlier local changes. OCI export creates transferable image data. Publication needs intended credentials and service authorization; OIDC also needs signed claims and configured provider trust. Record immutable image identity and partial-side-effect recovery separately from build success.
 
 ## Verification boundary
 
-A refused engine socket blocks image and builder execution, while the host policy tests remain usable. Image construction, metadata action execution, hosted artifacts, registry authorization, effective OIDC and cross-OS behavior need their own evidence. A local policy pass supplies none of those observations. No learner mastery follows from assistant checks.
+A refused engine socket blocks image and builder execution, while the host policy tests remain usable. Image construction, metadata action execution, hosted artifacts, registry authorization, effective OIDC and cross-OS behavior need their own evidence. A local policy pass supplies none of those observations.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0039 · Use setup, cache, and artifact actions instead of bootstrap scripts](0039-setup-cache-and-artifact-actions.md) | [Curriculum](index.md) | [0041 · Automate releases, pull requests, and reports with pre-built actions](0041-release-pr-and-reporting-actions.md) |

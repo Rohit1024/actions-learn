@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0050 · Design action.yml inputs, outputs, runtimes, and failure contracts
 
-!!! note "Authored reference lesson"
-    This page develops a real metadata file, a runnable adapter, an inactive consumer, and success/failure probes. Predict each case before running it. Authored content and author-run checks do not demonstrate learner mastery.
-
-## Prerequisites and observable goal
-
-Read [0049 · Choose a reuse boundary](0049-reuse-compose-or-create-an-action.md) and revisit [0005 · Output channels](0005-environment-files-and-output-contracts.md). You need to distinguish an Actions expression, an environment input, a log, and a named output. Use the [module guide](create-your-own-action.md) for the six-lesson path.
-
-Your goal is to trace one caller input through metadata into a process, then back through the runner's output file to the caller. You will diagnose a missing runtime validator and explain why changing `required` does not fix it. Run commands from the repository root; the lab uses installed Node 24 and temporary files.
+Read the metadata, run its adapter, and trace the output to an inactive consumer. Predict each success and failure case before running its probe.
 
 ## Metadata describes the action boundary
 
@@ -66,7 +59,7 @@ For this package, the contract is:
 | Input contains CR or LF | Exit 1 with diagnosis | None |
 | Missing or unwritable output path | Exit 1 | None from a completed success write |
 
-A workflow omission allows the metadata default. A direct `node index.cjs` invocation does not evaluate metadata: the copied adapter independently uses `process.env.INPUT_NAME ?? 'World'`. The `??` fallback handles an absent environment property, not an empty string. These are two different defaulting mechanisms that happen to agree here.
+A workflow omission allows the metadata default. A direct `node index.cjs` invocation does not evaluate metadata. The copied adapter applies its own fallback with `process.env.INPUT_NAME ?? 'World'`. The `??` fallback handles an absent environment property, not an empty string. These are two different defaulting mechanisms that happen to agree here.
 
 For a runner-style missing required input without a default, the implementation must still reject the empty/missing value it receives. Adding `required: true` alone is insufficient. Do not infer nonempty data from a declaration.
 
@@ -80,7 +73,7 @@ For a runner-style missing required input without a default, the implementation 
 
 The copied `greet.cjs` owns the domain rule:
 
-```javascript title="labs/0050/action/greet.cjs — function excerpt"
+```javascript title="labs/0050/action/greet.cjs, function excerpt"
 function greet(name) {
   if (typeof name !== 'string' || /[\r\n]/u.test(name) || !name.trim()) {
     throw new Error('name must be a nonempty, single-line string');
@@ -94,6 +87,8 @@ This rule deliberately keeps results single-line. Without it, a value such as `A
 The copied `index.cjs` owns the **adapter**, the code translating the runner interface into a function call. It reads `INPUT_NAME`, validates it, checks `GITHUB_OUTPUT`, appends the output record, logs a diagnostic, and sets a failed exit code on errors. It appends rather than truncating the file. A human log does not create `steps.greeting.outputs.greeting`; the [runner output protocol](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands#setting-an-output-parameter) does.
 
 ## Lab: exercise the real process contract
+
+Run commands from the repository root. The lab uses the installed Node 24 and temporary files.
 
 Run:
 
@@ -111,9 +106,9 @@ PASS: whitespace process input; exit=1
 PASS: output-record injection; exit=1
 ```
 
-The probe creates a real output file whose path contains spaces, seeds `existing=value`, and launches the actual adapter for each case. It asserts the exit code and exact file contents, including preservation of the earlier record. The first case explicitly supplies `World`; the label describes the runner-style value, not a claim that a runner executed. The probe itself exits zero because the invalid child cases fail as intended.
+The probe creates a real output file whose path contains spaces, seeds `existing=value`, and launches the actual adapter for each case. It asserts the exit code and exact file contents, including preservation of the earlier record. The first case supplies `World` directly. It checks the value a runner would pass after applying the default, without testing how the runner applies that default. The probe itself exits zero because the invalid child cases fail as intended.
 
-Before adding a new input, write its valid, invalid, omitted, explicitly empty, missing-output, and failed-I/O cases. Do not silently make empty mean “default” unless that is the intended public policy.
+Before adding a new input, write its valid, invalid, omitted, explicitly empty, missing-output, and failed-I/O cases. Do not silently make empty mean "default" unless that is the intended public policy.
 
 ### Break validation without editing the working package
 
@@ -146,7 +141,7 @@ The diagnostic also displays the unexpected output records. The probe generates 
   run: test "$GREETING" = 'Hello, World!'
 ```
 
-The caller's step `id` supplies the `steps.greeting` reference. A direct process test cannot evaluate that expression. The local `uses` path starts at the checked-out workspace; `main` starts at the action package. Confusing these roots produces “metadata not found” or “entrypoint not found” symptoms at different boundaries.
+The caller's step `id` supplies the `steps.greeting` reference. A direct process test cannot evaluate that expression. The local `uses` path starts at the checked-out workspace; `main` starts at the action package. Confusing these roots produces "metadata not found" or "entrypoint not found" symptoms at different boundaries.
 
 Different action kinds transport the same logical interface differently:
 
@@ -168,7 +163,7 @@ Add a proposed `style` input to your contract worksheet with accepted values `fo
 4. What does the caller see when validation fails normally?
 
 ??? tip "Worked transfer and retrieval"
-    Add a string input declaration and default, transport the style into the domain function, and validate the two accepted values before writing output. Test both styles, omission, empty data, unknown data, and unchanged prior records on failure. `main` identifies an action-package file executed by the declared runtime. Composite outputs map an internal step's result through `outputs.<name>.value`. A normal failed process makes the action step fail and later success-conditioned steps skip; no success output should be emitted. A caller can explicitly alter failure handling, so that policy also needs review.
+    Add a string input declaration and default, transport the style into the domain function, and validate the two accepted values before writing output. Test both styles, omission, empty data, unknown data, and unchanged prior records on failure. The declared runtime executes the action-package file named by `main`. Composite outputs map an internal step's result through `outputs.<name>.value`. Normally, a failed process fails the action step and later steps that require success skip. The process should emit no success output. A caller can explicitly alter failure handling, so that policy also needs review.
 
 ## Verification limits
 
@@ -176,6 +171,6 @@ The probe checks real environment transport, output-file writes, and status. Sta
 
 Primary sources were checked on **2026-10-30**; see the [source library](../references/resources.md) and `labs/module-9-handoff.md`. Continue to [0051](0051-own-composite-action-from-prebuilt-actions.md).
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0049 · Decide when to reuse, compose, or create your own action](0049-reuse-compose-or-create-an-action.md) | [Curriculum](index.md) | [0051 · Create a composite action by composing pre-built actions](0051-own-composite-action-from-prebuilt-actions.md) |

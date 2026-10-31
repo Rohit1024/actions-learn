@@ -6,13 +6,7 @@ lesson_status: authored
 
 # 0041 · Automate releases, pull requests, and reports with pre-built actions
 
-Replace standard release and reporting API glue with reviewed action interfaces. Keep the operation, producer trust and write permission visible. Opening a pull request, publishing a release and uploading coverage are different external effects even when all appear near the end of CI.
-
-## Prerequisites and observable goal
-
-Read [0040 · Build and identity boundaries](0040-docker-build-and-cloud-auth-actions.md), [0031 · Token and fork trust](0031-github-token-forks-and-trust-boundaries.md), and [0032 · Privileged events and artifacts](0032-script-injection-artifacts-and-privileged-events.md). Recall that artifacts can carry untrusted content even when a privileged workflow downloads them successfully.
-
-You will choose an action for each intended effect, state its authority requirements, and test local write-admission and report-consumption policies. Success means you can reject a fork-event write plan, distinguish release proposals from actual releases, and preserve a failing report's status without creating a real PR, release, check run or external upload.
+Replace standard release and reporting API glue with reviewed action interfaces. State the operation, identify which code or report you trust, and grant only its required write permission. Opening a pull request, publishing a release and uploading coverage are different external effects even when all appear near the end of CI.
 
 !!! note "Inactive recipes and bounded fixtures"
     Work from the repository root using the existing `.venv`. The workflow stays under `labs/0041/`. Host commands read JSON/XML fixtures and perform no API calls. A fixture's acknowledgment field is an input to a policy test, not a real user's approval or a GitHub environment review.
@@ -37,7 +31,7 @@ Release Please interprets supported commit conventions and release configuration
 
 The lab deliberately requests **proposal-only** behavior:
 
-```yaml title="labs/0041/release.yml — job excerpt"
+```yaml title="labs/0041/release.yml, job excerpt"
 propose:
   if: inputs.acknowledge_writes && github.ref == 'refs/heads/main' # (1)!
   runs-on: ubuntu-latest
@@ -98,7 +92,7 @@ This is an interface excerpt, not a runnable workflow added to GitHub. A constan
 
 A test report is input data. A reporter parses that data; it does not rerun or validate the tests that allegedly produced it. Test-reporter's own documentation warns that a same-workflow check writer cannot operate with the usual restricted fork-PR token. Switching to `pull_request_target` and executing the fork's code would move untrusted execution into a privileged context.
 
-A separate privileged reporter can be designed to read bounded data from a known workflow/run/commit and create checks. Validate producer identity and expected files; never execute downloaded report scripts. Keep required test success separate from report delivery. `if: ${{ !cancelled() }}` can allow a bounded report step after failed tests, but a successful report must not erase the failing test result.
+A separate privileged reporter can read a size-limited report from a known workflow, run, and commit, then create checks. Validate producer identity and expected files; never execute downloaded report scripts. Keep required test success separate from report delivery. `if: ${{ !cancelled() }}` can allow a bounded report step after failed tests, but a successful report must not erase the failing test result.
 
 Codecov upload is another service boundary. It sends coverage data to a third party and needs its own repository/service identity and upload policy. Neither a local XML parser nor `checks: write` proves that service authentication or upload succeeded.
 
@@ -159,8 +153,8 @@ Design a generated changelog PR and a fork-safe test report. Name the generator,
 
 ## Verification boundary
 
-Local checks validate intended-effect policy and bounded XML consumption. They do not establish actual token scopes, PR/release/check writes, downstream CI approvals, fork restrictions, Codecov upload, or service behavior. Those require separately reviewed hosted checks. No authored page or assistant-run fixture establishes learner mastery.
+Local checks validate intended-effect policy and bounded XML consumption. They do not establish actual token scopes, PR/release/check writes, downstream CI approvals, fork restrictions, Codecov upload, or service behavior. Those require separately reviewed hosted checks.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0040 · Compose Docker build and cloud authentication actions](0040-docker-build-and-cloud-auth-actions.md) | [Curriculum](index.md) | [0042 · Compose an action-based pipeline and maintain its dependencies](0042-compose-maintained-actions-and-manage-updates.md) |

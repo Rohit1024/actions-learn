@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0030 · Compose setup/build/test steps and reusable job workflows
 
-!!! note "Reference lesson"
-    `labs/0030/` combines a setup composite, reusable worker draft, explicit caller graph, and deterministic host evidence checks. The final path prints a plan only. There is no release, deployment, API write, or model call, and written availability does not establish learner mastery.
-
-## Prerequisites and observable goal
-
-Read [0029 · Reusable workflow interfaces](0029-reusable-workflows-and-permission-interfaces.md) and retrieve failure propagation from [0006](0006-matrices-dependencies-and-cancellation.md). Explain why a file created on one runner is not automatically present on another.
-
-Build a plan → build/test → join → publish-plan graph with visible runner and permission policy. Success means the gate accepts only two successful workers with complete, matching evidence; a failed, skipped, absent, or stale test result must block it. Explain which behavior is real host execution and which still needs workflow/platform execution.
+`labs/0030/` combines a setup composite, a reusable worker draft, and a caller graph with host tests. The final step prints a plan. It does not release, deploy, write through an API, or call a model.
 
 ## Assign each responsibility once
 
@@ -27,7 +20,7 @@ A **worker** performs bounded project work. An **orchestrator** supplies inputs,
 | `gate.cjs` | Require successful statuses and exact candidate/schema/pass evidence |
 | `publish-plan` job | Print a synthetic readiness plan, with no external side effect |
 
-Hiding `runs-on`, `needs`, or release policy inside a composite cannot work: a step component does not create or schedule its parent job. Put job policy in the caller or reusable job. Keep repository-specific build/test commands visible rather than wrapping them in an installer action.
+A composite cannot set its parent job's `runs-on` or `needs`. Define runner selection, job dependencies, and release policy in the workflow. Put job policy in the caller or reusable job. Keep repository-specific build/test commands visible rather than wrapping them in an installer action.
 
 ```mermaid
 flowchart TD
@@ -51,7 +44,7 @@ The two worker calls can become eligible after plan succeeds. Eligibility is not
 
 The setup composite contains one maintained setup-node step at the reviewed catalog pin:
 
-```yaml title="labs/0030/setup/action.yml — reuse excerpt"
+```yaml title="labs/0030/setup/action.yml, reuse excerpt"
 outputs:
   node-version:
     description: Installed Node version.
@@ -66,7 +59,7 @@ runs:
         package-manager-cache: false # (1)!
 ```
 
-1. No project package installation or cache is needed: the fixture uses Node built-ins and the existing runtime. The `node-version` input defaults to `'24'`. The public output is the actual installed version, not necessarily the selector text.
+1. The fixture uses Node built-ins and the installed runtime, so it needs no package installation or cache. The `node-version` input defaults to `'24'`. The public output is the actual installed version, not necessarily the selector text.
 
 The reusable worker separately checks out files, calls this local composite, validates its `kind` and failure selector, then runs one of these explicit project commands:
 
@@ -116,7 +109,7 @@ Maintained upload/download actions handle platform file transport. Small names a
 
 The caller uses two distinct job IDs rather than a matrix so each branch has an unambiguous result:
 
-```yaml title="labs/0030/module5-orchestrator.yml — build call excerpt"
+```yaml title="labs/0030/module5-orchestrator.yml, build call excerpt"
 build:
   needs: plan
   uses: ./.github/workflows/module5-worker.yml
@@ -162,14 +155,14 @@ Only after both pass does the real process append `ready=true` and log readiness
 
 ## Run the deterministic local pipeline
 
-All files stay under disposable temporary directories. The harness invokes actual build/test/emitter/gate processes **sequentially on this host**. It does not emulate job scheduling, artifact upload/download, or parallel timing.
+All files stay under disposable temporary directories. The test script runs the build, test, emitter, and gate processes in sequence on this host. It does not emulate job scheduling, artifact upload/download, or parallel timing.
 
 ```bash
 node --test labs/0030/domain.test.cjs labs/0030/gate.test.cjs
 .venv/bin/python labs/0030/exercise.py
 ```
 
-Expected: **9 tests pass** in the Node command, followed by this successful harness output and exit **0**:
+Expected: **9 tests pass** in the Node command, then the test script prints the following output and exits 0:
 
 ```text
 host results: build=success, test=success
@@ -177,7 +170,7 @@ READY: build + test evidence match preview candidate
 PLAN ONLY: no release or deployment occurs
 ```
 
-The harness also asserts exact bundle bytes and emitter output records. The unit tests cover unsuccessful statuses, a missing file, a stale candidate, false/string-valued/wrong-kind/wrong-schema evidence, an extra file, and malformed JSON.
+The test script also checks the exact bundle bytes and emitter output records. The unit tests cover unsuccessful statuses, a missing file, a stale candidate, false/string-valued/wrong-kind/wrong-schema evidence, an extra file, and malformed JSON.
 
 !!! tip "Predict four blocked cases"
     Which condition fails if the test branch reports failure? If it reports success but its file disappears? If it skips? If it writes evidence for the previous candidate? Should any of these emit `ready=true`?
@@ -203,7 +196,7 @@ Each exits **1** and publishes no readiness output:
 The `fail-test` selector deliberately fails evidence emission after the domain test command; it models a required branch's failure and is not a mutation claiming the domain test itself failed.
 
 ??? tip "Diagnosis and repair"
-    A failed/skipped branch first fails the status requirement. A success-shaped status with a missing/stale file fails the evidence requirement. Restore the required branch and generate fresh evidence for the current candidate by running the default harness again. Do not repair the gate by accepting absent evidence, using the previous candidate, or making a required worker optional. In a real rerun, collect evidence from the intended run/attempt rather than silently reusing an earlier artifact.
+    A failed or skipped branch fails the status check. A reported success still fails the evidence check if its file is missing or stale. Restore the required branch and generate fresh evidence for the current candidate by running the default test script again. Do not repair the gate by accepting absent evidence, using the previous candidate, or making a required worker optional. In a real rerun, collect evidence from the intended run/attempt rather than silently reusing an earlier artifact.
 
 ## Inspect workflow policy separately
 
@@ -230,11 +223,11 @@ Retrieve without looking:
 2. Why does `needs` not transport files?
 3. What is missing from a join that checks only statuses?
 4. Why avoid a scalar matrix output for collecting every artifact name?
-5. Which part of this local harness actually ran in parallel?
+5. Which part of this local test script actually ran in parallel?
 6. Can a forged `passed: true` file authorize a real release?
 
 ??? tip "Retrieval check"
-    The reusable job chooses the runner. Dependencies order work and expose mapped outputs; artifacts transfer files. Success without expected evidence can still hide missing, stale, malformed, or wrong-worker results. Matrix scalar output selection is not aggregation. The host harness ran processes sequentially. A trusted production gate needs stronger identity/provenance and authorization controls than this synthetic consistency check.
+    The reusable job chooses the runner. Dependencies order work and expose mapped outputs; artifacts transfer files. Success without expected evidence can still hide missing, stale, malformed, or wrong-worker results. Matrix scalar output selection is not aggregation. The host test script ran processes in sequence. A production gate also needs authenticated producer identities, artifact provenance, and authorization. This synthetic check only tests consistency.
 
 ## Verification limits and sources
 
@@ -242,6 +235,6 @@ Direct tests validate host processes and the exact join policy. Static analysis 
 
 Primary references were checked **2026-10-30**: linked contexts, reuse and artifact guides; pinned [download metadata](https://raw.githubusercontent.com/actions/download-artifact/9000827ccba6bdab643e8b6fd33ac0654aef8333/action.yml); and the [dated action catalog](../references/prebuilt-actions.md). Continue to Module 6 at [0031 · Token and trust boundaries](0031-github-token-forks-and-trust-boundaries.md).
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0029 · Reusable workflows, typed inputs, explicit secrets, and permissions](0029-reusable-workflows-and-permission-interfaces.md) | [Curriculum](index.md) | [0031 · Least-privilege tokens, fork pull requests, and event trust boundaries](0031-github-token-forks-and-trust-boundaries.md) |

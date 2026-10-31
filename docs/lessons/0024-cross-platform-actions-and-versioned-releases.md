@@ -6,18 +6,11 @@ lesson_status: authored
 
 # 0024 · Cross-platform action behavior, dependency updates, and release versions
 
-!!! note "Authored reference lesson"
-    `labs/0024/` develops a portable Node file operation, host tests, an inactive OS-matrix recipe, and a release plan. No hosted matrix, tag, release, push, or publication has been executed. Authored material does not establish learner mastery or untested platform support.
-
-## Prerequisites and goal
-
-Read [0023 · Lifecycle and cleanup](0023-javascript-action-lifecycle-and-state.md) and retrieve the source/artifact distinction from [0021](0021-typescript-bundling-and-dist-drift.md). Recall that declaring Node 24 does not install arbitrary external binaries.
-
-Build a line-count action with explicit text/path semantics, then prepare a compatibility and versioning decision for consumers. Success means you can identify an OS assumption, verify the portable alternative locally, and state which evidence is still required before promising Linux, macOS, and Windows support.
+`labs/0024/` includes a Node file operation, host tests, an inactive OS matrix, and a release plan. The hosted matrix and publication steps have not run, so platform support still needs verification.
 
 ## Node compatibility has several boundaries
 
-A **cross-platform contract** states which operating systems, architectures, runner versions, path formats, and behaviors an action supports. “Written in JavaScript” does not settle all of those questions. A Node action can still call a Unix binary, use a hardcoded path separator, load a native addon, or depend on a particular runner image.
+A **cross-platform contract** states which operating systems, architectures, runner versions, path formats, and behaviors an action supports. "Written in JavaScript" does not settle all of those questions. A Node action can still call a Unix binary, use a hardcoded path separator, load a native addon, or depend on a particular runner image.
 
 The [JavaScript action tutorial](https://docs.github.com/en/actions/tutorials/create-actions/create-a-javascript-action) recommends pure JavaScript without external binary dependencies when targeting all hosted operating systems. The lab follows that principle with Node filesystem and path APIs. It does not claim those APIs erase filesystem case rules, permissions, or runner differences.
 
@@ -33,7 +26,7 @@ flowchart TD
     Reference --> Maintain["Review updates and repeat affected evidence"]
 ```
 
-The diagram includes future release gates; only the host/model/static checks described below were executed during authoring. No arrow implies that a deferred hosted gate has already passed.
+The diagram includes future release gates; the recorded checks cover only host execution, simulated paths, and static analysis. No arrow implies that a deferred hosted gate has already passed.
 
 ## Define the result before choosing an implementation
 
@@ -47,7 +40,7 @@ The diagram includes future release gates; only the host/model/static checks des
 
 This policy avoids inheriting the incidental behavior of a platform command. It is appropriate for small UTF-8 text fixtures read into memory. Huge or binary files would need a separately designed streaming/encoding contract.
 
-```javascript title="labs/0024/lines.cjs — text rule"
+```javascript title="labs/0024/lines.cjs, text rule"
 function lineCount(text) {
   if (typeof text !== 'string') throw new Error('text must be a string');
   if (!text) return 0;
@@ -105,7 +98,7 @@ execFileSync('wc', ['-l', file], { encoding: 'utf8' });
 ??? tip "Diagnosis and repair"
     The broken child exits 1 with `ENOENT`, exposing executable lookup as the failed boundary. Quoting the path or changing action metadata cannot install the missing binary. The repaired child uses Node's own file read and `lineCount`, succeeds with the same restricted `PATH`, and returns `count=2`. This is a deterministic missing-binary experiment on the current host, not a claim that a Windows runner was executed.
 
-The authoring host was **macOS ARM64, Node 24.21.0**. No dependency installation or external shell utility is required by the repaired action. A `.cjs` entrypoint removes ambiguity about the module format, but does not by itself guarantee compatibility with every Node version.
+The recorded host tests ran on macOS ARM64 with Node 24.21.0. No dependency installation or external shell utility is required by the repaired action. A `.cjs` entrypoint removes ambiguity about the module format, but does not by itself guarantee compatibility with every Node version.
 
 ## Prepare the intended hosted matrix
 
@@ -141,13 +134,13 @@ Static-check the recipe without dispatching it:
 
 Expected: no diagnostics and exit 0. A second inactive recipe, `labs/0019/module4-contracts.yml`, statically connects all six Module 4 action interfaces. It can be checked with the same command.
 
-Future hosted use requires a deliberate decision to copy a recipe into `.github/workflows/`, review the selected revision, and manually dispatch it. That is not part of this authoring task. The matrix has not been run, and `-latest` labels also move over time. Passing a single current runner image would not establish every self-hosted installation, architecture, or future image.
+Future hosted use requires a deliberate decision to copy a recipe into `.github/workflows/`, review the selected revision, and manually dispatch it. The matrix has not run. Runner images selected by `-latest` labels also change over time. Passing a single current runner image would not establish every self-hosted installation, architecture, or future image.
 
 `act` can exercise selected Linux wiring if an engine is available, but it does not turn Linux containers into macOS or Windows VMs. This module did not require or attempt container execution. See the [local/hosted guide](../cheatsheet/local-testing.md) and [0012 · Coverage boundaries](0012-local-hosted-coverage-and-usage-budget.md).
 
 ## Version the contract a consumer receives
 
-A release reference selects a repository revision containing metadata and executable files. A major tag such as `v1` commonly moves to a later compatible release; a full commit SHA selects fixed source content. An ordinary version-looking tag is still a Git ref unless protected by an appropriate release policy. Do not confuse “looks like a version” with immutability.
+A release reference selects a repository revision containing metadata and executable files. A major tag such as `v1` commonly moves to a later compatible release; a full commit SHA selects fixed source content. An ordinary version-looking tag is still a Git ref unless protected by an appropriate release policy. Do not confuse "looks like a version" with immutability.
 
 GitHub's [release-maintenance guide](https://docs.github.com/en/actions/how-tos/create-and-publish-actions/release-and-maintain-actions) describes semantic release tags and compatible major/minor aliases. With [immutable releases](https://docs.github.com/en/actions/how-tos/create-and-publish-actions/using-immutable-releases-and-tags-to-manage-your-actions-releases), release-linked tags cannot simply be force-moved; manage moving aliases separately according to that feature's documented policy. The [secure-use reference](https://docs.github.com/en/actions/reference/security/secure-use) recommends reviewing and pinning full-length commit references for stable content selection. A pin still needs a maintenance process to receive reviewed fixes.
 
@@ -165,7 +158,7 @@ The plan therefore does not certify that `v1.1.0` is appropriate. The correct ve
 
 For a bundled action like 0021, a dependency update changes the source supply chain and potentially shipped code. Review the package/lock diff, maintainer release notes, runtime support, license changes, and the regenerated distribution together. Then run type checks, pure/process tests, drift comparison, and the affected OS/runner cases. A changed version string alone is insufficient evidence.
 
-This workspace's dependency manifests and lockfiles are shared. The lab adds no packages and performs no upgrades. The release-plan exercise records the required review instead. In a real standalone repository, include all runtime-required modules/assets at the selected revision; consumers should not need to install your authoring toolchain to run the action.
+This workspace's dependency manifests and lockfiles are shared. The lab adds no packages and performs no upgrades. The release-plan exercise records the required review instead. In a real standalone repository, include all runtime-required modules/assets at the selected revision; consumers should not need to install your build tools to run the action.
 
 No Git tags or releases are needed to practice the decision. Inspect the plan locally:
 
@@ -188,13 +181,13 @@ A consumer pins an action to a full commit and reports that an upstream `v1` upd
 
 Retrieve without looking:
 
-1. Which assertions actually opened files on Windows during this authoring session?
+1. Which assertions actually opened files on Windows during the recorded checks?
 2. What does a portable path model leave untested?
 3. Why can a one-character counting change require a major version?
 4. What evidence links the reviewed source to what a consumer executes?
 
 ??? tip "Retrieval check"
-    None: actual file execution was on macOS; Windows assertions used a lexical model. Filesystem behavior, runner images, shells, installed tools, and native dependencies require target-platform evidence. A small implementation change can break a documented result used by callers. Metadata, fresh shipped bytes, artifact tests, and the exact reviewed release revision together connect authored source to consumer execution.
+    None. The file tests ran on macOS. The Windows assertions checked path strings with a lexical model. Filesystem behavior, runner images, shells, installed tools, and native dependencies require target-platform evidence. A small implementation change can break a documented result used by callers. Metadata, fresh shipped bytes, artifact tests, and the exact reviewed release revision together show which reviewed source produced the code callers execute.
 
 ## Verification limits
 
@@ -202,6 +195,6 @@ Local tests and actionlint pass for the cases recorded in the Module 4 handoff. 
 
 Continue sequentially to [0025 · Composite structure and output mapping](0025-composite-action-inputs-and-outputs.md), the start of Module 5.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0023 · Action lifecycle hooks, state files, and cleanup](0023-javascript-action-lifecycle-and-state.md) | [Curriculum](index.md) | [0025 · Composite action structure, step IDs, and output mapping](0025-composite-action-inputs-and-outputs.md) |

@@ -11,21 +11,9 @@ lesson_status: placeholder
 
 **Level:** Professional practice.
 
-## Prerequisites
-
-- [0054 · Document, version, and publish your action for real consumers](0054-own-action-release-and-marketplace.md)
-- [0048 · Hosted trials, model variability, usage budgets, and diagnostics](0048-agentic-hosted-trials-budgets-and-diagnostics.md)
-- [0030 · Compose setup/build/test steps and reusable job workflows](0030-compose-step-and-job-orchestration.md)
-- [0035 · Commit pins, semantic releases, major tags, and distribution integrity](0035-sha-pins-semantic-releases-and-provenance.md)
-
-## What you will learn to do
-
-- Write a concrete capstone specification and workflow DAG.
-- Map each requirement to local evidence or a hosted integration check.
-
 ## Explain the Actions behavior
 
-Start from the prerequisite workflow or action behavior and introduce these concepts with focused examples:
+Use a small workflow or action to explain these concepts:
 
 1. A professional orchestrator coordinates workers through explicit inputs, outputs, dependencies, and trust boundaries.
 2. Acceptance criteria define observable behavior for success and failure.

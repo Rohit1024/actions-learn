@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0053 · Create a Docker action with tested arguments, mounts, and outputs
 
-!!! note "Authored reference lesson"
-    This introductory Docker action inspects a bounded workspace file. Its host tests are runnable without a daemon; its separate image test requires one. Developed material and assistant-run tests do not establish learner mastery.
-
-## Prerequisites and goal
-
-Read [0052 · Node packaging](0052-own-node-action-and-distribution.md), [0050 · Action contracts](0050-own-action-metadata-and-contracts.md), and [0010 · Engines and architecture](0010-container-engines-images-and-architecture.md). Recall [0005 · Output files](0005-environment-files-and-output-contracts.md): the runner supplies a path, not a magic stdout parser. See the [local testing guide](../cheatsheet/local-testing.md#run-the-docker-boundary) if the existing engine is unavailable.
-
-Your goal is to trace metadata arguments into a Python process in a Linux image, inspect one caller file, and publish byte/line counts through the supplied output path. You will distinguish host program evidence from image, mount, and GitHub evidence. Commands run from the repository root. Do not provision a VM or install tools to make this introductory exercise appear green.
+Build a Docker action that inspects a workspace file with a byte limit. Run its host tests without a daemon, then use the separate image test to check container arguments and mounts.
 
 ## Choose Docker for a runtime requirement
 
@@ -32,13 +25,13 @@ The package is isolated under `labs/0053/action/`. It extends the existing Docke
 | Invalid data or failed I/O | Exit 1, stderr diagnosis, no success records from that run |
 | Side effects | Read file and append output records; no upload, token, or network operation |
 
-The process reads at most the chosen limit plus one byte, so an oversized file is rejected without reading its entire contents. It decodes UTF-8 strictly before publishing. It resolves the input path and rejects a target outside the workspace, including the tested escaping symlink. These guards define this lab's accepted inputs; they are not a sandbox against concurrent malicious filesystem changes.
+The process reads at most the chosen limit plus one byte, so it can reject an oversized file without reading the entire contents. It decodes UTF-8 strictly before publishing. It resolves the input path and rejects a target outside the workspace, including the tested escaping symlink. These guards define this lab's accepted inputs; they are not a sandbox against concurrent malicious filesystem changes.
 
 ## Read metadata, image, and process as three interfaces
 
 The metadata declares both input descriptions and output names. Its execution section is:
 
-```yaml title="labs/0053/action/action.yml — execution excerpt"
+```yaml title="labs/0053/action/action.yml, execution excerpt"
 runs:
   using: docker
   image: Dockerfile # (1)!
@@ -98,6 +91,8 @@ Use this exact environment-provided destination. In a real container action the 
 
 ## Lab: test the real entrypoint before the image
 
+Run commands from the repository root. If the engine is unavailable, run the host tests and leave image execution unverified. The [local testing guide](../cheatsheet/local-testing.md#run-the-docker-boundary) covers the engine setup.
+
 The fixture `labs/0053/fixtures/release notes.txt` contains exactly:
 
 ```text
@@ -117,7 +112,7 @@ Expected: **11 `PASS:` case lines**, followed by:
 PASS: 11 host process cases; no GitHub runner used
 ```
 
-The cases cover the spaced filename, an exact 11-byte limit, an oversized file, empty input, escaping path, invalid limit, missing file, missing output variable, output directory instead of file, invalid UTF-8, and an escaping symlink. Every case uses a real Python subprocess, temporary caller workspace, and seeded output file. Invalid cases must return nonzero, write stderr rather than success logs, and preserve the earlier output record. The harness removes the temporary files afterward.
+The cases cover the spaced filename, an exact 11-byte limit, an oversized file, empty input, escaping path, invalid limit, missing file, missing output variable, output directory instead of file, invalid UTF-8, and an escaping symlink. Every case uses a real Python subprocess, temporary caller workspace, and seeded output file. Invalid cases must return nonzero, write stderr rather than success logs, and preserve the earlier output record. The test script removes the temporary files afterward.
 
 These are **host** tests. They cannot establish that the Dockerfile builds, Python exists in the selected image, the image architecture matches the engine, or mounts are writable. Passing them is a reason to proceed to the next boundary, not to skip it.
 
@@ -127,7 +122,7 @@ These are **host** tests. They cannot establish that the Dockerfile builds, Pyth
 uv run python labs/0053/contract.py --wrong-output
 ```
 
-Expected: the harness exits **1** on the first valid case. Its diagnostic begins `FAIL: valid spaced path; exit=0; runner output='existing=value\n'`. The temporary mutated program wrote a separate `guessed-output.txt`, leaving the expected runner file unchanged.
+Expect the test script to exit 1 on the first valid case. Its diagnostic begins `FAIL: valid spaced path; exit=0; runner output='existing=value\n'`. The temporary mutated program wrote a separate `guessed-output.txt`, leaving the expected runner file unchanged.
 
 ??? tip "Diagnosis and repair"
     Inspect process status and actual runner output separately. The guessed path is a protocol failure even though computation succeeded. Restore `os.environ.get("GITHUB_OUTPUT")`, ensure the destination is mounted for a container run, and rerun the host contract without `--wrong-output`. This experiment changes a temporary entrypoint only; the lab's working implementation is preserved.
@@ -149,9 +144,9 @@ docker build --tag actions-learn-module9-inspect:local labs/0053/action
 uv run python labs/0053/contract.py --container actions-learn-module9-inspect:local
 ```
 
-Expected only after actual execution: the image builds, then the same **11 container cases** pass. The harness starts the built image with `--network none`, a read-only caller workspace mount, a separate writable `/runner-io` mount, and `GITHUB_OUTPUT=/runner-io/step output.txt`. The build can still require downloading a base image. A manual image test is not the GitHub runner's own mount implementation.
+Expected only after actual execution: the image builds, then the same **11 container cases** pass. The test script starts the built image with `--network none`, a read-only caller workspace mount, a separate writable `/runner-io` mount, and `GITHUB_OUTPUT=/runner-io/step output.txt`. The build can still require downloading a base image. A manual image test is not the GitHub runner's own mount implementation.
 
-The harness uses the engine's default image architecture. If you choose another target architecture, explicitly align the build, runtime, and runner plan and record it. Do not guess that an Apple Silicon host proves Linux AMD64 compatibility.
+The test script uses the engine's default image architecture. If you choose another target architecture, explicitly align the build, runtime, and runner plan and record it. Do not guess that an Apple Silicon host proves Linux AMD64 compatibility.
 
 ## Inspect the complete workflow boundary
 
@@ -171,7 +166,7 @@ The action's input file is relative to the caller workspace; the Dockerfile is r
 .tools/bin/actionlint labs/0053/consumer.yml
 ```
 
-Expected: exit zero with no diagnostics. It cannot build the image or prove the mounted runtime interface. A future reviewed GitHub run would execute the whole metadata-to-container-to-output chain; no hosted run is part of this authoring task.
+Expected: exit zero with no diagnostics. It cannot build the image or prove the mounted runtime interface. A future reviewed GitHub run would execute the whole metadata-to-container-to-output chain; the recorded checks include no hosted run.
 
 ## Transfer and retrieval
 
@@ -183,12 +178,12 @@ Adapt the fixture to contain `A\n` followed by one non-ASCII character and a new
 4. Which evidence is still missing after only the host test passes?
 
 ??? tip "Worked transfer and retrieval"
-    For `A\nλ\n`, UTF-8 uses 5 bytes and 2 lines: the lambda occupies two bytes. The fixed byte limit bounds data read, not the count of visible characters. A packaged Linux toolchain can justify Docker. Metadata maps inputs into this program's arguments. `GITHUB_WORKSPACE` contains caller files; `GITHUB_OUTPUT` names the current step's output file. Host tests leave the build, image dependencies, architecture, container filesystem/mounts, runner wiring, and GitHub policy unverified.
+    For `A\nλ\n`, UTF-8 uses 5 bytes and 2 lines. The lambda occupies two bytes. The fixed byte limit bounds data read, not the count of visible characters. A packaged Linux toolchain can justify Docker. Metadata maps inputs into this program's arguments. `GITHUB_WORKSPACE` contains caller files; `GITHUB_OUTPUT` names the current step's output file. Host tests leave the build, image dependencies, architecture, container filesystem/mounts, runner wiring, and GitHub policy unverified.
 
 ## Evidence and next lesson
 
 Record which of host, image, static consumer, local workflow, and GitHub checks actually ran. An unavailable engine is an explicit deferred boundary, not learner failure. Sources were checked on **2026-10-30**; see `labs/module-9-handoff.md` for exact commands and results. Continue to [0054](0054-own-action-release-and-marketplace.md) to assemble a local release candidate before the production capstone.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0052 · Create a JavaScript or TypeScript action with a tested distribution](0052-own-node-action-and-distribution.md) | [Curriculum](index.md) | [0054 · Document, version, and publish your action for real consumers](0054-own-action-release-and-marketplace.md) |

@@ -6,20 +6,13 @@ lesson_status: authored
 
 # 0044 · Agent engines, authentication, tools, and network boundaries
 
-!!! note "Authored reference lesson"
-    This lab evaluates a declared capability policy against synthetic requests. No credential is loaded and no service is contacted. Passing it does not establish GitHub authorization or model behavior.
-
-## Prerequisites and observable goals
-
-Read [0043 · Source and execution stages](0043-agentic-markdown-and-compiled-workflows.md). Recall [0031 · Token and event trust](0031-github-token-forks-and-trust-boundaries.md) and [0033 · Hosted identity and approvals](0033-oidc-environments-and-hosted-policy.md): identity, scope, and approval are separate contracts.
-
-Map each report requirement to a capability and identity. Predict whether requests fail at the tool, network, permission, credential-role, or operation boundary. Reject an overbroad configuration without attempting a remote write. Success is a minimal capability inventory plus the decisions produced by `labs/0044/`. Run all commands from the repository root with the installed environment.
+Test a declared tool policy against synthetic requests. The lab loads no credentials and contacts no service, so it cannot establish authorization or model behavior.
 
 ## Separate identities before choosing an engine
 
 An **engine** is the coding-agent implementation performing the task. Its inference authentication is separate from the identity reading repository files or publishing an output. A working developer `gh` login does not establish that a future runner can authenticate an engine.
 
-The current [authentication reference](https://github.github.com/gh-aw/reference/auth/) distinguishes Copilot organization billing through `copilot-requests: write` from the personal-repository `COPILOT_GITHUB_TOKEN` path. The Module 8 source selects `copilot` but configures neither new credentials nor organization inference permission. That remains a hosted prerequisite. Other engines have their own supported routes; verify the selected route and installed version before a hosted experiment.
+The current [authentication reference](https://github.github.com/gh-aw/reference/auth/) distinguishes Copilot organization billing through `copilot-requests: write` from the personal-repository `COPILOT_GITHUB_TOKEN` path. The Module 8 source selects `copilot` but configures neither new credentials nor organization inference permission. That remains a hosted prerequisite. Other engines support different authentication methods. Check the chosen method against the installed version before running a hosted experiment.
 
 Separate four responsibilities:
 
@@ -66,9 +59,11 @@ network: defaults # (3)!
 The [network reference](https://github.github.com/gh-aw/reference/network/) describes firewall controls and their runtime scope. An allowed domain says where traffic may go; it does not authorize every API operation there. Host setup steps, custom tools, and external servers have additional boundaries requiring separate review.
 
 !!! warning "Prompt text is not authorization"
-    “Read only” expresses intended behavior. Tool restrictions, scoped credentials, network policy, and output handlers enforce different parts of that intent. If a separate shell tool has a write credential, handler staging cannot guard that route.
+    "Read only" expresses intended behavior. Tool restrictions, scoped credentials, network policy, and output handlers enforce different parts of that intent. If a separate shell tool has a write credential, handler staging cannot guard that route.
 
 ## Lab: predict the first failing boundary
+
+Run commands from the repository root with the installed tools.
 
 `labs/0044/policy.json` is a **normalized teaching model**, not gh-aw frontmatter. Its only data-service destination is `api.github.com`; it does not model inference transport, setup traffic, DNS, or real firewall enforcement. Credential values are role labels, never tokens.
 
@@ -108,7 +103,7 @@ The evaluation order explains the first reported denial, rather than prescribing
 Expected **exit 1**, with four `REJECT` diagnostics: unexpected tools, destination, repository authority, and credential role. This fixture deliberately grants shell/issue tools, a wildcard destination, write permission, and an administrator role. The audit never attempts those operations.
 
 ??? tip "Diagnosis and repair"
-    Compare each grant to the requirement: one file read. Restore `policy.json` as the minimal declaration and rerun its audit. If a later report needs an unavailable file, report that limit or review a specific read route. General writes cannot repair missing read evidence. The positive policy passes after excessive grants are removed; hosted authentication remains unverified.
+    The task needs one file read. Compare each grant with that requirement. Restore `policy.json` as the minimal declaration and rerun its audit. If a later report needs an unavailable file, report that limit or review a specific read route. General writes cannot repair missing read evidence. The positive policy passes after excessive grants are removed; hosted authentication remains unverified.
 
 ## Transfer and retrieval
 
@@ -122,12 +117,12 @@ Answer without reopening the examples:
 4. Why does staged issue creation leave a direct shell write relevant?
 
 ??? tip "Worked transfer and retrieval"
-    Read an artifact identifying command, revision, result, and observing environment, or state that tests were not executed. Inference and repository credentials serve different consumers. Tool selection cannot guarantee scope or visibility. Network controls permit destinations; API authorization constrains operations. Direct writes need independent controls because they bypass the staged handler.
+    Read an artifact identifying command, revision, result, and observing environment, or state that tests were not executed. Inference and repository credentials serve different consumers. Allowing a tool does not guarantee it can see the required files or resources. Network rules control which destinations it can reach. API authorization controls which operations it can perform. Direct writes need independent controls because they bypass the staged handler.
 
 ## Verification boundary
 
-Primary documentation was checked on **2026-10-30**. This exercise verifies the teaching model's decisions. The gh-aw extension is absent, so effective source capabilities have not been compiled or exercised. `docker info` failed to connect to the Podman socket; no container or `act` execution occurred. Inference, GitHub authorization, firewall enforcement, and target runner behavior require a later bounded platform experiment.
+Primary documentation was checked on **2026-10-30**. This exercise verifies the teaching model's decisions. The recorded environment lacked the gh-aw extension, so the source configuration has not been compiled or executed. `docker info` failed to connect to the Podman socket; no container or `act` execution occurred. Inference, GitHub authorization, firewall enforcement, and target runner behavior require a later bounded platform experiment.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0043 · Agentic Markdown sources, frontmatter, lock workflows, and execution stages](0043-agentic-markdown-and-compiled-workflows.md) | [Curriculum](index.md) | [0045 · Strict local compilation and inspection of generated workflows](0045-agentic-local-compilation-and-generated-yaml.md) |

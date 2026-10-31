@@ -6,18 +6,11 @@ lesson_status: authored
 
 # 0031 · Least-privilege tokens, fork pull requests, and event trust boundaries
 
-!!! note "Authored reference lesson"
-    Predict the decisions before running the synthetic policy lab. Written availability and assistant-run checks establish no learner mastery. This lesson never requests, reads, or prints a real credential.
-
-## Prerequisites and observable goals
-
-Read [0030 · Step and job orchestration](0030-compose-step-and-job-orchestration.md) and [0029 · Reusable workflow permission interfaces](0029-reusable-workflows-and-permission-interfaces.md). Retrieve [0003 · Events](0003-events-payloads-and-filters.md): an event, workflow revision, and checked-out revision are separate facts.
-
-Build an authority inventory for a job, reject an untrusted-code/write-token combination, and explain a denied operation without increasing unrelated scopes. Success means your inventory names the operation, executing code, event, required permissions, credential exposure, and remaining hosted evidence.
+Predict the decisions in the synthetic token-policy lab before running it. The exercise uses no real credentials.
 
 ## Start with the operation and the code
 
-An **authority** is the ability to perform an operation, such as writing an issue comment. **Least privilege** means granting only the authority needed for that operation, for the smallest useful job and lifetime. A trust boundary separates code or data controlled by different parties. Repository membership, event names, and a green status are evidence to consider; none substitutes for identifying the code that executes.
+Authority is the ability to perform an operation, such as writing an issue comment. **Least privilege** means granting only the authority needed for that operation, for the smallest useful job and lifetime. A trust boundary separates code or data controlled by different parties. Identify which code will execute before trusting repository membership, event names, or a green check.
 
 `GITHUB_TOKEN` is GitHub's job credential. A job's `permissions` map requests its repository capabilities. GitHub calculates effective permissions using defaults, workflow/job declarations, and event/settings restrictions. Listing permissions sets omitted scopes to `none`; use `permissions: {}` as a clear workflow baseline, then declare each job's needs. These are requested scopes, not proof that any API call succeeded. See [workflow permission calculation](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#how-permissions-are-calculated-for-a-workflow-job), checked **2026-10-30**.
 
@@ -44,11 +37,11 @@ flowchart TD
 
 ## Fork admission is separate from trusted execution
 
-For ordinary fork `pull_request` runs, the normal model withholds repository secrets and restricts the job token. Settings can permit broader fork behavior; do not assume every repository has identical configuration. Dependabot PRs also have special restrictions. Approval to start a contributor's run is admission to execute, not a code audit or permission to expose secrets. Check the [fork event documentation](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflows-in-forked-repositories) and the [fork permission exception](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#changing-the-permissions-in-a-forked-repository).
+For ordinary fork `pull_request` runs, the normal model withholds repository secrets and restricts the job token. Settings can permit broader fork behavior; do not assume every repository has identical configuration. Dependabot PRs also have special restrictions. Approving a contributor's run lets it start. You still need to review the code before giving it secrets or write access. Check the [fork event documentation](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflows-in-forked-repositories) and the [fork permission exception](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#changing-the-permissions-in-a-forked-repository).
 
 An action can access `github.token` without a consumer explicitly passing it as an input. Omitting a `token:` input therefore does not establish isolation. Likewise, `persist-credentials: false` prevents checkout from leaving its authentication available for later Git commands; it does not remove every job credential, undo a permission grant, or isolate another step from the runner. The [secure-use reference](https://docs.github.com/en/actions/reference/security/secure-use) explains this credential exposure model.
 
-A malicious test script can execute code before the command visibly called “test”: dependency installation hooks, build plugins, local actions, and generated scripts are execution paths too. A write-capable reporter should not install or execute an unreviewed PR's dependencies. A self-hosted runner also needs protection from persistent modifications; reducing the token alone does not make a long-lived host safe for arbitrary contributors.
+Untrusted code can run before the command named "test". Dependency installation hooks, build plugins, local actions, and generated scripts can all execute it. A write-capable reporter should not install or execute an unreviewed PR's dependencies. A self-hosted runner also needs protection from persistent modifications; reducing the token alone does not make a long-lived host safe for arbitrary contributors.
 
 ## Read the inactive PR recipe
 
@@ -141,6 +134,6 @@ Answer from memory:
 
 A later bounded GitHub check should record event, fork/base identity, workflow and checkout SHAs, requested/effective permission evidence, secret availability as a boolean, and harmless allowed/denied operations in a disposable context. Never record token values. Real fork settings, authorization, self-hosted isolation, and reusable permission propagation remain unverified here; `act` cannot establish them. Continue to [0032 · Injection and privileged-event boundaries](0032-script-injection-artifacts-and-privileged-events.md).
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0030 · Compose step and job orchestration](0030-compose-step-and-job-orchestration.md) | [Curriculum](index.md) | [0032 · Script injection, artifacts, and privileged events](0032-script-injection-artifacts-and-privileged-events.md) |

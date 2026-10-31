@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0032 · Script injection, untrusted artifacts, and privileged-event pitfalls
 
-!!! note "Authored reference lesson"
-    The injection payload is fixed and creates only a disposable local marker. The artifact exercise consumes in-memory synthetic ZIPs as data. No real credential, hosted event, download service, or privileged operation is involved; authored content establishes no learner mastery.
-
-## Prerequisites and observable goals
-
-Read [0031 · Tokens and trust](0031-github-token-forks-and-trust-boundaries.md) and [0027 · Input transport and quoting](0027-untrusted-input-and-shell-quoting.md). Recall that Actions evaluates expressions before a shell interprets the generated script.
-
-Reproduce an injection-shaped string becoming shell syntax, preserve the same string as data, and reject an artifact with the wrong producer or unexpected files. Success means you can identify the exact evaluation stage, explain which identity evidence is trusted, and repair a privileged follow-up without executing contributor content.
+The fixed injection payload creates a temporary marker. The artifact exercise reads synthetic ZIPs in memory. Neither exercise uses a real credential or performs a privileged operation.
 
 ## Follow data through every interpreter
 
@@ -25,7 +18,7 @@ run: printf '%s\n' "${{ github.event.pull_request.title }}"
 
 Shell quotes in the template cannot protect against a value that contributes new quote characters to the generated script. The safer shape transports the value separately:
 
-```yaml title="labs/0032/data-only-pr.yml — safe transport"
+```yaml title="labs/0032/data-only-pr.yml, safe transport"
 env:
   TITLE: ${{ github.event.pull_request.title }} # (1)!
 shell: bash
@@ -55,7 +48,7 @@ flowchart TD
 
 A `workflow_run` follow-up can have secrets or a write token even when the preceding workflow did not. A `completed` trigger does not mean the predecessor succeeded; conclusion is a separate check. Moreover, success does not prove its artifact is authorized or safe. These are documented [workflow_run semantics](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_run).
 
-A safer follow-up uses reviewed consumer code and validates independent service evidence: repository identity, workflow ID/path, run ID and attempt, event, head revision, and conclusion. It selects an exact artifact from that run, isolates the download from executable workspace files, and parses a constrained schema. The artifact's own `repository` or `sha` string is an assertion from the producer, not proof of identity. A filename such as `approved-report.zip` is equally weak.
+A safer follow-up runs reviewed consumer code. It checks the service's metadata for the repository identity, workflow ID and path, run ID and attempt, event, head revision, and conclusion. It selects an exact artifact from that run, isolates the download from executable workspace files, and parses a constrained schema. The artifact's own `repository` or `sha` string is an assertion from the producer, not proof of identity. A filename such as `approved-report.zip` is equally weak.
 
 !!! warning "A report can redirect an otherwise safe write"
     A numeric PR number in a valid report still needs to match the intended triggering PR/repository. Parsing JSON safely does not authorize the target of a comment, release, or deployment. This lab performs none of those operations.
@@ -92,14 +85,14 @@ report: 3/3 checks passed (data only)
 
 The counters must be actual integers, with `0 <= passed <= total <= 100`. Rejecting booleans matters because Python treats `bool` as an integer subtype. The strict key set also rejects a supplied `command` field; report data must not grow an accidental execution interface.
 
-```python title="labs/0032/boundaries.py — producer boundary"
+```python title="labs/0032/boundaries.py, producer boundary"
 if observed_producer != EXPECTED: # (1)!
     raise ValueError("producer context mismatch")
 ```
 
 1. `observed_producer` is a separate synthetic input, representing future trusted service metadata. It is not read from the ZIP. Both dictionaries are fixtures here, so this comparison demonstrates a selection rule without authenticating any real producer.
 
-The example's expected metadata identifies a fictional push run and source revision. For a PR reporting workflow, deliberately define a different event/PR contract and bind its target. Do not loosen event checks merely until a downloaded artifact is accepted. Real archive consumers also need threat-appropriate compression, parser, filesystem, and race limits; this bounded in-memory exercise is not a general extraction sandbox.
+The example's expected metadata identifies a fictional push run and source revision. For a PR reporting workflow, deliberately define a different event/PR contract and bind its target. Define the allowed event before downloading the artifact. Keep that rule when a downloaded artifact fails it. Real archive consumers also need threat-appropriate compression, parser, filesystem, and race limits; this bounded in-memory exercise is not a general extraction sandbox.
 
 ```bash
 python3 -B -m unittest discover -s labs/0032 -p 'test_*.py' -v
@@ -113,7 +106,7 @@ Expected: seven test methods pass and actionlint returns 0 with no diagnostics. 
 Consider a follow-up that downloads `report.zip` from the latest successful run, extracts it over the checkout, and executes `report.sh`. Name three independent defects before opening the solution.
 
 ??? tip "Worked repair"
-    “Latest” can select a different revision/run; a familiar filename says nothing about provenance; extraction can overwrite trusted scripts; executing the result gives producer code the consumer's authority. Bind the triggering run and artifact ID, verify service metadata, isolate the data destination, reject unexpected entries, parse an explicit schema, and authorize a specific operation/target. A valid report remains untrusted evidence to evaluate, rather than a script to run. Keeping a privileged consumer on reviewed code is essential even when the producer succeeded.
+    "Latest" can select a different revision/run; a familiar filename says nothing about provenance; extraction can overwrite trusted scripts; executing the result gives producer code the consumer's authority. Bind the triggering run and artifact ID, verify service metadata, isolate the data destination, reject unexpected entries, parse an explicit schema, and authorize a specific operation/target. Parse and evaluate the report as data. Never execute it as consumer code. Keeping a privileged consumer on reviewed code is essential even when the producer succeeded.
 
 ## Transfer and retrieval
 
@@ -136,6 +129,6 @@ Retrieve without looking:
 
 The host lab proves the tested Bash data boundary and synthetic archive checks. It does not verify `pull_request_target`/`workflow_run` admission, token access, hosted artifact identity, permissions, or an actual follow-up. No container or `act` execution occurred. Continue to [0033 · Identity and environment policy](0033-oidc-environments-and-hosted-policy.md), keeping policy simulation distinct from platform enforcement.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0031 · Tokens, forks, and trust boundaries](0031-github-token-forks-and-trust-boundaries.md) | [Curriculum](index.md) | [0033 · OIDC, environments, and hosted policy](0033-oidc-environments-and-hosted-policy.md) |

@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0035 · Commit pins, semantic releases, major tags, and distribution integrity
 
-!!! note "Authored reference lesson"
-    Prepare and inspect a local candidate using installed tools. Ref movement is a dictionary simulation; no Git reference, release, registry, attestation, or repository is changed. Written content and local checks establish no learner mastery or published release readiness.
-
-## Prerequisites and observable goals
-
-Read [0034 · Reproducibility and provenance](0034-caches-artifacts-and-reproducibility.md), [0021 · Bundled distribution](0021-typescript-bundling-and-dist-drift.md), and [0024 · Compatibility and versions](0024-cross-platform-actions-and-versioned-releases.md).
-
-Explain what a consumer reference selects, expose a source change with stale executable bytes, repair the bundle deliberately, and classify a consumer-visible change. Success means you can bind reviewed source, build inputs, shipped files, and an update/rollback decision without publishing anything.
+Prepare and inspect a local release candidate. The lab simulates reference changes with a dictionary, leaving Git references, releases, registries, and attestations untouched.
 
 ## A reference selects a revision; it does not review it
 
@@ -27,7 +20,7 @@ A remote action reference names a repository, optional subdirectory, and ref. An
 | Full reviewed commit SHA | Keep fixed repository content until an explicit update | Verify upstream identity, package, transitive/runtime inputs |
 | Adopted workflow dependency lockfile | Resolve covered action dependencies through the lock | Review generated lock changes and uncovered boundaries |
 
-The [secure-use reference](https://docs.github.com/en/actions/reference/security/secure-use#using-third-party-actions), checked **2026-10-30**, now points to workflow dependency lockfiles as the stronger option for repositories that adopt them, with full-SHA pinning as the fallback. Avoid teaching that a fixed direct reference locks the entire supply chain: a composite can call mutable remote actions, a Dockerfile can use a mutable base, and code can fetch additional content at runtime.
+The [secure-use reference](https://docs.github.com/en/actions/reference/security/secure-use#using-third-party-actions), checked **2026-10-30**, now points to workflow dependency lockfiles as the stronger option for repositories that adopt them, with full-SHA pinning as the fallback. A fixed direct reference leaves other dependencies free to change. A composite can call mutable remote actions. A Dockerfile can use a mutable base, and code can fetch content at runtime.
 
 ## Know the current dependency-locking boundary
 
@@ -52,7 +45,7 @@ flowchart TD
 
 `labs/0035/action.yml` selects Node 24 and `dist/index.cjs`. The TypeScript source implements a single-line greeting and writes a `greeting` output. The consumer does not type-check or build that source before running the action. The [action maintenance documentation](https://docs.github.com/en/actions/how-tos/create-and-publish-actions/release-and-maintain-actions) discusses committing runtime dependencies/distribution with the action.
 
-```yaml title="labs/0035/action.yml — runtime selection"
+```yaml title="labs/0035/action.yml, runtime selection"
 runs:
   using: node24
   main: dist/index.cjs # (1)!
@@ -79,7 +72,7 @@ python3 -B -m unittest discover -s labs/0035 -p 'test_*.py' -v
 .tools/bin/actionlint labs/0035/candidate-consumer.yml
 ```
 
-Expected: no type diagnostics, `PASS: distribution matches current source and builder`, four test methods passing, and no actionlint diagnostics. Tests launch the shipping `.cjs` from temporary consumer contexts, assert the exact output record, reject invalid input without success output, and exercise temporary stale-candidate repair. esbuild transpilation is not TypeScript semantic checking; the two commands serve different purposes. See [esbuild's TypeScript limitations](https://esbuild.github.io/content-types/#typescript) and [build API](https://esbuild.github.io/api/).
+Expected: no type diagnostics, `PASS: distribution matches current source and builder`, four test methods passing, and no actionlint diagnostics. Tests launch the shipping `.cjs` from temporary consumer contexts, assert the exact output record, reject invalid input without success output, and exercise temporary stale-candidate repair. esbuild generates JavaScript without checking TypeScript types. Run both commands to check types and generate the executable. See [esbuild's TypeScript limitations](https://esbuild.github.io/content-types/#typescript) and [build API](https://esbuild.github.io/api/).
 
 The complete inactive consumer recipe checks out files with the course's existing reviewed pin, uses `./labs/0035`, and asserts `${{ steps.candidate.outputs.greeting }}`. Static linting does not execute that runner output mapping or prove a remote ref resolves correctly.
 
@@ -104,7 +97,7 @@ The program copies source, metadata, distribution, and TypeScript configuration 
 The all-`a` and all-`b` strings are synthetic revision labels, not real upstream commits. The dictionary preserves the version snapshot by lab design. It does not enforce GitHub immutable releases or guarantee ordinary Git tags are immutable.
 
 ??? tip "Diagnosis and repair"
-    A source test can pass while consumers still execute stale code. Follow metadata to the shipping file, run a comparison that preserves the defect, build deliberately, review the generated diff, and retest the artifact. Do not “fix” a drift checker by making it silently rebuild first; that erases evidence that the proposed package was incomplete.
+    A source test can pass while consumers still execute stale code. Follow metadata to the shipping file, run a comparison that preserves the defect, build deliberately, review the generated diff, and retest the artifact. Do not "fix" a drift checker by making it silently rebuild first; that erases evidence that the proposed package was incomplete.
 
 For a deliberate change to the maintained lab rather than a temporary copy, the repair command is:
 
@@ -117,7 +110,7 @@ It writes the owned distribution file. Repeat type and process checks after the 
 
 ## Version the public promise
 
-**Semantic versioning** communicates compatibility: a compatible fix is patch, compatible added functionality is minor, and a broken public promise needs a major change under the chosen policy. Consider the caller's behavior, not the number of changed lines.
+Under semantic versioning, use a patch release for a compatible fix and a minor release for compatible added functionality. Breaking a public promise needs a major release under the chosen policy. Consider the caller's behavior, not the number of changed lines.
 
 | Proposed change | Decision to justify |
 | --- | --- |
@@ -127,7 +120,7 @@ It writes the owned distribution file. Repeat type and process checks after the 
 | Raise runtime requirements | Assess consumers excluded by the new runner/runtime floor |
 | Security correction that rejects formerly accepted unsafe input | Document the security/compatibility tradeoff and migration explicitly |
 
-With GitHub immutable releases enabled, release-associated tags/assets have protections that ordinary movable aliases do not. Keep convenience aliases separate according to [immutable releases and compatibility tags](https://docs.github.com/en/actions/how-tos/create-and-publish-actions/using-immutable-releases-and-tags-to-manage-your-actions-releases). Do not blindly force-move release tags or publish broad tag-update shell commands during a local exercise. Rollback usually changes the consumer to a known-good reviewed SHA; publish a new fixed release rather than rewriting history consumers already reviewed.
+With GitHub immutable releases enabled, release-associated tags/assets have protections that ordinary movable aliases do not. Keep convenience aliases separate according to [immutable releases and compatibility tags](https://docs.github.com/en/actions/how-tos/create-and-publish-actions/using-immutable-releases-and-tags-to-manage-your-actions-releases). Check release protections before moving a tag. Keep this local exercise in the reference simulation. Rollback usually changes the consumer to a known-good reviewed SHA; publish a new fixed release rather than rewriting history consumers already reviewed.
 
 ## Bind provenance to the intended subject
 
@@ -156,6 +149,6 @@ Retrieve:
 
 Local evidence covers the declared source/toolchain, shipping bytes, process outputs, and static recipe. Real remote resolution, dependency-lock enforcement, intended hosted OS support, signed provenance, release protection, and distribution remain unverified. No Git mutation, release write, deployment, or hosted execution occurs. Continue to [0036 · Operating diagnostics and usage](0036-observability-concurrency-and-usage-budgets.md).
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0034 · Caches, artifacts, and reproducibility](0034-caches-artifacts-and-reproducibility.md) | [Curriculum](index.md) | [0036 · Observability, concurrency, and budgets](0036-observability-concurrency-and-usage-budgets.md) |

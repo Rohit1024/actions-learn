@@ -6,16 +6,11 @@ lesson_status: authored
 
 # 0045 · Strict local compilation and inspection of generated workflows
 
-!!! note "Authored reference lesson"
-    The compiler is absent in the authoring environment. This lesson includes a guarded optional compile path and a runnable inspection lab. `illustrative.lock.yml` is hand-written teaching material, never a successful compilation receipt.
-
-## Prerequisites and observable goals
-
-Read [0043 · Source and execution stages](0043-agentic-markdown-and-compiled-workflows.md) and [0044 · Capability boundaries](0044-agentic-engines-tools-and-authentication.md). Recall [0008 · Workflow linting](0008-workflow-shell-and-security-linting.md): syntax and expression checks do not execute jobs.
-
-Choose the correct local check, distinguish missing tooling from invalid source, and inspect permissions, dependencies, deadlines, and references in an executable workflow. Success means you can review both a no-emit result and an emitted artifact without upgrading either to runtime evidence. Commands run from the repository root using existing tools.
+Start with the runnable inspection lab. The recorded environment had no compiler, so the optional compile path remains unverified. `illustrative.lock.yml` is a hand-written example, not compiler output.
 
 ## Version and help are part of the experiment
+
+Run commands from the repository root with the installed tools.
 
 Start with read-only discovery:
 
@@ -80,7 +75,9 @@ For a compatible compiler, an explicit emit request instead uses `--strict --out
 .venv/bin/python labs/0045/compile_local.py --emit
 ```
 
-Only successful actual lock outputs are copied into `labs/0045/generated/`, alongside the compiler version. No generated output exists from this authoring run. Inspect auxiliary generated assets as well before any future adoption; copying a lock for inspection is not a complete deployment package.
+The helper copies lock files into `labs/0045/generated/` only after compilation succeeds. It also records the compiler version. The recorded checks produced no generated output.
+
+Before adopting a compiled workflow, inspect its auxiliary files too. A copied lock file alone may be an incomplete deployment package.
 
 !!! tip "Predict"
     A no-emit command returns success. Where is the new lock file? If an emitted workflow uses a mutable action tag, should you hand-edit the generated `uses` line to satisfy review?
@@ -120,7 +117,7 @@ Expected: inspector exit 0 with `jobs=prepare,agent,safe_outputs,conclusion`; ex
 PASS: schematic dependency chain inspected; unsafe authority, pin and deadline rejected
 ```
 
-Actionlint should return exit 0 with no diagnostics. It checks this inactive recipe, not a compiled agentic workflow. The custom inspector is deliberately stricter than a general workflow linter: it allows manual dispatch only, read/empty permissions, explicit deadlines, and full commit pins for remote references. It does not prove shell safety, authorization, or runtime dependency behavior. Some real compiler jobs need capabilities outside this teaching policy; review their purpose instead of blindly applying its result as a production gate.
+Actionlint should return exit 0 with no diagnostics. It checks this inactive recipe, not a compiled agentic workflow. The custom inspector enforces a narrow teaching policy. It requires manual dispatch, read or empty permissions, explicit timeouts, and full commit pins for remote references. It does not prove shell safety, authorization, or runtime dependency behavior. Real compiler jobs may need permissions outside this policy. Review each job's purpose before using the inspector to block production changes.
 
 ## Break authority, then repair the source of the defect
 
@@ -137,7 +134,7 @@ For an actual generated artifact, also inspect engine/model settings, tool defau
 
 ## Transfer and retrieval
 
-A teammate copied a flag from newer docs, got an unknown-option error, then reported “source schema invalid.” Explain the evidence needed to repair that diagnosis. Next, design a review of a source whose body changed while its lock stayed identical.
+A teammate copied a flag from newer docs, got an unknown-option error, then reported "source schema invalid." Explain the evidence needed to repair that diagnosis. Next, design a review of a source whose body changed while its lock stayed identical.
 
 1. How do no-emit validation and emission answer different questions?
 2. Why isolate both the output directory and compiler working repository?
@@ -151,6 +148,6 @@ A teammate copied a flag from newer docs, got an unknown-option error, then repo
 
 The host inspection lab remains useful with gh-aw absent. No emitted lock, reference resolution, engine run, handler execution, GitHub authorization, service behavior, cancellation, or OS parity has been verified. Primary documentation was checked on **2026-10-30**; the installed-help gap is intentional and visible. Continue to output policy with [0046](0046-agentic-safe-outputs-and-human-review.md).
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0044 · Agent engines, authentication, tools, and network boundaries](0044-agentic-engines-tools-and-authentication.md) | [Curriculum](index.md) | [0046 · Safe outputs, staging, write limits, and human review](0046-agentic-safe-outputs-and-human-review.md) |

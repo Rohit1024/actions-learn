@@ -6,14 +6,7 @@ lesson_status: authored
 
 # 0051 · Create a composite action by composing pre-built actions
 
-!!! note "Authored reference lesson"
-    Build the team interface around maintained setup behavior. The action, inactive consumer, and file preflight are developed under `labs/0051/`. Predict failures before opening solutions; written content does not establish mastery.
-
-## Prerequisites and goal
-
-Read [0050 · Metadata and contracts](0050-own-action-metadata-and-contracts.md), including the distinction between a declaration and runtime validation. Recall [0001](0001-execution-model.md): checkout supplies local action files, and a composite invocation is a step in the caller's job. Keep the [module guide](create-your-own-action.md) and [local testing guide](../cheatsheet/local-testing.md) available.
-
-Your goal is to trace a requested Node version and lockfile from the caller into setup-node, then trace the installed-version output back to the caller. You will also distinguish file preflight, static checks, remote setup execution, npm installation, and the actual project's tests. Run all local commands from the repository root.
+Build a team setup interface around maintained actions. Use the action, inactive consumer, and file preflight in `labs/0051/` to diagnose caller mistakes before attempting remote setup.
 
 ## Define the small team policy
 
@@ -62,7 +55,7 @@ flowchart TD
     Caller --> Install["Caller runs npm ci and project tests"]
 ```
 
-The composite is a useful naming and policy boundary, not a separate machine. It changes PATH and cache setup for subsequent steps in the same job through setup-node's runner integration. The version used to execute setup-node's own JavaScript action is its metadata runtime; the version it installs for later `node` commands is the requested project runtime. These can be different contracts even when both currently use Node 24.
+The composite applies the team's setup policy inside the caller's job. Through setup-node, it configures PATH and caching for later steps in that job. There are two Node versions to distinguish. Metadata selects the runtime that executes setup-node itself. The requested project version selects what later `node` commands run. Both use Node 24 in this example, but they can differ.
 
 ## Trace the caller workspace
 
@@ -91,7 +84,7 @@ jobs:
 
 A remotely referenced composite could be downloaded separately from the caller's checkout. Its definition would come from the action repository, while this lockfile would still come from the caller workspace. If you later add a helper script bundled with the composite, locate that script using the action's directory, such as `github.action_path`, rather than assuming it is in the caller root. [0026](0026-composite-shells-paths-and-portability.md) develops that path boundary.
 
-**Prediction:** a caller checks out its repository into `source/`. Which paths in this excerpt must change?
+A caller checks out its repository into `source/`. Predict which paths in this excerpt must change.
 
 ??? tip "Worked prediction"
     The local package is now under `./source/labs/0051/action`, and the caller lockfile is `source/package-lock.json`. Project commands must also run in the checked-out project directory, for example through step `working-directory`. Changing the action path alone does not move the lockfile or the npm command's working directory.
@@ -100,11 +93,13 @@ A remotely referenced composite could be downloaded separately from the caller's
 
 The composite explicitly selects `cache: npm`, so setup-node hashes the chosen lockfile for npm download-cache behavior. A cache hit can avoid downloads; it is not evidence that project dependencies were installed or tests passed. Upstream's [README at this pin](https://github.com/actions/setup-node/blob/949feb2413d6458794dcd2491c4babbbce0c15c1/README.md#caching-global-packages-data) states that `node_modules` is not cached.
 
-The caller therefore continues with an actual runtime assertion, `npm ci`, and `npm test`. These commands are project policy. Keeping them explicit avoids making a setup wrapper silently execute every repository's scripts. `npm ci` can access registries and run lifecycle scripts; reading or linting this recipe does not execute it, and it is not needed to run this module's host probes with already installed dependencies.
+The caller therefore continues with an actual runtime assertion, `npm ci`, and `npm test`. These commands are project policy. Keeping them explicit avoids making a setup wrapper silently execute every repository's scripts. `npm ci` can access registries and run lifecycle scripts. Reading or linting the recipe does not run it. The module's host probes use the installed dependencies and do not need another install.
 
 The recipe checks that the mapped output is nonempty and that `process.versions.node` has major version `24`. A later real integration run should observe both the output and the executable on PATH. A static check cannot prove a downloaded runtime was installed.
 
 ## Lab: preflight caller files, then inspect the interface
+
+Run local commands from the repository root.
 
 Before running the preflight, predict whether it needs a container daemon or a GitHub token:
 
@@ -176,6 +171,6 @@ This lab provides local file evidence and a static consumer check. It has not ex
 
 Sources were checked on **2026-10-30**. Continue to [0052](0052-own-node-action-and-distribution.md), where custom domain behavior finally requires our own code. Do not convert a written recipe or preflight success into a completed hosted check.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0050 · Design action.yml inputs, outputs, runtimes, and failure contracts](0050-own-action-metadata-and-contracts.md) | [Curriculum](index.md) | [0052 · Create a JavaScript or TypeScript action with a tested distribution](0052-own-node-action-and-distribution.md) |

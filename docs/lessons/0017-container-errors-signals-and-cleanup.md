@@ -6,16 +6,7 @@ lesson_status: authored
 
 # 0017 · Container exit codes, stderr, signals, timeouts, and cleanup
 
-!!! note "Authored reference lesson"
-    The isolated lab in `labs/0017/` includes real host interruption tests and opt-in container tests. Predict each failure before opening its solution. Written content and author evidence do not establish learner mastery.
-
-## Prerequisites and goal
-
-Continue from [0016 · Host and image tests](0016-docker-action-direct-and-image-tests.md). Revisit [0006 · Cancellation and failure propagation](0006-matrices-dependencies-and-cancellation.md) for job-level results and [0005 · Outputs](0005-environment-files-and-output-contracts.md) for named data.
-
-Design an action that reports ordinary failure truthfully, cleans temporary local work on a graceful interruption, and leaves forced-termination limits explicit. Success means you can explain what a caller should infer from status, diagnostics, output records and leftover files separately.
-
-The lab stages one local report. It calls no APIs, acquires no external resources and needs no secrets. Run commands from the repository root. Signals here serve the action's process contract; this is not a general Linux process course.
+The lab in `labs/0017/` includes host interruption tests and optional container tests. Predict the exit status and leftover files for each failure.
 
 ## Failure needs both a status and a diagnosis
 
@@ -31,9 +22,9 @@ The lab chooses these policies:
 | `fail` | Exit 1, explanatory stderr | No new output; prior completed result preserved; staging removed |
 | `wait`, then SIGINT | Handler returns exit 130 | No new output; prior result preserved; staging removed |
 | `wait`, then SIGTERM | Handler returns exit 143 | Same graceful cleanup policy |
-| `wait`, then SIGKILL | Python subprocess reports `-9` | No new output; staging remains until harness cleanup |
+| `wait`, then SIGKILL | Python subprocess reports `-9` | No new output; staging remains until the test script removes it |
 
-The 130/143 numbers are this adapter's explicit `128 + signal` policy. A container engine commonly reports 137 for a killed container. Do not infer that GitHub must show those numbers as the overall workflow result: platform cancellation has its own run/job status.
+The 130/143 numbers are this adapter's explicit `128 + signal` policy. A container engine commonly reports 137 for a killed container. GitHub cancellation has separate run and job statuses. It need not show these process exit numbers as the overall result.
 
 ```mermaid
 flowchart TD
@@ -54,7 +45,7 @@ flowchart TD
 
 `labs/0017/action/worker.py` accepts `success`, `fail`, or `wait` as its first argument. Metadata defaults `mode` to `success` and passes it through `runs.args`. It requires `GITHUB_WORKSPACE` and `GITHUB_OUTPUT`. Its controlled operation is:
 
-```python title="labs/0017/action/worker.py — staged work"
+```python title="labs/0017/action/worker.py, staged work"
 signal.signal(signal.SIGINT, on_signal)
 signal.signal(signal.SIGTERM, on_signal)
 workspace = Path(os.environ["GITHUB_WORKSPACE"])
@@ -98,6 +89,8 @@ If your real action spawns child tools, this simple single-process fixture does 
 
 ## Predict and run six actual host cases
 
+Run commands from the repository root. The lab stages a local report without APIs, external resources, or secrets.
+
 !!! tip "Prediction"
     Which path guarantees the `finally` block runs in this fixture? Which path leaves the staging file? Can a caller tell the difference between an empty valid result and an interrupted attempt merely by reading an absent output?
 
@@ -108,10 +101,10 @@ sh -n labs/0017/action/entrypoint.sh
 
 Expected: six Python tests pass and the shell syntax check exits 0 with no output. The tests cover success, ordinary failure, SIGINT, SIGTERM, SIGKILL and a deliberately broken adapter. Each test seeds `result.txt` with `prior completed report\n` to ensure a rejected pre-publication attempt does not erase prior work.
 
-For graceful interruption, the test starts a real host subprocess, reads its `READY` message with a five-second bound, sends the chosen signal, collects its final channels/status, and inspects files. The forced-kill case asserts that staging remains; the parent harness then deletes its isolated temporary directory. That cleanup by the harness is not cleanup performed by the killed worker.
+For graceful interruption, the test starts a real host subprocess, reads its `READY` message with a five-second bound, sends the chosen signal, collects its final channels/status, and inspects files. The forced-kill case checks that the staging file remains. The parent test script then removes its temporary directory. The killed worker performs no cleanup.
 
 ??? tip "Worked prediction"
-    Normal return and caught errors/signals reach `finally` during this controlled execution. SIGKILL cannot. An absent result does not distinguish a valid empty result from failure by itself: combine process/step status with a documented presence or result contract. The worker has no valid empty result, so a successful caller expects `result=result.txt` and an actual completed file.
+    Normal return and caught errors/signals reach `finally` during this controlled execution. SIGKILL cannot. An absent result alone cannot distinguish a valid empty result from failure. Check the process or step status and document how callers detect a present result. The worker has no valid empty result, so a successful caller expects `result=result.txt` and an actual completed file.
 
 ## Deliberate failure: swallow the selected status
 
@@ -128,7 +121,7 @@ The sixth host test runs this wrapper in `fail` mode. Expected: stderr describes
 ??? tip "Diagnose and repair"
     Trace the diagnostic back to the selected return status, then ask who turns that status into process exit. Replace the final call in a disposable copy with `raise SystemExit(worker.main())`, or invoke the real `action/worker.py`, which already does that. The caller now observes failure. A shell wrapper has an analogous defect if it runs the worker, then finishes with a successful unrelated command while discarding the worker status. Use `exec` for this single-program wrapper.
 
-This is an especially dangerous workflow defect: downstream steps with implicit `success()` may run even though the action logged an error. The repair is truthful status propagation, not a broader `if: always()` condition downstream.
+Downstream steps with implicit `success()` may now run even though the action logged an error. That can let failed work reach later jobs. The repair is truthful status propagation, not a broader `if: always()` condition downstream.
 
 ## Add real container stop and kill observations
 
@@ -158,9 +151,9 @@ Docker's [stop reference](https://docs.docker.com/reference/cli/docker/container
 
 On cancellation, GitHub reevaluates job/step conditions and tells runners which work to cancel. For a container-action step, the runner first signals the step's entry process, **the Docker client**, rather than promising a direct SIGTERM to the Python PID. The documented escalation is SIGINT, a 7.5-second wait, SIGTERM, a 2.5-second wait, then process-tree termination; a server cancellation limit can force remaining work to end. See the current [workflow cancellation reference](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-cancellation).
 
-Consequently, a host `send_signal` test proves your handler and local cleanup, and `docker stop` proves one container-engine path. Neither proves the exact signal delivery or outcome during GitHub cancellation. Reserve a bounded hosted cancellation test for that contract when needed; it is not requested in this authoring task.
+Consequently, a host `send_signal` test proves your handler and local cleanup, and `docker stop` proves one container-engine path. Neither proves the exact signal delivery or outcome during GitHub cancellation. Use a hosted cancellation test with a timeout when you need to verify that behavior.
 
-A job's `timeout-minutes`, a local subprocess timeout, and `docker stop`'s grace period belong to different layers. A subprocess timeout does not magically clean up external resources. A workflow cleanup step or post-entrypoint hook can help while the runner remains healthy; `always()` is not a guarantee of execution after runner loss. A Docker post hook also runs in a separate container, so process-local state does not survive there automatically.
+A job's `timeout-minutes`, a local subprocess timeout, and `docker stop`'s grace period belong to different layers. A subprocess timeout does not delete external resources. A workflow cleanup step or post-entrypoint hook can help while the runner remains healthy; `always()` is not a guarantee of execution after runner loss. A Docker post hook also runs in a separate container, so process-local state does not survive there automatically.
 
 For real external resources, use recorded resource IDs, idempotent cleanup, expiry/leases where supported, and later reconciliation. Avoid publishing success-shaped results before all required work completes. Do not delete a prior successful artifact simply because a new attempt failed.
 
@@ -168,7 +161,7 @@ For real external resources, use recorded resource IDs, idempotent cleanup, expi
 
 `labs/0017/consumer.yml` selects mode `fail`, uses `continue-on-error: true` only for that expected negative step, then checks:
 
-```yaml title="labs/0017/consumer.yml — assertion excerpt"
+```yaml title="labs/0017/consumer.yml, assertion excerpt"
 - name: Verify intended rejection and cleanup
   env:
     OUTCOME: ${{ steps.worker.outcome }} # (1)!
@@ -193,7 +186,7 @@ An action creates a temporary cloud resource before generating a report. Propose
 4. Why does the SIGKILL test pass while asserting a leftover file?
 
 ??? tip "Worked transfer and recall"
-    Record the resource ID durably, make deletion safe to retry, and use expiry or a later reconciler for runner loss. Mocked failures can test cleanup decisions; actual identity and cancellation delivery need platform evidence. An ignored return value leaves the process status successful. `exec` puts the worker at the wrapper's process boundary. None of the cleanup mechanisms guarantees execution after a forced kill or lost machine. The kill test passes because it accurately verifies and documents that limitation, then the harness removes its own fixture.
+    Record the resource ID durably, make deletion safe to retry, and use expiry or a later reconciler for runner loss. Mocked failures can test cleanup decisions; actual identity and cancellation delivery need platform evidence. An ignored return value leaves the process status successful. `exec` puts the worker at the wrapper's process boundary. None of the cleanup mechanisms guarantees execution after a forced kill or lost machine. The kill test passes by confirming that cleanup did not run. The test script then removes its own fixture.
 
 ## Evidence and next session
 
@@ -201,6 +194,6 @@ Author evidence consists of six passing host tests, shell syntax and consumer li
 
 Sources above were checked on **2026-10-30**; see the [library](../references/resources.md) and `labs/module-3-handoff.md`.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0016 · Test container logic directly and the built image separately](0016-docker-action-direct-and-image-tests.md) | [Curriculum](index.md) | [0018 · Container scanning, dependency pinning, cold starts, and release tradeoffs](0018-container-security-and-release-tradeoffs.md) |

@@ -6,20 +6,11 @@ lesson_status: authored
 
 # 0003 · Event payloads, branch filters, path filters, and manual dispatch
 
-!!! note "Authored reference lesson"
-    The fixtures and recipe are available under `labs/0003/`. Predict the admitted events and missing fields before opening solutions. Authoring this page does not establish learner mastery.
-
-## Prerequisites
-
-Read [0002 · Local feedback](0002-local-feedback-loop.md). You should be able to distinguish executing a program with a fixture from proving that GitHub selected a workflow.
-
-## What you will learn to do
-
-Read only the event fields a workflow needs, design admitted and rejected trigger cases, and explain the difference between a push branch, a pull request's base branch, and a manual dispatch. Success means you can write an admission table before editing YAML.
+Use the fixtures in `labs/0003/` to predict which events start a run and which payload fields exist. Check your answers against the worked examples.
 
 ## Explain the Actions behavior
 
-An **event payload** is structured data describing the activity that started a run. The `github.event` context exposes it; `github.event_name` identifies the event kind. Shapes differ: a dispatch does not contain a `pull_request` object. The runner also exposes the payload file path through `GITHUB_EVENT_PATH`.
+An **event payload** is structured data describing the activity that started a run. The `github.event` context exposes it; `github.event_name` identifies the event kind. A dispatch payload has no `pull_request` object. The runner also exposes the payload file path through `GITHUB_EVENT_PATH`.
 
 A workflow's `on` configuration determines which event kinds, activity types, branches, and paths can admit a run. Admission happens before a job's `if` condition. A fixture is controlled input to your local exercise; it does not ask GitHub to deliver a real event. See the [event reference](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows).
 
@@ -41,7 +32,7 @@ flowchart TD
 
 The complete inactive recipe is `labs/0003/module1-events.yml`. Its trigger block is:
 
-```yaml title="labs/0003/module1-events.yml — triggers"
+```yaml title="labs/0003/module1-events.yml, triggers"
 on:
   push:
     branches: [main] # (1)!
@@ -117,7 +108,9 @@ The recipe passes selected fields through environment variables before printing 
       "$EVENT_NAME" "$EVENT_REF" "$BASE_REF" "$PR_HEAD"
 ```
 
-For an open `pull_request` run, `github.ref` ordinarily identifies the PR merge ref, such as `refs/pull/7/merge`, rather than the source branch. `github.base_ref` and `github.head_ref` identify PR branch names. For this recipe's manual dispatch, the PR-only values are empty. A missing context property evaluates to an empty string; the strict fixture reader instead raises a diagnostic when you claim the fixture is the wrong event type. See the [contexts reference](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts).
+For an open `pull_request` run, `github.ref` ordinarily identifies the PR merge ref, such as `refs/pull/7/merge`, rather than the source branch. `github.base_ref` and `github.head_ref` identify PR branch names. For this recipe's manual dispatch, the PR-only values are empty.
+
+Actions returns an empty string for a missing context property. The fixture reader is stricter. It reports an error if the declared event type does not match the fixture. See the [contexts reference](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts).
 
 Treat branch names and other event text as data. Mapping them through `env` and quoting shell variables avoids turning those values into shell source. Printing selected fields also keeps unnecessary context out of logs.
 
@@ -134,13 +127,15 @@ Expected: exit **1** with `Missing required field: pull_request`. No credential 
 ??? tip "Worked repair"
     Use the event name that actually matches the payload, or select the PR fixture if that is the intended case. In a multi-event workflow, guard PR-only logic with `github.event_name == 'pull_request'`. Adding token permission cannot create a missing payload object. Avoid silently fabricating PR fields in a dispatch fixture to make the error disappear.
 
-Change one trigger rule in your copy: replace the PR base filter with `release`. Rewrite the affected admission-table rows before running `task lint:module1`. Linting can accept this valid but unintended policy; that is why rejected-case review matters.
+In your copy, change the PR base filter to `release`. Rewrite the affected admission-table rows before running `task lint:module1`. Linting can accept this valid but unintended policy; that is why rejected-case review matters.
 
 ## Platform behavior to account for
 
 Manual dispatch requires the workflow file to exist on the repository's default branch. A dispatch can target a selected branch or tag; `github.ref` identifies the selected ref. Keeping the recipe only under `labs/` does not enable a Run workflow button. The [manual dispatch reference](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_dispatch) describes the availability rule.
 
-Path filtering also has documented limits. GitHub compares two-dot diffs for existing branch pushes and three-dot diffs for pull requests. Changed-file evaluation is limited to the first 300 files; a relevant later file may be missed. More than 1,000 pushed commits or a diff-generation timeout can cause the workflow to run without the usual path decision. When an entire workflow is skipped by branch/path filtering, an expected required check can remain pending and block merging. See the [Git diff comparison rules](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#git-diff-comparisons).
+Path filtering also has documented limits. GitHub compares two-dot diffs for existing branch pushes and three-dot diffs for pull requests. Changed-file evaluation is limited to the first 300 files; a relevant later file may be missed. More than 1,000 pushed commits or a diff-generation timeout can cause the workflow to run without the usual path decision.
+
+Branch or path filters can also skip an entire workflow. An expected required check may then remain pending and block merging. See the [Git diff comparison rules](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#git-diff-comparisons).
 
 For a required CI gate, consider admitting the workflow broadly and making job selection explicit inside it. [Paths-filter and selective jobs](0038-paths-filter-and-selective-jobs.md) develops that design using a maintained action.
 
@@ -160,6 +155,6 @@ Design a policy that tests PRs targeting `main` when either `examples/**` or `te
 
 A targeted hosted experiment should use small changes with known paths, comparing one admitted and one rejected event. Local fixtures and linting cannot establish that result. Primary references were checked on **2026-10-30** and are indexed in the [source library](../references/resources.md).
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0002 · Build a local feedback loop](0002-local-feedback-loop.md) | [Curriculum](index.md) | [0004 · Contexts, expressions, conditions, status, and input types](0004-contexts-expressions-and-conditions.md) |

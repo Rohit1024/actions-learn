@@ -11,21 +11,9 @@ lesson_status: placeholder
 
 **Level:** Professional practice.
 
-## Prerequisites
-
-- [0056 · Implement deterministic checks in Docker and TypeScript](0056-capstone-deterministic-docker-and-typescript-workers.md)
-- [0006 · Matrices, job dependencies, cancellation, and failure propagation](0006-matrices-dependencies-and-cancellation.md)
-- [0029 · Reusable workflows, typed inputs, explicit secrets, and permissions](0029-reusable-workflows-and-permission-interfaces.md)
-- [0030 · Compose setup/build/test steps and reusable job workflows](0030-compose-step-and-job-orchestration.md)
-
-## What you will learn to do
-
-- Build a reusable multi-job DAG with predictable joins and release eligibility.
-- Demonstrate how one failed or skipped worker affects the report and gate.
-
 ## Explain the Actions behavior
 
-Start from the prerequisite workflow or action behavior and introduce these concepts with focused examples:
+Use a small workflow or action to explain these concepts:
 
 1. Composite setup reuse does not replace the isolation of separate jobs.
 2. Fan-out workers and fan-in gates exchange named evidence rather than relying on implicit shared state.

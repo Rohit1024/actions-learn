@@ -6,16 +6,7 @@ lesson_status: authored
 
 # 0013 · Docker action metadata, arguments, and container lifecycle
 
-!!! note "Authored reference lesson"
-    Predict each result before opening its worked solution. The page and isolated lab are developed; author checks do not establish learner mastery. Commands below run from the repository root.
-
-## Prerequisites and goal
-
-Continue from [0012 · Coverage boundaries](0012-local-hosted-coverage-and-usage-budget.md). Revisit [0010 · Engines and architecture](0010-container-engines-images-and-architecture.md), [0001 · Execution boundaries](0001-execution-model.md), and [0005 · Output contracts](0005-environment-files-and-output-contracts.md) if needed. You should be able to distinguish an action implementation from a workflow step that calls it.
-
-Build an observable chain from two named inputs to two container arguments, a Python process, a named output, and a caller assertion. Success means you can locate a defect at the correct boundary, including a process that exits zero with the wrong answer.
-
-The lab is `labs/0013/`. It extends the existing Docker greeting action in its own `action/` directory. Keep shared examples unchanged. The greeting is deliberately small: the purpose is to learn a reusable action interface, not to teach Python or container administration.
+Trace each metadata input to a process argument, then predict the result before running the probe. Run commands from the repository root.
 
 ## A container action is one step implementation
 
@@ -72,7 +63,9 @@ runs:
 
 The metadata declares a default for omitted input. It does not validate that an explicitly supplied value is nonempty or single-line. Even `required: true` does not automatically produce the runtime error an action author may expect; validation belongs in the program. GitHub documents these fields in the [metadata reference](https://docs.github.com/en/actions/reference/workflows-and-actions/metadata-syntax).
 
-Use explicit `runs.args` transport for this Docker action. Its program reads `sys.argv[1]` and `sys.argv[2]`; it does not read `INPUT_NAME`. Setting that environment variable in a host test does not supply these arguments or apply metadata defaults. The probe intentionally sets `INPUT_NAME=Ignored` to expose that distinction. Read environment values such as `GITHUB_OUTPUT` with `os.environ`; do not put a literal `$GITHUB_OUTPUT` in `args` and expect exec-form startup to expand it.
+Pass this Docker action's inputs through `runs.args`. Its program reads `sys.argv[1]` and `sys.argv[2]`; it does not read `INPUT_NAME`. Setting that environment variable in a host test does not supply these arguments or apply metadata defaults. The probe sets `INPUT_NAME=Ignored` to show that it does not supply a process argument.
+
+Read environment values such as `GITHUB_OUTPUT` with `os.environ`. Exec-form startup does not expand a literal `$GITHUB_OUTPUT` placed in `args`.
 
 ## The image starts a program without a shell
 
@@ -90,7 +83,7 @@ ENTRYPOINT ["python3", "/opt/action/entrypoint.py"]
 
 The full entrypoint validates both arguments, constructs the greeting, and catches validation or filesystem errors. Its output boundary is:
 
-```python title="labs/0013/action/entrypoint.py — output boundary"
+```python title="labs/0013/action/entrypoint.py, output boundary"
 destination = os.environ.get("GITHUB_OUTPUT")
 if not destination:
     raise ValueError("GITHUB_OUTPUT must be set")
@@ -105,6 +98,8 @@ print(greeting) # (2)!
 The runner processes the file supplied through `GITHUB_OUTPUT` and exposes the named result after the step. Declaring `outputs.greeting` documents that interface; it does not write the file. A zero process exit status means successful execution; the caller still needs to assert domain behavior. See [workflow commands](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands).
 
 ## Predict and run the host boundary
+
+The lab is `labs/0013/`. It extends the existing Docker greeting action in its own `action/` directory. Keep shared examples unchanged.
 
 !!! tip "Prediction"
     With `name=Ada` and `salutation=Hello`, what reaches argv, stdout, the output file, and the process exit status? Does the deliberately different `INPUT_NAME` affect the result?
@@ -136,7 +131,7 @@ uv run --no-sync python labs/0013/probe.py --reverse
 Predict before running. Expected: the **program exits 0**, prints `Ada, Hello!`, and appends `greeting=Ada, Hello!`. The **probe exits 1** because that result violates the documented interface.
 
 ??? tip "Diagnose and repair"
-    Both strings pass validation, so neither a runtime exception nor a token permission can detect the swap. Trace `inputs.name` to the first `runs.args` entry and `sys.argv[1]`, then salutation to the second. Remove `--reverse` to repair the probe. In a disposable copy of the action metadata, swap the two `args` entries to reproduce the same defect through a container-action caller; restore name first. A host probe alone cannot prove the YAML order is correct.
+    Both strings pass validation. The program needs an assertion about the expected greeting to detect the swapped arguments. Token permissions cannot fix their order. Trace `inputs.name` to the first `runs.args` entry and `sys.argv[1]`, then salutation to the second. Remove `--reverse` to repair the probe. In a disposable copy of the action metadata, swap the two `args` entries to reproduce the same defect through a container-action caller; restore name first. A host probe alone cannot prove the YAML order is correct.
 
 Now run `uv run --no-sync python labs/0013/probe.py --name ''`. The program exits 1, stderr says `name must be a nonempty, single-line string`, and the file retains only `prior=kept`. The success-oriented probe also exits 1. Invalid input must not publish a new greeting. [0016](0016-docker-action-direct-and-image-tests.md) turns those negative outcomes into an explicitly passing test matrix.
 
@@ -144,7 +139,7 @@ Now run `uv run --no-sync python labs/0013/probe.py --name ''`. The program exit
 
 `labs/0013/consumer.yml` is a complete inactive manual-dispatch recipe. Its relevant steps are:
 
-```yaml title="labs/0013/consumer.yml — caller excerpt"
+```yaml title="labs/0013/consumer.yml, caller excerpt"
 - id: greet
   uses: ./labs/0013/action
   with:
@@ -158,7 +153,7 @@ Now run `uv run --no-sync python labs/0013/probe.py --name ''`. The program exit
 
 1. `greet` is the step ID, not the action's display name. Transporting the result through `env` keeps it out of shell source code.
 
-The full recipe selects `ubuntu-latest`, a five-minute job timeout, read-only contents permission, and the existing course checkout commit pin with persisted credentials disabled. Checkout must precede this local `uses` path: the runner needs the action files in its workspace. Nothing under `labs/` registers a hosted workflow automatically.
+The full recipe selects `ubuntu-latest`, a five-minute job timeout, read-only contents permission, and the existing course checkout commit pin with persisted credentials disabled. Checkout must precede this local `uses` path. The runner needs the action files in its workspace. Nothing under `labs/` registers a hosted workflow automatically.
 
 Static check, with the installed tool:
 
@@ -200,6 +195,6 @@ The author ran the successful probe, reversed and empty-input failures, and acti
 
 Primary documentation was checked on **2026-10-30**; see the [source library](../references/resources.md) and `labs/module-3-handoff.md`. Continue to [0014](0014-dockerfiles-layers-and-build-context.md).
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0012 · Define the local/hosted coverage boundary and usage budget](0012-local-hosted-coverage-and-usage-budget.md) | [Curriculum](index.md) | [0014 · Dockerfile layers, build context, reproducible bases, and entrypoints](0014-dockerfiles-layers-and-build-context.md) |

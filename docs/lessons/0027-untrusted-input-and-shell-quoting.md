@@ -6,18 +6,11 @@ lesson_status: authored
 
 # 0027 · Transport inputs safely through environment variables and quoted arguments
 
-!!! note "Reference lesson"
-    `labs/0027/` contains a fixed synthetic injection demonstration and a repaired adapter. All marker writes stay in an automatically removed temporary directory. Read the prediction before running the exercise.
-
-## Prerequisites and observable goal
-
-Read [0026 · Shell and path boundaries](0026-composite-shells-paths-and-portability.md) and retrieve [0004 · Expressions and types](0004-contexts-expressions-and-conditions.md). Identify which evaluator handles `${{ ... }}` and which expands `$VALUE`.
-
-Pass spaces, quotes, dollar signs, command-shaped text, and an embedded newline through a composite without turning them into code or extra output records. Success means exact round-trip equality and an absent marker file for the repaired path, plus a reasoned explanation of the deliberately unsafe path.
+`labs/0027/` contains a fixed injection demonstration and a repaired adapter. The marker files stay in a temporary directory that the script removes. Read the prediction before running it.
 
 ## Separate source generation from data transport
 
-An expression in `run` can become part of the temporary shell script **before Bash parses it**. Ordinary shell quotes around that expression are not a general defense: the substituted value may itself contain shell syntax.
+An expression in `run` can become part of the temporary shell script **before Bash parses it**. Shell quotes around the expression cannot protect against every substituted value. The value can contain shell syntax of its own.
 
 ```yaml title="Unsafe illustration only; do not execute with real event data"
 - shell: bash
@@ -56,7 +49,7 @@ flowchart TD
 
 The runnable composite uses `inputs.label`, because a composite should accept data without assuming it was called by a PR workflow:
 
-```yaml title="labs/0027/action/action.yml — transport excerpt"
+```yaml title="labs/0027/action/action.yml, transport excerpt"
 - id: accept
   shell: bash
   env:
@@ -127,7 +120,7 @@ The script creates a fresh temporary cwd and runs the unsafe case with **only th
 For each case it asserts status zero, empty stderr, one physical output record, exact JSON-decoded equality, the generic log, and marker absence. Empty, whitespace-only, and 161-code-unit labels fail without changing a prior output record. Every child has a five-second timeout; temporary files are removed automatically.
 
 ??? tip "Worked diagnosis and repair"
-    Generated source is parsed once after the payload is inserted, so `$(...)` executes. Expanding a quoted environment variable does not recursively interpret its contents as command substitutions. The repaired adapter therefore receives the literal payload and writes its JSON representation. The multiline label needs JSON serialization as well: quoting its shell argument alone would not stop raw LF from splitting a `name=value` output record.
+    Generated source is parsed once after the payload is inserted, so `$(...)` executes. Expanding a quoted environment variable does not recursively interpret its contents as command substitutions. The repaired adapter therefore receives the literal payload and writes its JSON representation. The multiline label also needs JSON serialization. Shell quoting does not stop a raw LF from splitting a `name=value` output record.
 
 Do not extend the unsafe demonstration to user-supplied strings. To practice a new untrusted label, add it only to the repaired path and preserve marker and exact-byte assertions.
 
@@ -151,14 +144,14 @@ Static-check this exact recipe:
 .tools/bin/actionlint -no-color labs/0027/consumer.yml
 ```
 
-Expected: exit **0**, no diagnostics. Linting is useful for workflow expressions and interfaces, but a clean result is not a comprehensive injection audit. The process harness is the executable evidence for these particular transport cases. GitHub's [workflow-command reference](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands#setting-an-output-parameter) defines the runner-side output boundary.
+Expected: exit **0**, no diagnostics. Linting is useful for workflow expressions and interfaces, but a clean result is not a comprehensive injection audit. The process tests check how these particular inputs reach the program and output file. GitHub's [workflow-command reference](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands#setting-an-output-parameter) defines the runner-side output boundary.
 
 ## Transfer exercise and retrieval
 
 A composite receives a PR title, a workspace-relative file path, and a test-mode flag. The title may contain newlines; the path must stay within a project directory; the flag enables extra tests. Specify three validation/transport decisions and a failure case for each.
 
 ??? tip "Worked transfer"
-    Keep the title in env/quoted argv and serialize it if returning through a single-line output. Use an explicit path-containment policy and filesystem checks for the file; quoting only protects the argument boundary. For a composite flag, define a small accepted text set such as `true` and `false` and reject other values; reusable workflows can additionally declare a boolean input. Test a command-shaped title, an escaping path, and `false`/invalid flag text independently. None of these decisions makes privileged execution of untrusted repository code safe.
+    Pass the title through an environment variable and a quoted argument. Serialize it before returning it through a single-line output. Use an explicit path-containment policy and filesystem checks for the file; quoting only protects the argument boundary. For a composite flag, define a small accepted text set such as `true` and `false` and reject other values; reusable workflows can also declare a boolean input. Test a command-shaped title, an escaping path, and `false`/invalid flag text independently. None of these decisions makes privileged execution of untrusted repository code safe.
 
 Retrieve without looking:
 
@@ -177,6 +170,6 @@ The local exercise reproduces one fixed injection and tests the repaired actual 
 
 Primary secure-use, metadata, and workflow-command references were checked **2026-10-30** through the [curated library](../references/resources.md). The runnable lab installs no dependencies and uses no credentials or external service.
 
-| Previous Lesson | All Lessons | Next Lesson |
+| Previous lesson | All lessons | Next lesson |
 | --- | --- | --- |
 | [0026 · Explicit shells, action paths, paths with spaces, and portability](0026-composite-shells-paths-and-portability.md) | [Curriculum](index.md) | [0028 · Test composite scripts and then their workflow wiring](0028-composite-script-tests-and-workflow-wiring.md) |
